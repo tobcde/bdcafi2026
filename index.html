@@ -2224,7 +2224,7 @@ function _renderLista(jugadores, catFiltro) {
     + '<strong style="display:block;font-size:26px;color:#1e3a5f;font-weight:800;">'+total+'</strong>jugadores'
     + (cafiSrc ? '<br><img src="'+cafiSrc+'" style="width:36px;height:36px;object-fit:contain;margin-top:4px;">' : '')
     + '</div></div>'
-    + '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px;">'+gridContent+'</div>'
+    + '<div style="display:grid;grid-template-columns:repeat('+(window._pdfCols||3)+',1fr);gap:6px;margin-top:8px;">'+gridContent+'</div>'
     + '<div style="margin-top:60px;border-top:1px solid #ccc;padding-top:6px;display:flex;justify-content:space-between;align-items:center;">'
     + '<div style="font-size:8px;color:#aaa;">Municipalidad de Vicente L\u00f3pez \u2014 Temporada 2026</div>'
     + '<div style="font-size:10px;font-weight:800;color:#1e3a5f;letter-spacing:.05em;">CAFI 2026</div>'
@@ -2486,7 +2486,7 @@ function imgError(el) {
   font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
   text-transform:uppercase;letter-spacing:.06em;
   color:rgba(255,255,255,.25);pointer-events:none;user-select:none;">
-  v3.4
+  v3.5
 </div>
 </body>
 </html>
