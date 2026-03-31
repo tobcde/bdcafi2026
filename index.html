@@ -360,7 +360,7 @@ body.readonly a[target="_blank"] { pointer-events: none !important; color: var(-
   #listaScreen { position: static !important; overflow: visible !important; }
   #listaPrintBar { display: none !important; }
   #listaContent { width: 100% !important; padding: 0 !important; }
-  @page { margin: 10mm; size: A4; }
+  @page { margin: 10mm; size: A4 landscape; }
 }
 </style>
 </head>
@@ -2175,7 +2175,7 @@ function _renderLista(jugadores, catFiltro) {
     var fotoUrl = getFotoJugador(p);
     var photoHtml;
     if (fotoUrl) {
-      photoHtml = '<img src="'+esc(fotoUrl)+'" style="width:100%;height:100%;object-fit:cover;object-position:top;">';
+      photoHtml = '<img src="'+esc(fotoUrl)+'" style="width:100%;height:100%;object-fit:cover;object-position:center 50%;">';
     } else {
       photoHtml = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">'
         + '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>'
@@ -2190,7 +2190,7 @@ function _renderLista(jugadores, catFiltro) {
     }
 
     return '<div style="border:1px solid #ccc;border-radius:6px;overflow:hidden;display:flex;flex-direction:column;">'
-      + '<div style="width:100%;height:'+(window._pdfFotoH||130)+'px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">'
+      + '<div style="width:100%;height:'+(window._pdfFotoH||150)+'px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">'
       + photoHtml + '</div>'
       + '<div style="padding:5px 6px;background:#f8f8f8;flex:1;">'
       + '<div style="font-size:8.5px;font-weight:800;text-transform:uppercase;color:#111;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + esc(apellido) + '</div>'
@@ -2224,7 +2224,7 @@ function _renderLista(jugadores, catFiltro) {
     + '<strong style="display:block;font-size:26px;color:#1e3a5f;font-weight:800;">'+total+'</strong>jugadores'
     + (cafiSrc ? '<br><img src="'+cafiSrc+'" style="width:36px;height:36px;object-fit:contain;margin-top:4px;">' : '')
     + '</div></div>'
-    + '<div style="display:grid;grid-template-columns:repeat('+(window._pdfCols||3)+',1fr);gap:6px;margin-top:8px;">'+gridContent+'</div>'
+    + '<div style="display:grid;grid-template-columns:repeat('+(window._pdfCols||4)+',1fr);gap:6px;margin-top:8px;">'+gridContent+'</div>'
     + '<div style="margin-top:60px;border-top:1px solid #ccc;padding-top:6px;display:flex;justify-content:space-between;align-items:center;">'
     + '<div style="font-size:8px;color:#aaa;">Municipalidad de Vicente L\u00f3pez \u2014 Temporada 2026</div>'
     + '<div style="font-size:10px;font-weight:800;color:#1e3a5f;letter-spacing:.05em;">CAFI 2026</div>'
@@ -2319,7 +2319,7 @@ function imgError(el) {
 
 <!-- LISTA IMPRIMIBLE -->
 <div id="listaScreen" style="display:none; position:fixed; inset:0; z-index:8500; background:white; overflow-y:auto;">
-  <div id="listaContent" style="width:210mm; margin:0 auto; padding:10mm; font-family:Arial,sans-serif;"></div>
+  <div id="listaContent" style="width:277mm; margin:0 auto; padding:10mm; font-family:Arial,sans-serif;"></div>
   <div id="listaPrintBar" style="position:fixed; bottom:0; left:0; right:0; background:#1e3a5f; padding:12px 24px; display:flex; align-items:center; gap:12px; box-shadow:0 -4px 20px rgba(0,0,0,.3);">
     <span style="font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:white;" id="listaPrintInfo"></span>
     <div style="margin-left:auto; display:flex; gap:10px;">
@@ -2335,8 +2335,8 @@ function imgError(el) {
     <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;text-transform:uppercase;color:#a0c4ff;letter-spacing:.05em;">&#9881; Editor Lista PDF</span>
     <div style="display:flex;align-items:center;gap:8px;">
       <label style="font-size:11px;font-weight:700;text-transform:uppercase;color:#a0c4ff;">Altura foto</label>
-      <input type="range" id="edH" min="80" max="400" value="130" step="10" style="width:140px;accent-color:#e94560;" oninput="edUpdate()">
-      <span id="edHVal" style="font-size:13px;font-weight:800;color:#e94560;min-width:40px;">130px</span>
+      <input type="range" id="edH" min="80" max="400" value="150" step="10" style="width:140px;accent-color:#e94560;" oninput="edUpdate()">
+      <span id="edHVal" style="font-size:13px;font-weight:800;color:#e94560;min-width:40px;">150px</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;">
       <label style="font-size:11px;font-weight:700;text-transform:uppercase;color:#a0c4ff;">object-fit</label>
@@ -2347,8 +2347,8 @@ function imgError(el) {
     </div>
     <div style="display:flex;align-items:center;gap:8px;">
       <label style="font-size:11px;font-weight:700;text-transform:uppercase;color:#a0c4ff;">Pos. Y</label>
-      <input type="range" id="edPos" min="0" max="100" value="0" step="5" style="width:120px;accent-color:#e94560;" oninput="edUpdate()">
-      <span id="edPosVal" style="font-size:13px;font-weight:800;color:#e94560;min-width:35px;">0%</span>
+      <input type="range" id="edPos" min="0" max="100" value="50" step="5" style="width:120px;accent-color:#e94560;" oninput="edUpdate()">
+      <span id="edPosVal" style="font-size:13px;font-weight:800;color:#e94560;min-width:35px;">50%</span>
     </div>
     <div style="display:flex;align-items:center;gap:8px;">
       <label style="font-size:11px;font-weight:700;text-transform:uppercase;color:#a0c4ff;">Columnas</label>
@@ -2486,7 +2486,7 @@ function imgError(el) {
   font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
   text-transform:uppercase;letter-spacing:.06em;
   color:rgba(255,255,255,.25);pointer-events:none;user-select:none;">
-  v3.6
+  v3.7
 </div>
 </body>
 </html>
