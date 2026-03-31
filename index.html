@@ -1,0 +1,2148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listas de Buena Fe — CAFI 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0f1117; --surface:#181c27; --surface2:#1e2433; --border:#2a3045;
+  --text:#e8ecf4; --muted:#8491a8; --accent:#3b82f6;
+  --green:#22c55e;   --green-bg:#0d2e1a;   --green-border:#16a34a;
+  --lgreen:#86efac;  --lgreen-bg:#0a2818;  --lgreen-border:#4ade80;
+  --yellow:#fbbf24;  --yellow-bg:#2d2200;  --yellow-border:#d97706;
+  --orange:#fb923c;  --orange-bg:#2d1500;  --orange-border:#ea580c;
+  --red:#f87171;     --red-bg:#2d0a0a;     --red-border:#dc2626;
+  --gray:#94a3b8;    --gray-bg:#1a1f2e;    --gray-border:#475569;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Barlow',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+header { background:var(--surface); border-bottom:2px solid var(--accent); padding:14px 20px; display:flex; align-items:center; gap:16px; position:sticky; top:0; z-index:100; flex-wrap:wrap; }
+.logo { font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; }
+.logo span { color:var(--accent); }
+.sub { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; margin-top:2px; }
+.reload-btn { margin-left:auto; font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; background:transparent; border:1px solid var(--border); color:var(--muted); padding:6px 12px; border-radius:5px; cursor:pointer; transition:all .15s; display:flex; align-items:center; gap:6px; }
+.reload-btn:hover { border-color:var(--accent); color:var(--accent); }
+.legend { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.leg { display:flex; align-items:center; gap:5px; font-size:10px; color:var(--muted); font-family:'Barlow Condensed',sans-serif; text-transform:uppercase; letter-spacing:.04em; }
+.leg-dot { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
+
+.club-bar { background:var(--surface); border-bottom:1px solid var(--border); }
+.club-tabs { display:flex; overflow-x:auto; scrollbar-width:thin; scrollbar-color:var(--border) transparent; padding:0 8px; }
+.club-tab { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; padding:11px 14px; cursor:pointer; border:none; background:none; color:var(--muted); border-bottom:3px solid transparent; white-space:nowrap; transition:all .12s; flex-shrink:0; }
+.club-tab:hover { color:var(--text); }
+.club-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+
+.cat-bar { background:var(--surface2); border-bottom:1px solid var(--border); padding:6px 20px; display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.cat-label { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-family:'Barlow Condensed',sans-serif; margin-right:4px; }
+.cat-btn { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; padding:5px 12px; cursor:pointer; border:1px solid var(--border); background:transparent; color:var(--muted); border-radius:4px; transition:all .12s; text-transform:uppercase; letter-spacing:.05em; }
+.cat-btn:hover { border-color:var(--accent); color:var(--text); }
+.cat-btn.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+
+.stats { display:flex; gap:18px; padding:10px 20px; background:var(--bg); border-bottom:1px solid var(--border); flex-wrap:wrap; align-items:center; }
+.st { display:flex; align-items:baseline; gap:6px; }
+.st-n { font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:700; }
+.st-l { color:var(--muted); font-size:10px; text-transform:uppercase; letter-spacing:.06em; }
+.last-update { margin-left:auto; font-size:10px; color:var(--muted); font-family:'Barlow Condensed',sans-serif; letter-spacing:.04em; }
+
+.grid-wrap { padding:16px 20px; }
+.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; }
+
+.card { border-radius:8px; border:1px solid; overflow:hidden; cursor:pointer; transition:transform .12s,box-shadow .12s; display:flex; flex-direction:column; }
+.card:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.5); }
+.card.green      { background:var(--green-bg);  border-color:var(--green-border); }
+.card.lightgreen { background:var(--lgreen-bg); border-color:var(--lgreen-border); }
+.card.yellow     { background:var(--yellow-bg); border-color:var(--yellow-border); }
+.card.orange     { background:var(--orange-bg); border-color:var(--orange-border); }
+.card.red        { background:var(--red-bg);    border-color:var(--red-border); }
+.card.gray       { background:var(--gray-bg);   border-color:var(--gray-border); }
+
+.photo {
+  width:100%; height:110px;
+  background:rgba(255,255,255,.04);
+  display:flex; align-items:center; justify-content:center;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  flex-shrink:0; overflow:hidden; position:relative;
+}
+.photo img { width:100%; height:100%; object-fit:cover; }
+.photo-placeholder { display:flex; flex-direction:column; align-items:center; gap:5px; }
+.photo-icon { width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.06); display:flex; align-items:center; justify-content:center; }
+.photo-icon svg { opacity:.25; }
+.photo-lbl { font-size:8px; text-transform:uppercase; letter-spacing:.1em; opacity:.25; font-family:'Barlow Condensed',sans-serif; }
+
+/* Apto físico badge */
+.apto-badge {
+  position:absolute; bottom:5px; right:5px;
+  font-family:'Barlow Condensed',sans-serif; font-size:8px; font-weight:700;
+  text-transform:uppercase; letter-spacing:.06em;
+  padding:2px 5px; border-radius:3px;
+}
+.apto-ok  { background:rgba(34,197,94,.85); color:#000; }
+.apto-no  { background:rgba(248,113,113,.85); color:#000; }
+
+.cbar { height:3px; flex-shrink:0; }
+.card.green      .cbar { background:var(--green); }
+.card.lightgreen .cbar { background:var(--lgreen); }
+.card.yellow     .cbar { background:var(--yellow); }
+.card.orange     .cbar { background:var(--orange); }
+.card.red        .cbar { background:var(--red); }
+.card.gray       .cbar { background:var(--gray); }
+
+.cinfo { padding:10px 12px; flex:1; display:flex; flex-direction:column; gap:7px; }
+.cname { font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:800; text-transform:uppercase; letter-spacing:.03em; line-height:1.2; }
+.cmeta { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.ctag { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; background:rgba(255,255,255,.07); border-radius:3px; padding:2px 6px; color:var(--muted); }
+.cdivider { height:1px; background:rgba(255,255,255,.06); }
+.caddr-block { display:flex; flex-direction:column; gap:5px; }
+.caddr-section { display:flex; flex-direction:column; gap:2px; }
+.caddr-label { font-family:'Barlow Condensed',sans-serif; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); opacity:.7; }
+.caddr-val { font-size:11px; color:var(--muted); line-height:1.3; }
+.art23-tag { font-family:'Barlow Condensed',sans-serif; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--orange); background:rgba(251,146,60,.1); border:1px solid var(--orange-border); border-radius:3px; padding:2px 6px; display:inline-block; margin-top:2px; }
+
+/* Loading / Error */
+.fullscreen-msg { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:60vh; gap:16px; }
+.spinner { width:40px; height:40px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.msg-title { font-family:'Barlow Condensed',sans-serif; font-size:16px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); }
+.error-box { background:var(--red-bg); border:1px solid var(--red-border); border-radius:8px; padding:16px 20px; max-width:480px; text-align:center; }
+.error-box .msg-title { color:var(--red); }
+.error-box p { font-size:12px; color:var(--muted); margin-top:8px; line-height:1.6; }
+.retry-btn { margin-top:12px; font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; background:var(--accent); border:none; color:#fff; padding:8px 16px; border-radius:5px; cursor:pointer; }
+
+/* Modal */
+.overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.75); z-index:200; align-items:center; justify-content:center; backdrop-filter:blur(3px); }
+.overlay.open { display:flex; }
+.modal { background:var(--surface); border:1px solid var(--border); border-radius:12px; width:560px; max-width:94vw; max-height:88vh; overflow-y:auto; }
+.mhead { padding:18px 22px 14px; border-bottom:1px solid var(--border); display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+.mname { font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; text-transform:uppercase; letter-spacing:.04em; }
+.mclose { background:none; border:none; color:var(--muted); cursor:pointer; font-size:20px; line-height:1; padding:2px; }
+.mclose:hover { color:var(--text); }
+.mbody { padding:18px 22px; }
+.msec { margin-bottom:18px; }
+.msec-t { font-family:'Barlow Condensed',sans-serif; font-size:10px; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); margin-bottom:8px; padding-bottom:5px; border-bottom:1px solid var(--border); }
+.mrow { display:flex; justify-content:space-between; gap:10px; font-size:12px; margin-bottom:5px; }
+.ml { color:var(--muted); flex-shrink:0; font-size:11px; }
+.mr { text-align:right; word-break:break-word; }
+.badge { display:inline-flex; align-items:center; padding:3px 9px; border-radius:20px; font-size:11px; font-family:'Barlow Condensed',sans-serif; font-weight:700; text-transform:uppercase; letter-spacing:.05em; margin-top:5px; }
+.badge.green      { background:var(--green-bg);  color:var(--green);  border:1px solid var(--green-border); }
+.badge.lightgreen { background:var(--lgreen-bg); color:var(--lgreen); border:1px solid var(--lgreen-border); }
+.badge.yellow     { background:var(--yellow-bg); color:var(--yellow); border:1px solid var(--yellow-border); }
+.badge.orange     { background:var(--orange-bg); color:var(--orange); border:1px solid var(--orange-border); }
+.badge.red        { background:var(--red-bg);    color:var(--red);    border:1px solid var(--red-border); }
+.badge.gray       { background:var(--gray-bg);   color:var(--gray);   border:1px solid var(--gray-border); }
+
+.art23-box { background:rgba(251,146,60,.08); border:1px solid var(--orange-border); border-radius:6px; padding:12px 14px; }
+.art23-box-title { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--orange); margin-bottom:8px; }
+.art23-box-text { font-size:11px; color:var(--muted); line-height:1.7; white-space:pre-line; }
+
+/* Images in modal */
+.img-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:4px; }
+.img-box { border-radius:6px; overflow:hidden; background:rgba(255,255,255,.04); border:1px solid var(--border); }
+.img-box img { width:100%; display:block; cursor:zoom-in; }
+.img-box .img-label { font-family:'Barlow Condensed',sans-serif; font-size:9px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); padding:5px 8px; text-align:center; }
+.img-box.apto { grid-column:1/-1; }
+.img-error { padding:20px; text-align:center; font-size:11px; color:var(--muted); }
+.img-link { display:block; text-align:center; font-size:10px; color:var(--accent); padding:4px; font-family:'Barlow Condensed',sans-serif; text-transform:uppercase; letter-spacing:.05em; text-decoration:none; }
+.img-link:hover { text-decoration:underline; }
+
+.empty { text-align:center; padding:60px 20px; color:var(--muted); font-family:'Barlow Condensed',sans-serif; font-size:15px; text-transform:uppercase; letter-spacing:.1em; grid-column:1/-1; }
+
+/* Doc indicators on card */
+.doc-indicators { display:flex; gap:6px; margin-top:4px; flex-wrap:wrap; }
+.doc-ind {
+  display:flex; align-items:center; gap:4px;
+  font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700;
+  text-transform:uppercase; letter-spacing:.05em; padding:2px 7px;
+  border-radius:20px; border:1px solid transparent;
+}
+.doc-ind.ok    { background:rgba(34,197,94,.15);   color:#22c55e; border-color:rgba(34,197,94,.4); }
+.doc-ind.warn  { background:rgba(251,191,36,.18);  color:#fbbf24; border-color:rgba(251,191,36,.5); }
+.doc-ind.white { background:rgba(226,232,240,.10); color:#cbd5e1; border-color:rgba(226,232,240,.25); }
+.doc-ind.no    { background:rgba(248,113,113,.18); color:#f87171; border-color:rgba(248,113,113,.5); }
+@media(max-width:580px){ .legend{display:none;} .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));} }
+
+/* ── LOGIN ──────────────────────────────────────────────── */
+#loginScreen {
+  position:fixed; inset:0; z-index:9999;
+  background:var(--bg);
+  display:flex; align-items:center; justify-content:center;
+}
+.login-box {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:36px 40px;
+  width:340px; max-width:92vw;
+  display:flex; flex-direction:column; gap:20px;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.login-logo {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:22px; font-weight:800;
+  text-transform:uppercase; letter-spacing:.05em;
+  text-align:center;
+}
+.login-logo span { color:var(--accent); }
+.login-sub {
+  font-size:11px; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.1em;
+  text-align:center; margin-top:-14px;
+}
+.login-field { display:flex; flex-direction:column; gap:6px; }
+.login-label {
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px; font-weight:700;
+  text-transform:uppercase; letter-spacing:.08em;
+  color:var(--muted);
+}
+.login-input {
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:6px;
+  color:var(--text);
+  font-family:'Barlow',sans-serif;
+  font-size:14px;
+  padding:10px 14px;
+  outline:none;
+  transition:border-color .15s;
+}
+.login-input:focus { border-color:var(--accent); }
+.login-btn {
+  background:var(--accent);
+  border:none; border-radius:6px;
+  color:#fff;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:15px; font-weight:700;
+  text-transform:uppercase; letter-spacing:.06em;
+  padding:12px;
+  cursor:pointer;
+  transition:opacity .15s;
+  margin-top:4px;
+}
+.login-btn:hover { opacity:.85; }
+.login-error {
+  background:var(--red-bg);
+  border:1px solid var(--red-border);
+  border-radius:6px;
+  color:var(--red);
+  font-size:12px;
+  padding:8px 12px;
+  text-align:center;
+  display:none;
+}
+.login-error.visible { display:block; }
+
+
+/* ── OVERRIDES */
+.card { position:relative; }
+.card.overridden::after { content:'\270E'; position:absolute; top:5px; right:7px; font-size:12px; color:rgba(255,255,255,.45); pointer-events:none; }
+.card.selected { outline:2px solid rgba(255,255,255,.7); outline-offset:1px; }
+.card .chk { position:absolute; top:6px; left:7px; width:20px; height:20px; border-radius:5px; background:rgba(0,0,0,.45); border:1.5px solid rgba(255,255,255,.35); display:flex; align-items:center; justify-content:center; font-size:12px; color:#fff; cursor:pointer; z-index:10; transition:all .12s; }
+.card.selected .chk { background:var(--accent); border-color:var(--accent); }
+
+/* ── OBS MODAL */
+.obs-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.8); z-index:300; align-items:center; justify-content:center; backdrop-filter:blur(3px); }
+.obs-overlay.open { display:flex; }
+.obs-modal { background:var(--surface); border:1px solid var(--border); border-radius:12px; width:460px; max-width:94vw; padding:24px; display:flex; flex-direction:column; gap:16px; }
+.obs-title { font-family:'Barlow Condensed',sans-serif; font-size:17px; font-weight:800; text-transform:uppercase; letter-spacing:.04em; }
+.obs-sub { font-size:12px; color:var(--muted); margin-top:-10px; }
+.obs-lbl { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:5px; }
+.obs-textarea { background:var(--surface2); border:1px solid var(--border); border-radius:6px; color:var(--text); font-family:'Barlow',sans-serif; font-size:13px; padding:10px 12px; outline:none; resize:vertical; min-height:80px; width:100%; transition:border-color .15s; }
+.obs-textarea:focus { border-color:var(--accent); }
+.color-picker { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+.color-opt { width:34px; height:34px; border-radius:6px; cursor:pointer; border:2px solid transparent; transition:all .12s; flex-shrink:0; }
+.color-opt:hover { transform:scale(1.1); }
+.color-opt.selected { border-color:#fff !important; box-shadow:0 0 0 1px rgba(255,255,255,.3); }
+.color-opt-lbl { font-family:'Barlow Condensed',sans-serif; font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; text-align:center; width:34px; }
+.obs-history { background:var(--surface2); border-radius:6px; padding:10px 12px; font-size:11px; color:var(--muted); line-height:1.7; max-height:110px; overflow-y:auto; }
+.obs-actions { display:flex; gap:8px; justify-content:flex-end; align-items:center; flex-wrap:wrap; }
+.obs-save-status { font-size:11px; margin-right:auto; font-family:'Barlow Condensed',sans-serif; }
+.obs-btn { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; padding:9px 16px; border-radius:6px; border:none; cursor:pointer; transition:opacity .12s; }
+.obs-btn:hover { opacity:.8; } .obs-btn:disabled { opacity:.4; cursor:not-allowed; }
+.obs-btn-save { background:var(--accent); color:#fff; }
+.obs-btn-clear { background:var(--surface2); color:var(--muted); border:1px solid var(--border); }
+.obs-btn-cancel { background:transparent; color:var(--muted); }
+.obs-card-btn { width:100%; margin-top:3px; font-family:'Barlow Condensed',sans-serif; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); color:var(--muted); border-radius:3px; padding:3px 7px; cursor:pointer; }
+.obs-card-btn:hover { background:rgba(255,255,255,.1); color:var(--text); }
+.obs-snippet { font-size:9px; color:var(--muted); font-style:italic; line-height:1.3; margin-top:2px; }
+
+/* ── DOC INDICATORS */
+
+
+/* ── ESTADO FILTER */
+.estado-bar { background:var(--bg); border-bottom:1px solid var(--border); padding:6px 20px; display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.estado-btn { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; padding:4px 10px; border-radius:20px; cursor:pointer; border:2px solid transparent; transition:all .12s; }
+.estado-btn.active { box-shadow:0 0 0 2px rgba(255,255,255,.6); }
+.estado-btn.eb-all    { background:var(--surface2); color:var(--muted); border-color:var(--border); }
+.estado-btn.eb-green  { background:var(--green-bg);  color:var(--green);  border-color:var(--green-border); }
+.estado-btn.eb-lgreen { background:var(--lgreen-bg); color:var(--lgreen); border-color:var(--lgreen-border); }
+.estado-btn.eb-yellow { background:var(--yellow-bg); color:var(--yellow); border-color:var(--yellow-border); }
+.estado-btn.eb-orange { background:var(--orange-bg); color:var(--orange); border-color:var(--orange-border); }
+.estado-btn.eb-red    { background:var(--red-bg);    color:var(--red);    border-color:var(--red-border); }
+.estado-btn.eb-gray   { background:var(--gray-bg);   color:var(--gray);   border-color:var(--gray-border); }
+.ecnt { font-size:9px; background:rgba(255,255,255,.15); border-radius:8px; padding:1px 5px; margin-left:2px; }
+
+/* ── SEL BAR */
+.sel-bar { display:none; background:var(--accent); padding:8px 20px; align-items:center; gap:12px; flex-wrap:wrap; }
+.sel-bar.visible { display:flex; }
+.sel-txt { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:#fff; }
+.sel-actions { display:flex; gap:8px; margin-left:auto; }
+.sel-btn { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; padding:6px 14px; border-radius:5px; border:none; cursor:pointer; }
+.sel-btn-obs    { background:#fff; color:var(--accent); }
+.sel-btn-cancel { background:rgba(255,255,255,.2); color:#fff; }
+
+/* ── SEARCH */
+.search-wrap { display:flex; align-items:center; gap:6px; margin-left:8px; }
+.search-input { background:var(--surface2); border:1px solid var(--border); border-radius:6px; color:var(--text); font-family:'Barlow',sans-serif; font-size:13px; padding:6px 12px; outline:none; width:180px; transition:border-color .15s; }
+.search-input:focus { border-color:var(--accent); }
+.search-clear { background:none; border:none; color:var(--muted); cursor:pointer; font-size:16px; line-height:1; padding:0 4px; display:none; }
+.search-clear.visible { display:block; }
+
+/* ── TECNICOS */
+.card-tec { border-radius:8px; border:1px solid var(--accent); background:rgba(59,130,246,.08); overflow:hidden; cursor:pointer; transition:transform .12s,box-shadow .12s; display:flex; flex-direction:column; position:relative; }
+.card-tec:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.5); }
+.tec-photo { width:100%; height:160px; background:rgba(255,255,255,.04); display:flex; align-items:center; justify-content:center; overflow:hidden; border-bottom:1px solid rgba(59,130,246,.3); flex-shrink:0; padding:10px; box-sizing:border-box; }
+.tec-photo img { width:120px; height:140px; object-fit:cover; object-position:top center; border-radius:8px; border:2px solid rgba(59,130,246,.4); flex-shrink:0; }
+.tec-badge { position:absolute; top:6px; right:7px; font-family:'Barlow Condensed',sans-serif; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; background:rgba(59,130,246,.9); color:#fff; padding:2px 6px; border-radius:3px; }
+.tec-info { padding:10px 12px; display:flex; flex-direction:column; gap:5px; }
+.tec-name { font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:800; text-transform:uppercase; letter-spacing:.03em; line-height:1.2; }
+.tec-meta { display:flex; gap:6px; flex-wrap:wrap; }
+.tec-mat { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; background:rgba(59,130,246,.2); color:var(--accent); border:1px solid rgba(59,130,246,.4); border-radius:3px; padding:2px 6px; }
+
+/* ── DELEGADOS */
+.card-del { border-radius:8px; border:1px solid #a855f7; background:rgba(168,85,247,.08); overflow:hidden; cursor:pointer; transition:transform .12s,box-shadow .12s; display:flex; flex-direction:column; position:relative; }
+.card-del:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.5); }
+.del-bar { height:3px; background:#a855f7; flex-shrink:0; }
+.del-badge { position:absolute; top:6px; right:7px; font-family:'Barlow Condensed',sans-serif; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; background:rgba(168,85,247,.9); color:#fff; padding:2px 6px; border-radius:3px; }
+.club-tab.tec-tab { color:#3b82f6; }
+.club-tab.tec-tab.active { color:#3b82f6; border-bottom-color:#3b82f6; }
+.sync-indicator { font-family:'Barlow Condensed',sans-serif; font-size:10px; text-transform:uppercase; letter-spacing:.05em; padding:3px 8px; border-radius:3px; background:rgba(34,197,94,.15); color:var(--green); border:1px solid rgba(34,197,94,.3); }
+
+
+/* ── DELEGADOS / TÉCNICOS */
+.card.delegado { background:#1a1f35; border-color:#6366f1; }
+.card.delegado .cbar { background:#6366f1; }
+.card.tecnico  { background:#1a2535; border-color:#0ea5e9; }
+.card.tecnico  .cbar { background:#0ea5e9; }
+.role-badge { font-family:'Barlow Condensed',sans-serif; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:2px 6px; border-radius:3px; display:inline-block; margin-bottom:3px; }
+.role-badge.delegado { background:rgba(99,102,241,.2); color:#818cf8; border:1px solid rgba(99,102,241,.4); }
+.role-badge.tecnico  { background:rgba(14,165,233,.2); color:#38bdf8; border:1px solid rgba(14,165,233,.4); }
+.tec-photos { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; }
+.tec-photo-main { border-radius:8px; width:100%; max-height:200px; object-fit:cover; object-position:top center; border:1px solid var(--border); display:block; }
+.tec-photo-sm { border-radius:6px; object-fit:cover; object-position:top center; width:100%; height:100px; border:1px solid var(--border); display:block; cursor:zoom-in; }
+.matricula-badge { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:#38bdf8; background:rgba(14,165,233,.1); border:1px solid rgba(14,165,233,.3); border-radius:4px; padding:3px 8px; display:inline-block; }
+
+
+/* ── REPORTES ─────────────────────────────────────────────────────────── */
+#reportScreen select:focus { outline:none; border-color:var(--accent); }
+#reportTable th:hover { color:var(--text); }
+.report-row:hover { background:rgba(59,130,246,.06) !important; }
+#reportTable td { vertical-align:middle; }
+
+/* ── MODO CLUB / READONLY ───────────────────────────── */
+body.readonly .admin-only { display: none !important; }
+body.readonly .report-btn { display: none; } /* starts hidden, shown after login */
+body.readonly .chk { display: none !important; }
+body.readonly .obs-card-btn { display: none !important; }
+body.readonly #selBar { display: none !important; }
+body.readonly #estadoBar { display: none !important; }
+body.readonly .club-tabs-wrap { pointer-events: none; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">CAFI <span>2026</span></div>
+    <div class="login-sub">Listas de Buena Fe</div>
+    <div class="login-field">
+      <label class="login-label" for="loginUser">Usuario</label>
+      <input class="login-input" type="text" id="loginUser" placeholder="Usuario" autocomplete="username">
+    </div>
+    <div class="login-field">
+      <label class="login-label" for="loginPwd">Contrase&ntilde;a</label>
+      <input class="login-input" type="password" id="loginPwd" placeholder="Contrase&ntilde;a" autocomplete="current-password">
+    </div>
+    <div class="login-error" id="loginError">Usuario o contrase&ntilde;a incorrectos</div>
+    <button class="login-btn" id="loginBtn">Ingresar</button>
+  </div>
+</div>
+
+
+<header>
+  <div>
+    <div class="logo">CAFI <span>2026</span> &mdash; Buena Fe</div>
+    <div class="sub" id="logoSub">Municipalidad de Vicente L&oacute;pez</div>
+  </div>
+  <div class="legend admin-only">
+    <div class="leg"><div class="leg-dot" style="background:#22c55e"></div>VL &middot; Coincide</div>
+    <div class="leg"><div class="leg-dot" style="background:#fbbf24"></div>A analizar</div>
+    <div class="leg"><div class="leg-dot" style="background:#f87171"></div>Extranjero</div>
+    <div class="leg"><div class="leg-dot" style="background:#f472b6"></div>Sin domicilio</div>
+  </div>
+  <div class="search-wrap">
+    <input class="search-input" id="searchInput" type="text" placeholder="Buscar DNI o nombre…" autocomplete="off">
+    <button class="search-clear" id="searchClear">&#x2715;</button>
+  </div>
+  <button class="reload-btn report-btn" id="reportBtn" onclick="toggleReport()" style="background:rgba(168,85,247,.15);color:#a855f7;border-color:rgba(168,85,247,.3);display:none;">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 17H5a2 2 0 00-2 2v1h18v-1a2 2 0 00-2-2h-4M12 3v10M8 9l4 4 4-4"/></svg>
+    Reportes
+  </button>
+  <button class="reload-btn admin-only" id="syncVtoBtn" onclick="syncAllVtosToSheets()" title="Subir todas las fechas de vencimiento DNI al Sheets">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+    Sync fechas DNI
+  </button>
+  <button class="reload-btn admin-only" id="reloadBtn" onclick="loadData()">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+    Actualizar datos
+  </button>
+  <button class="reload-btn admin-only" onclick="reloadOverrides()" title="Sync observaciones desde Sheets">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    Sync obs.
+  </button>
+  <span id="syncInd" style="font-family:'Barlow Condensed',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);"></span>
+</header>
+
+<div class="club-bar"><div class="club-tabs" id="clubTabs"></div></div>
+<div class="cat-bar" id="catBar"><span class="cat-label">Categor&iacute;a:</span></div>
+<div class="estado-bar" id="estadoBar" class="admin-only">
+  <span class="cat-label" style="margin-left:12px;border-left:1px solid var(--border);padding-left:12px;">Fichaje:</span>
+  <button class="foto-btn eb-all active" id="fotoFiltAll" onclick="setFotoFilt('all')" style="border-color:rgba(168,85,247,.3);color:#a855f7;">Todos</button>
+  <button class="foto-btn" id="fotoFiltSi"  onclick="setFotoFilt('si')"  style="color:#22c55e;">&#9679; Con foto</button>
+  <button class="foto-btn" id="fotoFiltNo"  onclick="setFotoFilt('no')"  style="color:var(--muted);">&#9675; Sin foto</button>
+  <span class="cat-label">Estado:</span>
+  <button class="estado-btn eb-all active" data-estado="all">Todos</button>
+  <button class="estado-btn eb-green"  data-estado="green">&#9679; VL <span class="ecnt" id="ec-green">0</span></button>
+  <button class="estado-btn eb-yellow" data-estado="yellow">&#9679; A analizar <span class="ecnt" id="ec-yellow">0</span></button>
+  <button class="estado-btn eb-red"    data-estado="red">&#9679; Extranjero <span class="ecnt" id="ec-red">0</span></button>
+  <button class="estado-btn eb-pink"   data-estado="pink">&#9679; Sin domicilio <span class="ecnt" id="ec-pink">0</span></button>
+</div>
+<div class="sel-bar" id="selBar" class="sel-bar admin-only">
+  <span class="sel-txt" id="selTxt">0 seleccionados</span>
+  <div class="sel-actions">
+    <button class="sel-btn sel-btn-obs" id="selObsBtn">&#9998; Obs. masiva</button>
+    <button class="sel-btn sel-btn-cancel" id="selCancelBtn">Cancelar</button>
+  </div>
+</div>
+<div class="stats" id="stats"></div>
+<div class="grid-wrap" id="mainContent">
+  <div class="fullscreen-msg">
+    <div class="spinner"></div>
+    <div class="msg-title">Cargando datos desde Google Sheets&hellip;</div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="mhead">
+      <div><div class="mname" id="mname"></div><div id="mbadge"></div></div>
+      <button class="mclose" id="mclose">&#x2715;</button>
+    </div>
+    <div class="mbody" id="mbody"></div>
+  </div>
+</div>
+
+<script>
+
+// ── LOGIN ─────────────────────────────────────────────────
+var UH  = '08c140dd2326dc108f3dcd9dc4f1f7a28ce45526ae48afcd53c25d878a324699'; // cafi2026
+var PH  = '38497b0d0206bea858ba35c5e4f0ce22bb658676dea0103f2b5b188ad335859b'; // 20futbol26
+var UIH = 'dd8ca4bb0afa52abc9c30ea5dab2e71019c92e9bd8d2a25869aa66dcade65010'; // informe
+var PIH = 'e9496f98372e52644dde09a2b96ca3ee652f1ae73b425d70d5d55607d3ba7f9a'; // c4fiVt3Lop3z
+
+// ── MODO CLUB (solo lectura via ?club=NombreClub) ───────────────────────────
+var _urlParams  = new URLSearchParams(window.location.search);
+var CLUB_MODE   = _urlParams.get('club') ? decodeURIComponent(_urlParams.get('club')) : null;
+var READONLY    = !!CLUB_MODE;
+var REPORT_MODE = false; // true = modo informe
+
+function sha256(str) {
+  // Implementación simple de SHA-256 en JS puro
+  function rightRotate(value, amount) {
+    return (value >>> amount) | (value << (32 - amount));
+  }
+  var mathPow = Math.pow;
+  var maxWord = mathPow(2, 32);
+  var lengthProperty = 'length';
+  var i, j;
+  var result = '';
+  var words = [];
+  var asciiBitLength = str[lengthProperty] * 8;
+  var hash = sha256.h = sha256.h || [];
+  var k = sha256.k = sha256.k || [];
+  var primeCounter = k[lengthProperty];
+  var isComposite = {};
+  for (var candidate = 2; primeCounter < 64; candidate++) {
+    if (!isComposite[candidate]) {
+      for (i = 0; i < 313; i += candidate) isComposite[i] = candidate;
+      hash[primeCounter] = (mathPow(candidate, .5) * maxWord) | 0;
+      k[primeCounter++] = (mathPow(candidate, 1/3) * maxWord) | 0;
+    }
+  }
+  str += '\x80';
+  while (str[lengthProperty] % 64 - 56) str += '\x00';
+  for (i = 0; i < str[lengthProperty]; i++) {
+    j = str.charCodeAt(i);
+    if (j >> 8) return '';
+    words[i >> 2] |= j << ((3 - i) % 4) * 8;
+  }
+  words[words[lengthProperty]] = ((asciiBitLength / maxWord) | 0);
+  words[words[lengthProperty]] = (asciiBitLength);
+  for (j = 0; j < words[lengthProperty];) {
+    var w = words.slice(j, j += 16);
+    var oldHash = hash.slice(0);
+    for (i = 0; i < 64; i++) {
+      var i2 = i + j - 16;
+      var w15 = w[i - 15], w2 = w[i - 2];
+      var a = hash[0], e = hash[4];
+      var temp1 = hash[7]
+        + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
+        + ((e & hash[5]) ^ (~e & hash[6]))
+        + k[i]
+        + (w[i] = (i < 16) ? w[i] : (
+            w[i - 16]
+            + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3))
+            + w[i - 7]
+            + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))
+          ) | 0
+        );
+      var temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
+        + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+      hash = [(temp1 + temp2) | 0].concat(hash);
+      hash[4] = (hash[4] + temp1) | 0;
+      hash.length = 8;
+    }
+    hash = hash.map(function(v, i) { return (v + oldHash[i]) | 0; });
+  }
+  for (i = 0; i < 8; i++) {
+    for (j = 3; j + 1; j--) {
+      var b = (hash[i] >> (j * 8)) & 255;
+      result += ((b < 16) ? 0 : '') + b.toString(16);
+    }
+  }
+  return result;
+}
+
+
+// ── URLS EXTRA
+var DEL_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vROD3KC8278MhofGlbUdJN3hC1Syehmk_Dr9C6WL0PF32DoJjRZBK9qVd-FlPOInK0pjaHWOrrLRWqc/pub?gid=188066866&single=true&output=csv';
+var TEC_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vROD3KC8278MhofGlbUdJN3hC1Syehmk_Dr9C6WL0PF32DoJjRZBK9qVd-FlPOInK0pjaHWOrrLRWqc/pub?gid=502723740&single=true&output=csv';
+var DELEGADOS = [], TECNICOS = [];
+var TEC_CLUB = '▶ TÉCNICOS';
+var DEL_CAT  = 'Delegados';
+
+// ── isVL mejorado (texto truncado)
+var _origIsVL = isVL;
+function isVL(k) {
+  if (!k) return false;
+  var d = norm(k);
+  if (!d || d.indexOf('no detectado') >= 0) return false;
+  for (var i=0;i<VL_LOCS.length;i++) { if (d.indexOf(VL_LOCS[i]) >= 0) return true; }
+  for (var i=0;i<VL_PART.length;i++) { if (d.indexOf(VL_PART[i]) >= 0) return true; }
+  var partials = ['villam','carapa','florida o','la luci','vte lo','vte.lo'];
+  for (var i=0;i<partials.length;i++) { if (d.indexOf(partials[i]) >= 0) return true; }
+  return false;
+}
+
+function isLimitrofe(k) {
+  if (!k) return false;
+  var d = norm(k);
+  if (!d) return false;
+  for (var i=0;i<LIMITROFES.length;i++) { if (d.indexOf(LIMITROFES[i]) >= 0) return true; }
+  return false;
+}
+
+function isDomicilioLegible(texto) {
+  if (!texto) return false;
+  var d = norm(texto);
+  return d.length > 3 && 
+         d.indexOf('no detectado') < 0 && 
+         d.indexOf('no encontrado') < 0 &&
+         d.indexOf('sin datos') < 0;
+}
+
+// ── OVERRIDES (localStorage + Sheets JSONP)
+function getOverrides() { try { return JSON.parse(localStorage.getItem('cafi_overrides')||'{}'); } catch(e){ return {}; } }
+function saveLocalOverrides(ov) { try { localStorage.setItem('cafi_overrides', JSON.stringify(ov)); } catch(e){} }
+function applyOverrides(players) {
+  var ov = getOverrides();
+  var vtos = {};
+  try { vtos = JSON.parse(localStorage.getItem('cafi_vtos') || '{}'); } catch(e) {}
+  players.forEach(function(p) {
+    // Aplicar override de color/obs
+    if (ov[p.dni]) {
+      p.colorOrig = p.colorOrig || p.color;
+      p.color = ov[p.dni].color;
+      p.obs = ov[p.dni].obs || '';
+      p.obsHistory = ov[p.dni].history || [];
+      p.overridden = true;
+    } else {
+      p.colorOrig = p.color; p.overridden = false; p.obs = ''; p.obsHistory = [];
+    }
+    // Aplicar fecha vto local si no viene de la hoja
+    if (!p.fecha_vto && vtos[p.dni]) p.fecha_vto = vtos[p.dni];
+  });
+}
+function loadOverridesFromSheets(callback) {
+  if (!SCRIPT_URL) { callback(getOverrides()); return; }
+  var cb='_cafiR'+Date.now(), t=setTimeout(function(){window[cb]=null;callback(getOverrides());},10000);
+  window[cb]=function(res){clearTimeout(t);window[cb]=null;
+    if(res&&res.ok){
+      if(res.data) saveLocalOverrides(res.data);
+      if(res.vtos){
+        var vtos={};
+        try{vtos=JSON.parse(localStorage.getItem('cafi_vtos')||'{}');}catch(e){}
+        Object.keys(res.vtos).forEach(function(d){vtos[d]=res.vtos[d];});
+        try{localStorage.setItem('cafi_vtos',JSON.stringify(vtos));}catch(e){}
+      }
+      // Guardar índice de fotos si viene del Apps Script
+      if(res.fotos){
+        try{localStorage.setItem('cafi_fotos',JSON.stringify(res.fotos));}catch(e){}
+        window.FOTO_INDEX = res.fotos;
+      }
+      callback(res.data||getOverrides());
+    } else { callback(getOverrides()); }};  
+  var s=document.createElement('script');
+  s.src=SCRIPT_URL+'?action=read&callback='+cb+'&t='+Date.now();
+  s.onerror=function(){clearTimeout(t);window[cb]=null;callback(getOverrides());};
+  document.head.appendChild(s);
+}
+function saveOverride(dni,color,obs,callback) {
+  var ov=getOverrides(), now=new Date().toLocaleString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  var prev=ov[dni]||{history:[]}, hist=prev.history||[];
+  hist.push({color:color,obs:obs||'(sin texto)',date:now});
+  if(hist.length>10) hist=hist.slice(-10);
+  ov[dni]={color:color,obs:obs,history:hist,fecha:now};
+  saveLocalOverrides(ov);
+  if(!SCRIPT_URL){if(callback)callback({ok:true,local:true});return;}
+  var cb='_cafiW'+Date.now(),_t=setTimeout(function(){window[cb]=null;if(callback)callback({ok:false,local:true});},10000);
+  window[cb]=function(res){clearTimeout(_t);window[cb]=null;if(callback)callback(res||{ok:true});};
+  var s=document.createElement('script');
+  s.src=SCRIPT_URL+'?action=write&callback='+cb+'&dni='+encodeURIComponent(dni)+'&color='+encodeURIComponent(color)+'&obs='+encodeURIComponent(obs)+'&t='+Date.now();
+  s.onerror=function(){clearTimeout(_t);window[cb]=null;if(callback)callback({ok:false,local:true});};
+  document.head.appendChild(s);
+}
+function clearOverride(dni,callback) {
+  var ov=getOverrides(); delete ov[dni]; saveLocalOverrides(ov);
+  if(!SCRIPT_URL){if(callback)callback({ok:true});return;}
+  var cb='_cafiC'+Date.now();
+  window[cb]=function(res){window[cb]=null;if(callback)callback(res||{ok:true});};
+  var s=document.createElement('script');
+  s.src=SCRIPT_URL+'?action=clear&callback='+cb+'&dni='+encodeURIComponent(dni)+'&t='+Date.now();
+  s.onerror=function(){window[cb]=null;if(callback)callback({ok:true});};
+  document.head.appendChild(s);
+}
+function reloadOverrides() {
+  var ind=document.getElementById('syncInd');
+  if(ind){ind.textContent='↻ Sync...';ind.style.color='var(--muted)';}
+  loadOverridesFromSheets(function(ov){
+    saveLocalOverrides(ov);applyOverrides(ALL);applyOverrides(DELEGADOS);renderAll();
+    if(ind){ind.textContent='✓ '+Object.keys(ov).length+' obs.';ind.style.color='var(--green)';
+      setTimeout(function(){if(ind)ind.textContent='';},3000);}
+  });
+}
+
+// ── OBS MODAL STATE
+var obsTarget=null, obsSelectedColor=null;
+function openObs(dni) {
+  var p=null;
+  var all3=ALL.concat(DELEGADOS).concat(TECNICOS);
+  for(var i=0;i<all3.length;i++){if(all3[i].dni===String(dni)){p=all3[i];break;}}
+  if(!p)return;
+  obsTarget=p; obsSelectedColor=p.color;
+  document.getElementById('obsTitle').textContent=p.nombre;
+  document.getElementById('obsSub').textContent='DNI '+p.dni+' — '+(p.club||'');
+  document.getElementById('obsText').value=p.obs||'';
+  document.getElementById('obsSaveStatus').textContent='';
+  document.querySelectorAll('.color-opt').forEach(function(el){el.classList.toggle('selected',el.getAttribute('data-color')===p.color);});
+  var hist=p.obsHistory||[], hw=document.getElementById('obsHistoryWrap');
+  if(hist.length){
+    hw.style.display='block';
+    document.getElementById('obsHistory').innerHTML=hist.slice().reverse().map(function(h){
+      return '<div style="padding:4px 0;border-bottom:1px solid rgba(255,255,255,.06)"><strong style="color:var(--text)">'+esc(h.date)+'</strong> <span style="text-transform:uppercase;font-size:10px;color:var(--accent)">['+h.color+']</span> '+esc(h.obs)+'</div>';
+    }).join('');
+  } else { hw.style.display='none'; }
+  document.getElementById('obsOverlay').classList.add('open');
+  setTimeout(function(){document.getElementById('obsText').focus();},100);
+}
+function saveObs() {
+  if(!obsTarget)return;
+  var obs=document.getElementById('obsText').value.trim();
+  var color=obsSelectedColor||obsTarget.color;
+  var btn=document.getElementById('obsSaveBtn'), st=document.getElementById('obsSaveStatus');
+  btn.disabled=true;
+  if(obsTarget.dnis){
+    var dnis=obsTarget.dnis,total=dnis.length,done=0;
+    st.style.color='var(--muted)';
+    function next(i){if(i>=total){st.textContent='✓ '+total+' actualizados';st.style.color='var(--green)';btn.disabled=false;applyOverrides(ALL);applyOverrides(DELEGADOS);renderAll();clearSel();setTimeout(closeObs,1000);return;}
+      st.textContent='Guardando '+(i+1)+' de '+total+'...';
+      saveOverride(dnis[i],color,obs,function(){next(i+1);});}
+    next(0);
+  } else {
+    st.textContent=SCRIPT_URL?'Guardando en Sheets...':'Guardando...'; st.style.color='var(--muted)';
+    saveOverride(obsTarget.dni,color,obs,function(res){
+      st.textContent=(res&&res.ok&&!res.local)?'✓ Guardado en Sheets':(res&&res.ok?'✓ Guardado local':'⚠ Solo local');
+      st.style.color=(res&&res.ok)?'var(--green)':'var(--yellow)';
+      btn.disabled=false; applyOverrides(ALL); applyOverrides(DELEGADOS); renderAll();
+      setTimeout(closeObs,800);
+    });
+  }
+}
+function doClrObs(){if(!obsTarget)return;clearOverride(obsTarget.dni,function(){applyOverrides(ALL);applyOverrides(DELEGADOS);renderAll();closeObs();});}
+function closeObs(){document.getElementById('obsOverlay').classList.remove('open');obsTarget=null;}
+
+
+
+
+// ── ESTADO FILTER
+var estadoFilter='all', fotoFilt='all', selectedDnis={}, searchTerm='';
+function setFotoFilt(v) {
+  fotoFilt = v;
+  // Guard: si estadoFilter quedó null por click de otro listener, restaurar
+  if(!estadoFilter) estadoFilter = 'all';
+  ['fotoFiltAll','fotoFiltSi','fotoFiltNo'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.classList.remove('active');
+  });
+  var active = document.getElementById(v==='all'?'fotoFiltAll':v==='si'?'fotoFiltSi':'fotoFiltNo');
+  if(active) active.classList.add('active');
+  renderAll();
+}
+
+function initEstadoBar(){
+  if(READONLY){ var eb=document.getElementById('estadoBar'); if(eb)eb.style.display='none'; return; }
+  document.getElementById('estadoBar').querySelectorAll('.estado-btn').forEach(function(btn){
+    // Saltar botones de foto — solo bindear los de estado real
+    var id = btn.id || '';
+    if(id==='fotoFiltAll'||id==='fotoFiltSi'||id==='fotoFiltNo') return;
+    if(!btn.getAttribute('data-estado')) return;
+    btn.addEventListener('click',function(){
+      estadoFilter=this.getAttribute('data-estado')||'all';
+      document.querySelectorAll('[data-estado]').forEach(function(b){b.classList.remove('active');});
+      this.classList.add('active'); clearSel(); renderAll();
+    });
+  });
+  document.getElementById('selCancelBtn').addEventListener('click',clearSel);
+  document.getElementById('selObsBtn').addEventListener('click',openMassObs);
+}
+function updateCounts(){
+  if(cur===TEC_CLUB||cat===DEL_CAT){['green','yellow','red','pink'].forEach(function(k){var el=document.getElementById('ec-'+k);if(el)el.textContent='0';});return;}
+  var base=ALL.filter(function(p){return p.club===cur&&(!cat||p.categoria===cat);});
+  var cnt={green:0,yellow:0,red:0,pink:0};
+  base.forEach(function(p){if(cnt[p.color]!==undefined)cnt[p.color]++;});
+  document.getElementById('ec-green').textContent=cnt.green;
+  document.getElementById('ec-yellow').textContent=cnt.yellow;
+  document.getElementById('ec-red').textContent=cnt.red;
+  document.getElementById('ec-pink') && (document.getElementById('ec-pink').textContent=cnt.pink);
+}
+
+// ── SELECTION
+function toggleSel(dni){
+  if(selectedDnis[dni]){delete selectedDnis[dni];}else{selectedDnis[dni]=true;}
+  document.querySelectorAll('.chk[data-dni="'+dni+'"]').forEach(function(el){
+    el.textContent=selectedDnis[dni]?'✓':'';
+    var card=el.closest('.card'); if(card)card.classList.toggle('selected',!!selectedDnis[dni]);
+  });
+  updateSelBar();
+}
+function updateSelBar(){
+  if(READONLY)return;
+  var n=Object.keys(selectedDnis).length;
+  document.getElementById('selBar').classList.toggle('visible',n>0);
+  document.getElementById('selTxt').textContent=n+' jugador'+(n===1?'':'es')+' seleccionado'+(n===1?'':'s');
+}
+function clearSel(){
+  selectedDnis={};
+  document.querySelectorAll('.chk').forEach(function(el){el.textContent='';var card=el.closest('.card');if(card)card.classList.remove('selected');});
+  document.getElementById('selBar').classList.remove('visible');
+}
+function openMassObs(){
+  var dnis=Object.keys(selectedDnis); if(!dnis.length)return;
+  var names=[]; dnis.forEach(function(d){var p=ALL.filter(function(x){return x.dni===d;})[0];if(p)names.push(p.nombre);});
+  obsTarget={dni:'__mass__',dnis:dnis,nombre:dnis.length+' jugadores',color:'green',obs:'',obsHistory:[]};
+  obsSelectedColor='green';
+  document.getElementById('obsTitle').textContent=dnis.length+' jugadores';
+  document.getElementById('obsSub').textContent=names.slice(0,3).join(', ')+(names.length>3?' y '+(names.length-3)+' más':'');
+  document.getElementById('obsText').value='';
+  document.getElementById('obsSaveStatus').textContent='';
+  document.getElementById('obsHistoryWrap').style.display='none';
+  document.querySelectorAll('.color-opt').forEach(function(el){el.classList.toggle('selected',el.getAttribute('data-color')==='green');});
+  document.getElementById('obsOverlay').classList.add('open');
+  setTimeout(function(){document.getElementById('obsText').focus();},100);
+}
+
+// ── DELEGADOS / TECNICOS loaders
+function loadDelegados(cb){
+  var urls=[DEL_URL,
+    'https://corsproxy.io/?'+encodeURIComponent(DEL_URL),
+    'https://api.allorigins.win/raw?url='+encodeURIComponent(DEL_URL),
+    'https://allorigins.win/raw?url='+encodeURIComponent(DEL_URL)];
+  function tryNext(i){if(i>=urls.length){if(cb)cb();return;}
+    fetch(urls[i],{cache:'no-store'}).then(function(r){return r.text();})
+    .then(function(text){
+      var rows=parseCSV(text); DELEGADOS=[];
+      for(var j=1;j<rows.length;j++){
+        var r=rows[j], nombre=(r[2]||'').trim(), dni=(r[3]||'').trim().replace(/[^0-9]/g,''), club=(r[15]||'').trim();
+        if(!nombre||!dni||!club)continue;
+        DELEGADOS.push({tipo:'delegado',nombre:nombre,dni:dni,nacimiento:(r[4]||'').trim(),
+          foto_frente:(r[5]||'').trim(),foto_dorso:(r[6]||'').trim(),
+          calle:(r[7]||'').trim(),numero:(r[8]||'').trim(),localidad:(r[10]||'').trim(),
+          partido:(r[11]||'').trim(),telefono:(r[13]||'').trim(),email:(r[14]||'').trim(),
+          club:club,categoria:DEL_CAT,color:'purple',overridden:false,obs:'',obsHistory:[]});
+      }
+      var ov=getOverrides();
+      DELEGADOS.forEach(function(p){if(ov[p.dni]){p.colorOrig=p.color;p.color=ov[p.dni].color;p.obs=ov[p.dni].obs||'';p.obsHistory=ov[p.dni].history||[];p.overridden=true;}});
+      if(cb)cb();
+    }).catch(function(){tryNext(i+1);});}
+  tryNext(0);
+}
+function loadTecnicos(cb){
+  var urls=[TEC_URL,
+    'https://corsproxy.io/?'+encodeURIComponent(TEC_URL),
+    'https://api.allorigins.win/raw?url='+encodeURIComponent(TEC_URL),
+    'https://allorigins.win/raw?url='+encodeURIComponent(TEC_URL)];
+  function tryNext(i){if(i>=urls.length){if(cb)cb();return;}
+    fetch(urls[i],{cache:'no-store'}).then(function(r){return r.text();})
+    .then(function(text){
+      var rows=parseCSV(text); TECNICOS=[];
+      for(var j=1;j<rows.length;j++){
+        var r=rows[j], nombre=(r[1]||'').trim(), dni=(r[2]||'').trim().replace(/[^0-9]/g,'');
+        if(!nombre||!dni)continue;
+        TECNICOS.push({tipo:'tecnico',nombre:nombre,dni:dni,matricula:(r[3]||'').trim(),
+          nacimiento:(r[4]||'').trim(),foto_carnet:(r[5]||'').trim(),
+          foto_frente:(r[6]||'').trim(),foto_dorso:(r[7]||'').trim(),
+          foto_principal:(r[8]||'').trim(),
+          club:TEC_CLUB,categoria:'Técnicos',color:'blue',overridden:false,obs:'',obsHistory:[]});
+      }
+      if(cb)cb();
+    }).catch(function(){tryNext(i+1);});}
+  tryNext(0);
+}
+
+// ── CARD RENDERERS for delegados/tecnicos
+function renderTecnicoCard(p,i){
+  var thumb=driveThumb(p.foto_principal)||driveThumb(p.foto_frente);
+  var photo=thumb?'<img src="'+esc(thumb)+'" loading="lazy" onerror="photoError(this)">':'<div class="photo-placeholder"><div class="photo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><span class="photo-lbl">Sin foto</span></div>';
+  return '<div class="card-tec" data-idx="'+i+'">'
+    +'<span class="tec-badge">Técnico</span>'
+    +'<div class="tec-photo">'+photo+'</div>'
+    +'<div class="tec-info">'
+      +'<div class="tec-name">'+esc(p.nombre)+'</div>'
+      +'<div class="tec-meta">'
+        +'<span class="ctag">DNI '+esc(p.dni)+'</span>'
+        +(p.nacimiento?'<span class="ctag">'+esc(p.nacimiento)+'</span>':'')
+        +(p.matricula?'<span class="tec-mat">Mat. '+esc(p.matricula)+'</span>':'')
+      +'</div>'
+    +'</div>'
+  +'</div>';
+}
+function renderDelegadoCard(p,i){
+  var thumb=driveThumb(p.foto_frente);
+  var photo=thumb?'<img src="'+esc(thumb)+'" loading="lazy" onerror="photoError(this)">':'<div class="photo-placeholder"><div class="photo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><span class="photo-lbl">Sin foto</span></div>';
+  return '<div class="card-del" data-idx="'+i+'">'
+    +'<span class="del-badge">Delegado</span>'
+    +'<div class="photo">'+photo+'</div>'
+    +'<div class="del-bar"></div>'
+    +'<div class="cinfo">'
+      +'<div class="cname">'+esc(p.nombre)+'</div>'
+      +'<div class="cmeta"><span class="ctag">DNI '+esc(p.dni)+'</span>'+(p.nacimiento?'<span class="ctag">'+esc(p.nacimiento)+'</span>':'')+'</div>'
+      +(p.telefono?'<div style="font-size:11px;color:var(--muted);margin-top:3px">Tel: '+esc(p.telefono)+'</div>':'')
+    +'</div>'
+  +'</div>';
+}
+
+// ── MODALS for delegados/tecnicos
+function openTecnicoModal(p){
+  document.getElementById('mname').textContent=p.nombre;
+  document.getElementById('mbadge').innerHTML='<span class="badge" style="background:rgba(59,130,246,.15);color:var(--accent);border:1px solid rgba(59,130,246,.4)">Técnico</span>';
+  var h='<div class="msec"><div class="msec-t">Datos del técnico</div>'
+    +row('DNI',p.dni)+row('Fecha de nacimiento',p.nacimiento||'—')+(p.matricula?row('N\u00b0 Matr\u00edcula',p.matricula):'')+'</div>';
+  var hasPr=!!(p.foto_principal&&p.foto_principal.trim()),hasFr=!!(p.foto_frente&&p.foto_frente.trim()),hasDo=!!(p.foto_dorso&&p.foto_dorso.trim()),hasCar=!!(p.foto_carnet&&p.foto_carnet.trim());
+  h+='<div class="msec"><div class="msec-t">Documentaci\u00f3n</div>';
+  h+='<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">';
+  h+='<span class="doc-ind '+(hasFr?'ok':'no')+'">'+(hasFr?'\u2713':'\u2717')+' DNI Frente</span>';
+  h+='<span class="doc-ind '+(hasDo?'ok':'no')+'">'+(hasDo?'\u2713':'\u2717')+' DNI Dorso</span>';
+  h+='<span class="doc-ind '+(hasPr?'ok':'no')+'">'+(hasPr?'\u2713':'\u2717')+' Foto carnet</span>';
+  h+='</div>';
+  if(hasPr||hasFr||hasDo||hasCar){
+    h+='<div class="img-grid">';
+    var docs=[];
+    if(hasPr) docs.push({url:p.foto_principal,label:'Foto principal',full:false});
+    if(hasFr) docs.push({url:p.foto_frente,label:'DNI Frente',full:false});
+    if(hasDo) docs.push({url:p.foto_dorso,label:'DNI Dorso',full:false});
+    if(hasCar) docs.push({url:p.foto_carnet,label:'Carnet',full:true});
+    docs.forEach(function(doc){
+      var t=driveThumb(doc.url);
+      h+='<div class="img-box'+(doc.full?' apto':'')+'">'
+        +(t?'<a href="'+esc(doc.url)+'" target="_blank"><img src="'+esc(t)+'" loading="lazy" onerror="imgError(this)"></a>':'<div class="img-error">No disponible</div>')
+        +'<div class="img-label">'+esc(doc.label)+'</div>'
+        +'<a class="img-link" href="'+esc(doc.url)+'" target="_blank">Abrir en Drive \u2197</a></div>';
+    });
+    h+='</div>';
+  }
+  h+='</div>';
+  document.getElementById('mbody').innerHTML=h;
+  document.getElementById('overlay').classList.add('open');
+}
+function openDelegadoModal(p){
+  document.getElementById('mname').textContent=p.nombre;
+  document.getElementById('mbadge').innerHTML='<span class="badge" style="background:rgba(168,85,247,.15);color:#a855f7;border:1px solid rgba(168,85,247,.4)">Delegado — '+esc(p.club)+'</span>';
+  var h='<div class="msec"><div class="msec-t">Datos del delegado</div>'
+    +row('DNI',p.dni)+row('Fecha de nacimiento',p.nacimiento||'—')
+    +row('Teléfono',p.telefono||'—')+row('Email',p.email||'—')+row('Club',p.club)
+    +row('Domicilio',[p.calle,p.numero].filter(Boolean).join(' ')+(p.localidad?' — '+p.localidad:''))
+    +'</div>';
+  var hasFr=!!(p.foto_frente&&p.foto_frente!=='No encontrado'&&p.foto_frente.trim());
+  var hasDo=!!(p.foto_dorso&&p.foto_dorso!=='No encontrado'&&p.foto_dorso.trim());
+  h+='<div class="msec"><div class="msec-t">Documentaci\u00f3n</div>';
+  h+='<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">';
+  h+='<span class="doc-ind '+(hasFr?'ok':'no')+'">'+(hasFr?'\u2713':'\u2717')+' DNI Frente</span>';
+  h+='<span class="doc-ind '+(hasDo?'ok':'no')+'">'+(hasDo?'\u2713':'\u2717')+' DNI Dorso</span>';
+  h+='</div>';
+  if(hasFr||hasDo){
+    h+='<div class="img-grid">';
+    if(hasFr){var t=driveThumb(p.foto_frente);h+='<div class="img-box">'+(t?'<a href="'+esc(p.foto_frente)+'" target="_blank"><img src="'+esc(t)+'" loading="lazy" onerror="imgError(this)"></a>':'<div class="img-error">No disponible</div>')+'<div class="img-label">DNI Frente</div><a class="img-link" href="'+esc(p.foto_frente)+'" target="_blank">Abrir \u2197</a></div>';}
+    if(hasDo){var t2=driveThumb(p.foto_dorso);h+='<div class="img-box">'+(t2?'<a href="'+esc(p.foto_dorso)+'" target="_blank"><img src="'+esc(t2)+'" loading="lazy" onerror="imgError(this)"></a>':'<div class="img-error">No disponible</div>')+'<div class="img-label">DNI Dorso</div><a class="img-link" href="'+esc(p.foto_dorso)+'" target="_blank">Abrir \u2197</a></div>';}
+    h+='</div>';
+  }
+  h+='</div>';
+  document.getElementById('mbody').innerHTML=h;
+  document.getElementById('overlay').classList.add('open');
+}
+
+// ── SEARCH
+function searchGlobal(term){
+  var t=term.toLowerCase();
+  var found=ALL.concat(DELEGADOS).concat(TECNICOS).filter(function(p){
+    return p.dni.indexOf(term)>=0||p.nombre.toLowerCase().indexOf(t)>=0;
+  });
+  if(!found.length)return;
+  var firstClub=found[0].club;
+  if(firstClub!==cur){
+    cur=firstClub; cat=null;
+    document.querySelectorAll('.club-tab').forEach(function(b){b.classList.remove('active');});
+    var tab=document.querySelector('.club-tab[data-club="'+encodeURIComponent(firstClub)+'"]');
+    if(tab)tab.classList.add('active');
+    update();
+  } else { renderAll(); }
+}
+
+function doLogin() {
+  var u = document.getElementById('loginUser').value.trim();
+  var p = document.getElementById('loginPwd').value;
+  var err = document.getElementById('loginError');
+  var hu = sha256(u), hp = sha256(p);
+
+  if (CLUB_MODE) {
+    // En modo club: solo acepta credenciales de informe
+    if (hu === UIH && hp === PIH) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.body.classList.add('readonly');
+      var adminEls = document.querySelectorAll('.admin-only');
+      adminEls.forEach(function(el){ el.style.display='none'; });
+      var ls = document.getElementById('logoSub');
+      if (ls) ls.textContent = CLUB_MODE;
+      // Mostrar reportes DESPUÉS de ocultar admin-only
+      var rb=document.getElementById('reportBtn');
+      if(rb){ rb.style.display='inline-flex'; rb.style.setProperty('display','inline-flex','important'); }
+      loadData();
+    } else {
+      err.classList.add('visible');
+      document.getElementById('loginPwd').value = '';
+      document.getElementById('loginPwd').focus();
+    }
+    return;
+  }
+
+  // Login normal (sin ?club=)
+  if (hu === UH && hp === PH) {
+    // Admin — acceso completo
+    document.getElementById('loginScreen').style.display = 'none';
+    var rb=document.getElementById('reportBtn'); if(rb) rb.style.display='inline-flex';
+    loadData();
+  } else if (hu === UIH && hp === PIH) {
+    // Informe — solo lectura + reportes
+    REPORT_MODE = true;
+    READONLY = true;
+    document.body.classList.add('readonly');
+    document.getElementById('loginScreen').style.display = 'none';
+    var rb=document.getElementById('reportBtn'); if(rb) rb.style.display='inline-flex';
+    loadData();
+  } else {
+    err.classList.add('visible');
+    document.getElementById('loginPwd').value = '';
+    document.getElementById('loginPwd').focus();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Si modo club: ocultar login y cargar directo
+  // Login listeners — siempre, en cualquier modo
+  document.getElementById('loginBtn').addEventListener('click', doLogin);
+  document.getElementById('loginPwd').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doLogin();
+  });
+  document.getElementById('loginUser').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('loginPwd').focus();
+  });
+
+  if (CLUB_MODE) {
+    // Modo club: mostrar login con nombre del club, solo acepta credenciales de informe
+    var loginSub = document.querySelector('.login-sub');
+    if (loginSub) loginSub.textContent = CLUB_MODE;
+    return;
+  }
+  // Obs modal buttons
+  document.getElementById('obsSaveBtn').addEventListener('click',saveObs);
+  document.getElementById('obsClearBtn').addEventListener('click',doClrObs);
+  document.getElementById('obsCancelBtn').addEventListener('click',closeObs);
+  document.getElementById('obsOverlay').addEventListener('click',function(e){if(e.target===this)closeObs();});
+  document.querySelectorAll('.color-opt').forEach(function(el){
+    el.addEventListener('click',function(){
+      obsSelectedColor=this.getAttribute('data-color');
+      document.querySelectorAll('.color-opt').forEach(function(x){x.classList.remove('selected');});
+      this.classList.add('selected');
+    });
+  });
+  // Estado bar
+  initEstadoBar();
+  // Search
+  var si=document.getElementById('searchInput'), sc=document.getElementById('searchClear');
+  si.addEventListener('input',function(){
+    searchTerm=this.value.trim();
+    sc.classList.toggle('visible',searchTerm.length>0);
+    if(searchTerm.length>=2){searchGlobal(searchTerm);}else{renderAll();}
+  });
+  si.addEventListener('keydown',function(e){if(e.key==='Escape'){this.value='';searchTerm='';sc.classList.remove('visible');renderAll();}});
+  sc.addEventListener('click',function(){si.value='';searchTerm='';sc.classList.remove('visible');si.focus();renderAll();});
+
+});
+
+// ── CONFIG ────────────────────────────────────────────────────────────────────
+var SHEET_ID = '1T9inNuk44hxJdzHwfoOVSj9cSq68kr48t9g9M_JwQZs';
+var FOTO_FOLDER_ID = '1ybxtj0RFw8mBkIkCfwA8yMuCra0ILha0'; // carpeta fotos 2026
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby7vs8GeB_kHWTQrD2Y6LXa-JoUo8FzrANd48jsOpdNeQh-nFa46FJqQ0UMdzkre1_n/exec';
+
+var ART23_TEXT = 'ARTÍCULO 23 — Zonas limítrofes habilitadas\n\nCAPITAL FEDERAL\n1. Desde Av. Gral. Paz hasta Crisologo Larralde (entre Río de la Plata y Galván)\n2. Desde Crisologo Larralde y Galván hasta José P. Tamborini\n3. Desde Av. Gral. Paz hasta Ezeiza (entre Av. Constituyentes y Av. Gral. Paz)\n\nSAN MARTÍN\n1. Desde Av. De Los Constituyentes hasta Guillermo Hudson (entre M. Campos y Av. Gral. Paz)\n2. Desde Av. De Los Constituyentes hasta Catamarca (entre M. Campos y Entre Ríos)\n3. Desde A. Alcorta hasta Catamarca (entre Entre Ríos y Alvear)\n4. Desde A. Alcorta hasta Libertad (entre Alvear y M. Moreno)\n5. Desde Amancio Alcorta hasta Libertad (entre Mariano Moreno y Zeballos)\n\nSAN ISIDRO (incluye Villa Adelina)\n1. Desde Paraná hasta Perito Moreno (entre Av. Panamericana y Yerbal)\n2. Desde Paraná hasta Boedo (entre Yerbal y Amancio Alcorta)\n3. Desde Paraná hasta Hipólito Irigoyen (entre Av. Panamericana y Av. Sta. Fe)\n4. Desde Paraná hasta Gral. Alvear (entre Av. Sta. Fe y el Río de la Plata)';
+
+var LABELS = {
+  green:      'Vive en Vicente López · Domicilios coinciden',
+  lightgreen: 'Dirección distinta · DNI en Vicente López',
+  yellow:     'A analizar — Domicilios no concluyentes',
+  orange:     'A analizar — Zona limítrofe',
+  red:        'Extranjero — Fuera de Vicente López y limítrofes',
+  gray:       'Sin datos de DNI',
+  pink:       'Sin domicilio legible — Revisar manualmente'
+};
+
+var VL_LOCS = ['carapachay','florida oeste','florida','la lucila','munro',
+               'olivos','vicente lopez','villa adelina','villa martelli'];
+var VL_PART = ['vte lopez','vte. lopez','v.lopez','v. lopez','vte.lopez'];
+// Partidos/barrios limítrofes a Vicente López (no son VL pero tampoco extranjeros)
+var LIMITROFES = [
+  'martinez','villa adelina',
+  'villa ballester','villa concepcion','villa loyola','villa maipu','villa maipo',
+  'saavedra','coghlan','nunez',
+  'san isidro','caba','capital federal','ciudad de buenos aires','ciudad autonoma',
+  'san martin','gral san martin','general san martin','tres de febrero',
+  'tigre','san fernando'
+];
+var CATS    = ['2013','2014','2015','2016','2017','2018','2019/20'];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+var ALL = [], CLUBS = [], cur = '', cat = null, filtered = [], lastUpdate = '';
+
+// ── UTILS ─────────────────────────────────────────────────────────────────────
+function norm(s) {
+  if (!s) return '';
+  s = String(s).toLowerCase().trim();
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+
+function fotoJugadorUrl(numFoto) {
+  // numFoto = "4501" → busca 100_4501.JPG en la carpeta de fotos
+  if (!numFoto || !numFoto.toString().trim()) return null;
+  var n = numFoto.toString().trim().replace(/[^0-9]/g,'');
+  if (!n) return null;
+  // Construir nombre del archivo: 100_XXXX.JPG
+  var nombre = '100_' + n + '.JPG';
+  // URL de búsqueda en la carpeta de Drive
+  // Usamos el thumbnail directo: necesitamos el file ID
+  // Como no tenemos el ID directamente, usamos la URL de búsqueda en carpeta
+  // La foto se sirve como thumbnail via query de nombre en la carpeta pública
+  return 'https://drive.google.com/thumbnail?id=' + n + '&sz=w300'; // fallback
+}
+
+function fotoJugadorThumb(numFoto) {
+  // Genera URL de thumbnail buscando el archivo en la carpeta
+  if (!numFoto || !numFoto.toString().trim()) return null;
+  var n = numFoto.toString().trim().replace(/[^0-9]/g,'');
+  if (!n) return null;
+  // El archivo se llama 100_XXXX.JPG y está en la carpeta
+  // Usamos la URL directa de Drive con el nombre del archivo
+  // Como las fotos están compartidas públicamente en la carpeta:
+  var filename = '100_' + n + '.JPG';
+  // Search URL via folder
+  return '_foto_' + filename; // marcador, se resuelve via API
+}
+
+function getFotoJugador(p) {
+  // Usa foto_id del jugador (col AK) si existe, sino busca en índice
+  var fileId = p.foto_id || null;
+  if (!fileId && p.num_foto) {
+    var n = p.num_foto.toString().replace(/[^0-9]/g,'');
+    var filename = '100_' + n + '.JPG';
+    var idx = window.FOTO_INDEX || {};
+    try {
+      var stored = JSON.parse(localStorage.getItem('cafi_fotos') || '{}');
+      Object.assign(idx, stored);
+    } catch(e) {}
+    fileId = idx[filename] || idx[filename.toLowerCase()] || null;
+  }
+  return fileId ? 'https://drive.google.com/thumbnail?id=' + fileId + '&sz=w400' : null;
+}
+
+function driveThumb(url) {
+  if (!url || url === 'No encontrado') return null;
+  var m = url.match(/[?&]id=([^&]+)/);
+  if (!m) { m = url.match(/\/d\/([^/]+)/); }
+  if (!m) return null;
+  return 'https://drive.google.com/thumbnail?id=' + m[1] + '&sz=w300';
+}
+
+function driveLink(url) {
+  if (!url || url === 'No encontrado') return null;
+  return url;
+}
+
+function isVL(k) {
+  var d = norm(k);
+  if (!d || d.indexOf('no detectado') >= 0) return null;
+  for (var i=0;i<VL_LOCS.length;i++) { if (d.indexOf(VL_LOCS[i]) >= 0) return true; }
+  for (var i=0;i<VL_PART.length;i++) { if (d.indexOf(VL_PART[i]) >= 0) return true; }
+  return false;
+}
+
+function isArt23(k) {
+  var d = norm(k);
+  for (var i=0;i<ART23Z.length;i++) { if (d.indexOf(ART23Z[i]) >= 0) return true; }
+  return false;
+}
+
+function addrMatch(calle, k) {
+  var c = norm(calle), d = norm(k);
+  return c.length >= 4 && d.indexOf(c) >= 0;
+}
+
+function parseFechaVto(fecha_vto) {
+  // Parsea múltiples formatos:
+  // dd/mm/yyyy, yyyy-mm-dd, "Thu Jun 29 2028 00:00:00 GMT...", "21092031" (sin separadores)
+  if (!fecha_vto || !fecha_vto.trim()) return null;
+  var f = fecha_vto.trim();
+  var d;
+  // Formato dd/mm/yyyy
+  if (f.indexOf('/') >= 0) {
+    var p = f.split('/');
+    if (p.length === 3 && p[2].length === 4) {
+      d = new Date(parseInt(p[2]), parseInt(p[1])-1, parseInt(p[0]));
+    }
+  }
+  // Formato yyyy-mm-dd
+  else if (f.match(/^\d{4}-\d{2}-\d{2}/)) {
+    d = new Date(f);
+  }
+  // Formato Date.toString() de Google: "Thu Jun 29 2028 00:00:00 GMT..."
+  else if (f.indexOf(' ') >= 0 && f.length > 15) {
+    d = new Date(f);
+  }
+  // Sin separadores ddmmyyyy o ddmmyy
+  else if (f.match(/^\d{8}$/)) {
+    d = new Date(parseInt(f.substring(4)), parseInt(f.substring(2,4))-1, parseInt(f.substring(0,2)));
+  }
+  return (d && !isNaN(d.getTime())) ? d : null;
+}
+
+function dniVtoColor(fecha_vto, tiene_foto) {
+  if (!tiene_foto) return 'no';
+  if (fecha_vto && fecha_vto.trim()) {
+    var d = parseFechaVto(fecha_vto);
+    if (d) return d >= new Date() ? 'ok' : 'warn';
+  }
+  return 'white';
+}
+
+function syncAllVtosToSheets() {
+  if (!SCRIPT_URL) { alert('No hay Apps Script configurado'); return; }
+  var vtos = {};
+  try { vtos = JSON.parse(localStorage.getItem('cafi_vtos') || '{}'); } catch(e) {}
+  var dnis = Object.keys(vtos);
+  if (!dnis.length) { alert('No hay fechas de vto en caché local para sincronizar'); return; }
+
+  var total = dnis.length, done = 0, errors = 0;
+  var btn = document.getElementById('syncVtoBtn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Sincronizando 0/' + total + '...'; }
+
+  function sendNext(idx) {
+    if (idx >= dnis.length) {
+      if (btn) { btn.disabled = false; btn.textContent = '\u2713 Sincronizado ' + done + '/' + total; }
+      setTimeout(function(){ if(btn) btn.textContent = '\u21bb Sync fechas DNI'; }, 4000);
+      return;
+    }
+    var dni = dnis[idx];
+    var fecha = vtos[dni];
+    var cb = '_cafiVS' + Date.now() + idx;
+    var t = setTimeout(function(){
+      window[cb] = null; errors++;
+      if (btn) btn.textContent = 'Sincronizando ' + (idx+1) + '/' + total + '...';
+      sendNext(idx + 1);
+    }, 8000);
+    window[cb] = function(res) {
+      clearTimeout(t); window[cb] = null;
+      if (res && res.ok) done++; else errors++;
+      if (btn) btn.textContent = 'Sincronizando ' + (idx+1) + '/' + total + '...';
+      sendNext(idx + 1);
+    };
+    var s = document.createElement('script');
+    s.src = SCRIPT_URL + '?action=write_vto&callback=' + cb +
+            '&dni=' + encodeURIComponent(dni) +
+            '&fecha_vto=' + encodeURIComponent(fecha) +
+            '&t=' + Date.now();
+    s.onerror = function(){ clearTimeout(t); window[cb]=null; errors++; sendNext(idx+1); };
+    document.head.appendChild(s);
+  }
+  sendNext(0);
+}
+
+function toDateInput(fecha) {
+  // Convierte cualquier formato a yyyy-mm-dd para input[type=date]
+  if (!fecha) return '';
+  var d = parseFechaVto(fecha);
+  if (!d) return '';
+  var y = d.getFullYear();
+  var m = String(d.getMonth()+1).padStart(2,'0');
+  var day = String(d.getDate()).padStart(2,'0');
+  return y + '-' + m + '-' + day;
+}
+
+function saveVto(dni) {
+  var input = document.getElementById('vtoInput');
+  var status = document.getElementById('vtoStatus');
+  if (!input) return;
+  var val = input.value; // yyyy-mm-dd
+  // Convertir a dd/mm/yyyy para guardar
+  var display = val;
+  if (val && val.indexOf('-') >= 0) {
+    var p = val.split('-');
+    if (p.length === 3) display = p[2] + '/' + p[1] + '/' + p[0];
+  }
+  status.textContent = 'Guardando…';
+  status.style.color = 'var(--muted)';
+
+  // Guardar en localStorage inmediatamente
+  var vtos = {};
+  try { vtos = JSON.parse(localStorage.getItem('cafi_vtos') || '{}'); } catch(e) {}
+  vtos[dni] = display;
+  try { localStorage.setItem('cafi_vtos', JSON.stringify(vtos)); } catch(e) {}
+
+  // Actualizar en ALL
+  var p = ALL.filter(function(x){ return x.dni === dni; })[0];
+  if (p) p.fecha_vto = display;
+
+  // Guardar en Sheets via Apps Script
+  if (SCRIPT_URL) {
+    var cb = '_cafiVto' + Date.now();
+    var t = setTimeout(function(){ window[cb]=null; status.textContent='Guardado local'; status.style.color='var(--yellow)'; }, 8000);
+    window[cb] = function(res) {
+      clearTimeout(t); window[cb] = null;
+      if (res && res.ok) {
+        status.textContent = '✓ Guardado';
+        status.style.color = 'var(--green)';
+      } else {
+        status.textContent = 'Guardado local';
+        status.style.color = 'var(--yellow)';
+      }
+      setTimeout(function(){ if(status) status.textContent=''; }, 3000);
+    };
+    var s = document.createElement('script');
+    s.src = SCRIPT_URL + '?action=write_vto&callback=' + cb + '&dni=' + encodeURIComponent(dni) + '&fecha_vto=' + encodeURIComponent(display) + '&t=' + Date.now();
+    s.onerror = function(){ clearTimeout(t); window[cb]=null; status.textContent='Guardado local'; status.style.color='var(--yellow)'; };
+    document.head.appendChild(s);
+  } else {
+    status.textContent = '✓ Guardado local';
+    status.style.color = 'var(--green)';
+    setTimeout(function(){ if(status) status.textContent=''; }, 3000);
+  }
+}
+
+function addrMatchFuzzy(calle, numero, datos_dni) {
+  if (!calle || !datos_dni) return false;
+  var c = norm(calle);
+  var d = norm(datos_dni);
+  // Eliminar prefijos de tipo de via
+  c = c.replace(/\b(av|avda|avd|calle|bvd|blvd|pje|cno|cmno)\b\.?/g,'').replace(/\s+/g,' ').trim();
+  if (c.length < 3) return false;
+
+  // Nivel 1: calle completa en DNI
+  var calleOk = d.indexOf(c) >= 0;
+
+  // Nivel 2: cada palabra significativa de la calle aparece en el DNI
+  if (!calleOk) {
+    var words = c.split(' ').filter(function(w){ return w.length >= 4; });
+    if (words.length > 0) calleOk = words.every(function(w){ return d.indexOf(w) >= 0; });
+  }
+
+  // Nivel 3 (typos graves como bencalada/blanco encalada):
+  // Si tenemos número Y al menos 4 chars seguidos de la calle aparecen en DNI
+  if (!calleOk && numero && numero.trim()) {
+    var n = numero.replace(/[^0-9]/g,'');
+    if (n.length >= 2 && d.indexOf(n) >= 0) {
+      // Buscar substring de 5+ chars de la calle dentro del DNI
+      var found = false;
+      for (var i=0; i<=c.length-5 && !found; i++) {
+        if (d.indexOf(c.substring(i, i+5)) >= 0) found = true;
+      }
+      calleOk = found;
+    }
+  }
+
+  if (!calleOk) return false;
+
+  // Verificar número si está disponible
+  if (numero && numero.trim()) {
+    var n = numero.replace(/[^0-9]/g,'');
+    if (n.length >= 2) return d.indexOf(n) >= 0;
+  }
+  return true;
+}
+
+function classify(calle, datos_dni, localidad_decl, partido_decl, numero) {
+  // Construir texto de domicilio declarado combinando calle + localidad + partido
+  var decl_texto = [calle, localidad_decl, partido_decl].filter(Boolean).join(' ');
+
+  var dniLegible  = isDomicilioLegible(datos_dni);
+  var declLegible = isDomicilioLegible(decl_texto);
+
+  // ROSA: ninguno de los dos domicilios es legible
+  if (!dniLegible && !declLegible) return 'pink';
+
+  var vlDni  = dniLegible  ? isVL(datos_dni)  : false;
+  var vlDecl = declLegible ? isVL(decl_texto) : false;
+
+  // VERDE: ambos en VL (aunque no coincidan las calles)
+  if (vlDni && vlDecl) return 'green';
+  // VERDE: calle+número coinciden Y al menos uno está en VL
+  var calleCoincide = addrMatchFuzzy(calle, numero, datos_dni);
+  if (calleCoincide && (vlDni || vlDecl)) return 'green';
+
+  // Para rojo: ambos domicilios legibles y ambos fuera de VL y limítrofes
+  var limDni  = dniLegible  ? isLimitrofe(datos_dni)  : false;
+  var limDecl = declLegible ? isLimitrofe(decl_texto) : false;
+  var extDni  = dniLegible  && !vlDni  && !limDni;
+  var extDecl = declLegible && !vlDecl && !limDecl;
+
+  // ROJO: ambos fuera de VL y limítrofes
+  if (dniLegible && declLegible && extDni && extDecl) return 'red';
+
+  // AMARILLO: todo lo demás
+  return 'yellow';
+}
+
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── CSV PARSER ────────────────────────────────────────────────────────────────
+function parseCSV(text) {
+  var rows = [], re = /("(?:[^"]|"")*"|[^,\n\r]*)/g, cur = [], cell = '';
+  var lines = text.split(/\r?\n/);
+  for (var li=0; li<lines.length; li++) {
+    var line = lines[li];
+    var cells = [], i = 0;
+    while (i <= line.length) {
+      if (i === line.length) { cells.push(cell); cell = ''; break; }
+      var c = line[i];
+      if (c === '"') {
+        i++;
+        var s = '';
+        while (i < line.length) {
+          if (line[i] === '"') { if (line[i+1] === '"') { s += '"'; i+=2; } else { i++; break; } }
+          else { s += line[i]; i++; }
+        }
+        cell = s;
+        if (i < line.length && line[i] === ',') { cells.push(cell); cell = ''; i++; }
+      } else if (c === ',') { cells.push(cell); cell = ''; i++; }
+      else { cell += c; i++; }
+    }
+    cells.push(cell); cell = '';
+    rows.push(cells);
+  }
+  return rows;
+}
+
+// ── LOAD DATA ─────────────────────────────────────────────────────────────────
+function loadData() {
+  document.getElementById('mainContent').innerHTML =
+    '<div class="fullscreen-msg"><div class="spinner"></div><div class="msg-title">Cargando datos…</div></div>';
+  document.getElementById('clubTabs').innerHTML = '';
+  document.getElementById('catBar').innerHTML = '<span class="cat-label">Categoría:</span>';
+  document.getElementById('stats').innerHTML = '';
+
+  var CSV_PUB = 'https://docs.google.com/spreadsheets/d/1T9inNuk44hxJdzHwfoOVSj9cSq68kr48t9g9M_JwQZs/export?format=csv&gid=0';
+  function tryFetch(urls, i) {
+    if (i >= urls.length) { showError('No se pudo cargar la hoja. Verificá tu conexión.'); return; }
+    fetch(urls[i], { cache: 'no-store' })
+      .then(function(r){ if (!r.ok) throw new Error('HTTP '+r.status); return r.text(); })
+      .then(function(text){
+        if (!text || text.trim().length < 20) throw new Error('Vacío');
+        var rows = parseCSV(text);
+        if (rows.length < 2) throw new Error('Sin datos');
+        processDataRows(rows);
+      })
+      .catch(function(){ tryFetch(urls, i+1); });
+  }
+  tryFetch([CSV_PUB,
+    'https://corsproxy.io/?' + encodeURIComponent(CSV_PUB),
+    'https://api.allorigins.win/raw?url=' + encodeURIComponent(CSV_PUB),
+    'https://allorigins.win/raw?url=' + encodeURIComponent(CSV_PUB),
+    'https://thingproxy.freeboard.io/fetch/' + CSV_PUB], 0);
+}
+
+function showError(msg) {
+  document.getElementById('mainContent').innerHTML =
+    '<div class="fullscreen-msg">' +
+      '<div class="error-box">' +
+        '<div class="msg-title">Error al cargar datos</div>' +
+        '<p>' + esc(msg) + '</p>' +
+        '<button class="retry-btn" onclick="loadData()">Reintentar</button>' +
+      '</div>' +
+    '</div>';
+}
+
+function processDataRows(rows) {
+  if (rows.length < 2) return;
+
+  ALL = [];
+  ALL_DEL = [];
+  ALL_TEC = [];
+  var _seen = {};
+  CLUBS = [];
+
+  for (var i=1; i<rows.length; i++) {
+    var r = rows[i];
+    // Nueva hoja: 1T9inNuk44hxJdzHwfoOVSj9cSq68kr48t9g9M_JwQZs
+    var nombre    = ((r[28]||'').trim() + ' ' + (r[27]||'').trim()).trim(); // AC nombre + AB apellido
+    var nombre_ocr = (r[28]||'').trim();   // AC — Nombre OCR
+    var apellido_ocr = (r[27]||'').trim(); // AB — Apellido OCR
+    var dni       = (r[2]  || '').trim();  // C — DNI
+    var naciStr   = (r[3]  || '').trim();  // D — Fecha nac
+    var fotoFr    = (r[4]  || '').trim();  // E — Foto frente DNI
+    var fotoDo    = (r[5]  || '').trim();  // F — Foto dorso DNI
+    var calle     = (r[6]  || '').trim();  // G
+    var numero    = (r[7]  || '').trim();  // H
+    var piso      = (r[8]  || '').trim();  // I
+    var localidad = (r[9]  || '').trim();  // J
+    var partido   = (r[10] || '').trim();  // K
+    var provincia = (r[11] || '').trim();  // L
+    var club      = (r[14] || '').trim();  // O — Institución
+    var categoria = (r[15] || '').trim();  // P — Categoría
+    var datos_dni = (r[20] || '').trim();  // U — Dirección DNI (texto OCR domicilio)
+    var apto      = (r[24] || '').trim();  // Y — Apto Físico
+    var num_foto  = (r[31] || '').trim();  // AF — Número de foto jugador
+    var foto_id   = (r[36] || '').trim();  // AK — File ID de foto jugador (escrito por Apps Script)
+    var fecha_vto = (r[34] || '').trim();  // AI — Fecha vto DNI
+    var obs_sheet = (r[35] || '').trim();  // AJ — Observaciones
+    // Fallback nombre: si no hay OCR, usar col B original
+    if (!nombre.trim() || nombre.trim() === ' ') nombre = (r[1]||'').trim();
+
+    // Filtrar filas válidas
+    if (!dni || !club || !categoria) continue;
+    // Filtrar clubs inválidos: emails, muy cortos, o que son categorías
+    if (club.indexOf('@') >= 0) continue;  // emails
+    if (club.length < 4) continue;          // muy corto
+    if (['2013','2014','2015','2016','2017','2018','2019/20'].indexOf(club) >= 0) continue; // categorías en col club
+    // Filtrar DNI no numérico
+    var dniNum = parseFloat(dni.replace(/[-. ]/g,''));
+    if (isNaN(dniNum)) continue;
+    // Deduplicar por DNI — si ya fue cargado, saltar
+    var dniKey = String(Math.round(dniNum));
+    if (_seen[dniKey]) continue;
+    _seen[dniKey] = true;
+
+    var color = classify(calle, datos_dni, localidad, partido, numero);
+    var hasApto = apto && apto !== 'No encontrado' && apto.trim() !== '';
+
+    // URL de foto de jugador: usar foto_id (col AK) si existe, sino buscar en índice
+    var _fotoFileId = foto_id || (function(){
+      if (!num_foto) return null;
+      var n = num_foto.replace(/[^0-9]/g,'');
+      var fname = '100_' + n + '.JPG';
+      var idx = window.FOTO_INDEX || {};
+      return idx[fname] || idx[fname.toLowerCase()] || null;
+    })();
+
+    ALL.push({
+      nombre: nombre,
+      nombre_ocr: nombre_ocr,
+      apellido_ocr: apellido_ocr,
+      dni: String(Math.round(dniNum)),
+      nacimiento: naciStr,
+      club: club,
+      categoria: categoria,
+      calle: calle, numero: numero, piso: piso,
+      localidad: localidad, partido: partido, provincia: provincia,
+      datos_dni: datos_dni,
+      foto_frente: fotoFr,
+      foto_dorso: fotoDo,
+      apto_fisico: apto,
+      has_apto: hasApto,
+      num_foto: num_foto,
+      foto_id: _fotoFileId,
+      foto_jugador: num_foto ? '100_' + num_foto.replace(/[^0-9]/g,'') + '.JPG' : '',
+      tiene_foto: !!(foto_id && foto_id.trim().length > 5),
+      fecha_vto: fecha_vto,
+      obs_sheet: obs_sheet,
+      color: color
+    });
+
+    if (club && !_seen[club]) { _seen[club] = true; CLUBS.push(club); }
+  }
+
+  CLUBS.sort();
+  cur = READONLY ? CLUB_MODE : (CLUBS[0] || '');
+  cat = null;
+  lastUpdate = new Date().toLocaleTimeString('es-AR');
+
+  // Load delegados + tecnicos in parallel, then overrides
+  var _loaded=0, _total=2;
+  function _onDone(){
+    _loaded++;
+    if(_loaded<_total)return;
+    loadOverridesFromSheets(function(ov){
+      saveLocalOverrides(ov);
+      applyOverrides(ALL);
+      applyOverrides(DELEGADOS);
+      buildTabs();
+      update();
+      // En modo informe: abrir reportes automáticamente
+      if (REPORT_MODE) {
+        toggleReport();
+      }
+      var si=document.getElementById('syncInd');
+      if(si&&SCRIPT_URL){var n=Object.keys(ov).length;si.textContent=n>0?'✓ '+n+' obs.':'';si.style.color='var(--green)';setTimeout(function(){if(si)si.textContent='';},3000);}
+    });
+  }
+  function _safeLoad(fn){ try{ fn(_onDone); }catch(e){ _onDone(); } }
+  _safeLoad(loadDelegados);
+  _safeLoad(loadTecnicos);
+
+  document.getElementById('mainContent').innerHTML = '';
+  document.getElementById('mainContent').appendChild(
+    Object.assign(document.createElement('div'), {className:'grid-wrap'})
+  );
+  document.getElementById('mainContent').firstChild.innerHTML = '<div class="grid" id="grid"></div>';
+
+  renderAll();
+}
+
+// ── UI ────────────────────────────────────────────────────────────────────────
+function buildTabs() {
+  var allClubs=CLUBS.slice();
+  DELEGADOS.forEach(function(d){if(allClubs.indexOf(d.club)<0)allClubs.push(d.club);});
+  allClubs.sort();
+  if(TECNICOS.length) allClubs.push(TEC_CLUB);
+  // Modo club: filtrar solo el club correspondiente
+  if(READONLY) allClubs = allClubs.filter(function(cl){ return cl===CLUB_MODE; });
+  var h='';
+  allClubs.forEach(function(cl){
+    var isTec=cl===TEC_CLUB;
+    h+='<button class="club-tab'+(cl===cur?' active':'')+(isTec?' tec-tab':'')+'" data-club="'+encodeURIComponent(cl)+'">'+esc(cl)+'</button>';
+  });
+  var ct=document.getElementById('clubTabs');
+  ct.innerHTML=h;
+  ct.querySelectorAll('.club-tab').forEach(function(b) {
+    b.addEventListener('click', function() {
+      cur = decodeURIComponent(this.getAttribute('data-club'));
+      cat = null;
+      // Resetear filtro de foto al cambiar de club
+      fotoFilt = 'all';
+      estadoFilter = estadoFilter || 'all';
+      ['fotoFiltAll','fotoFiltSi','fotoFiltNo'].forEach(function(id){
+        var el=document.getElementById(id);
+        if(el){el.classList.remove('active'); if(id==='fotoFiltAll') el.classList.add('active');}
+      });
+      ct.querySelectorAll('.club-tab').forEach(function(x){x.classList.remove('active');});
+      this.classList.add('active');
+      update();
+    });
+  });
+}
+
+function update() {
+  var cp = ALL.filter(function(p){return p.club===cur;});
+  var av = CATS.filter(function(c){return cp.some(function(p){return p.categoria===c;});});
+  var h = '<span class="cat-label">Categor\u00eda:</span>';
+  av.forEach(function(c){
+    h += '<button class="cat-btn' + (cat===c?' active':'') + '" data-cat="' + encodeURIComponent(c) + '">' + esc(c) + '</button>';
+  });
+  // Agregar botón Delegados si hay para este club
+  var hasDel = DELEGADOS.some(function(d){return d.club===cur;});
+  if(hasDel){
+    h += '<button class="cat-btn del-btn' + (cat===DEL_CAT?' active':'') + '" data-cat="' + encodeURIComponent(DEL_CAT) + '">Delegados</button>';
+  }
+  var cb = document.getElementById('catBar');
+  cb.innerHTML = h;
+  cb.querySelectorAll('.cat-btn').forEach(function(b){
+    b.addEventListener('click', function(){
+      var c = decodeURIComponent(this.getAttribute('data-cat'));
+      if (cat===c) { cat=null; cb.querySelectorAll('.cat-btn').forEach(function(x){x.classList.remove('active');}); }
+      else { cat=c; cb.querySelectorAll('.cat-btn').forEach(function(x){x.classList.remove('active');}); this.classList.add('active'); }
+      renderAll();
+    });
+  });
+  renderAll();
+}
+
+function getF(){
+  if(cur===TEC_CLUB) return TECNICOS.filter(function(p){
+    if(!searchTerm)return true;
+    var t=searchTerm.toLowerCase();
+    return p.dni.indexOf(searchTerm)>=0||p.nombre.toLowerCase().indexOf(t)>=0;
+  });
+  if(cat===DEL_CAT) return DELEGADOS.filter(function(p){
+    if(p.club!==cur)return false;
+    if(!searchTerm)return true;
+    var t=searchTerm.toLowerCase();
+    return p.dni.indexOf(searchTerm)>=0||p.nombre.toLowerCase().indexOf(t)>=0;
+  });
+  // Si hay filtro de foto activo, mostrar todos los clubs (no filtrar por cur)
+  var ignorarClub = (fotoFilt==='si'||fotoFilt==='no');
+  return ALL.filter(function(p){
+    if(!ignorarClub && p.club!==cur)return false;
+    if(!ignorarClub && cat&&p.categoria!==cat)return false;
+    if(estadoFilter&&estadoFilter!=='all'&&p.color!==estadoFilter)return false;
+    if(p.tipo!=='tecnico'&&p.tipo!=='delegado'){
+      var _tf = !!p.tiene_foto;
+      if(fotoFilt==='si'&&!_tf)return false;
+      if(fotoFilt==='no'&&_tf)return false;
+    }
+    if(searchTerm){var t=searchTerm.toLowerCase();
+      if(p.dni.indexOf(searchTerm)<0&&p.nombre.toLowerCase().indexOf(t)<0)return false;}
+    return true;
+  });
+}
+
+function renderAll() {
+  filtered = getF();
+  renderStats();
+  renderGrid();
+  updateCounts();
+}
+
+// ── REPORTES ──────────────────────────────────────────────────────────────────
+var _reportSort = {col:'nombre', asc:true};
+
+function toggleReport() {
+  var rs = document.getElementById('reportScreen');
+  if (!rs) return;
+  var showing = rs.style.display !== 'none';
+  if (showing) {
+    rs.style.display = 'none';
+  } else {
+    rs.style.display = 'block';
+    populateReportFilters();
+    renderReport();
+  }
+}
+
+function populateReportFilters() {
+  // Clubs
+  var clubSel = document.getElementById('rFiltClub');
+  if (CLUB_MODE) {
+    // En modo club: fijar el club y ocultar el selector
+    clubSel.innerHTML = '<option value="'+esc(CLUB_MODE)+'">'+esc(CLUB_MODE)+'</option>';
+    clubSel.value = CLUB_MODE;
+    clubSel.closest('div').style.display = 'none';
+  } else {
+    clubSel.innerHTML = '<option value="">Todos los clubes</option>';
+    var clubs = CLUBS.slice().sort();
+    clubs.forEach(function(c){ clubSel.innerHTML += '<option value="'+esc(c)+'">'+esc(c)+'</option>'; });
+  }
+
+  // Categorias
+  var catSel = document.getElementById('rFiltCat');
+  catSel.innerHTML = '<option value="">Todas</option>';
+  CATS.forEach(function(c){ catSel.innerHTML += '<option value="'+esc(c)+'">'+esc(c)+'</option>'; });
+}
+
+function getReportData() {
+  var filtClub   = document.getElementById('rFiltClub')   ? document.getElementById('rFiltClub').value   : '';
+  var filtCat    = document.getElementById('rFiltCat')    ? document.getElementById('rFiltCat').value    : '';
+  var filtEstado = document.getElementById('rFiltEstado') ? document.getElementById('rFiltEstado').value : '';
+  var filtDni    = document.getElementById('rFiltDni')    ? document.getElementById('rFiltDni').value    : '';
+  var filtApto   = document.getElementById('rFiltApto')   ? document.getElementById('rFiltApto').value   : '';
+
+  return ALL.filter(function(p) {
+    if (filtClub   && p.club      !== filtClub)   return false;
+    if (filtCat    && p.categoria !== filtCat)    return false;
+    if (filtEstado && p.color     !== filtEstado) return false;
+    if (filtApto === 'si' && !p.has_apto)  return false;
+    if (filtApto === 'no' &&  p.has_apto)  return false;
+    if (filtDni) {
+      var hasFoto = !!(p.foto_frente && p.foto_frente !== 'No encontrado' && p.foto_frente.trim() !== '');
+      var dv = dniVtoColor(p.fecha_vto, hasFoto);
+      if (dv !== filtDni) return false;
+    }
+    return true;
+  });
+}
+
+function sortReport(col) {
+  if (_reportSort.col === col) { _reportSort.asc = !_reportSort.asc; }
+  else { _reportSort.col = col; _reportSort.asc = true; }
+  renderReport();
+}
+
+function renderReport() {
+  var data = getReportData();
+
+  // Sort
+  var col = _reportSort.col, asc = _reportSort.asc;
+  data.sort(function(a, b) {
+    var va = (a[col]||'').toLowerCase(), vb = (b[col]||'').toLowerCase();
+    return asc ? va.localeCompare(vb) : vb.localeCompare(va);
+  });
+
+  // Count
+  var countEl = document.getElementById('reportCount');
+  if (countEl) countEl.textContent = data.length + ' jugador' + (data.length===1?'':'es') + ' encontrado' + (data.length===1?'':'s');
+
+  // Color dot helper
+  var colorDot = {
+    green:  '<span style="color:#22c55e;font-size:14px;">&#9679;</span>',
+    yellow: '<span style="color:#fbbf24;font-size:14px;">&#9679;</span>',
+    red:    '<span style="color:#f87171;font-size:14px;">&#9679;</span>',
+    pink:   '<span style="color:#f472b6;font-size:14px;">&#9679;</span>',
+  };
+  var dniDot = {
+    ok:    '<span style="color:#22c55e;">&#10003;</span>',
+    warn:  '<span style="color:#fbbf24;">&#9888;</span>',
+    white: '<span style="color:#cbd5e1;">&#9675;</span>',
+    no:    '<span style="color:#f87171;">&#10007;</span>',
+  };
+
+  var rows = '';
+  data.forEach(function(p, idx) {
+    var hasFoto = !!(p.foto_frente && p.foto_frente !== 'No encontrado' && p.foto_frente.trim() !== '');
+    var dv = dniVtoColor(p.fecha_vto, hasFoto);
+    var bg = idx % 2 === 0 ? '' : 'background:rgba(255,255,255,.02);';
+    rows += '<tr class="report-row" style="border-bottom:1px solid rgba(255,255,255,.04);'+bg+'">' +
+      '<td style="padding:8px 12px; color:var(--text);">'+esc(p.nombre)+'</td>'+
+      '<td style="padding:8px 12px; color:var(--muted); font-family:monospace;">'+esc(p.dni)+'</td>'+
+      '<td style="padding:8px 12px; color:var(--muted);">'+esc(p.nacimiento||'—')+'</td>'+
+      '<td style="padding:8px 12px; text-align:center;"><span style="background:rgba(59,130,246,.15);color:var(--accent);border-radius:4px;padding:1px 6px;font-size:11px;font-weight:700;">'+esc(p.categoria)+'</span></td>'+
+      '<td style="padding:8px 12px; color:var(--text); font-size:11px; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">'+esc(p.club)+'</td>'+
+      '<td style="padding:8px 12px; text-align:center;">'+(colorDot[p.color]||'<span style="color:var(--muted);">?</span>')+'</td>'+
+      '<td style="padding:8px 12px; text-align:center;">'+(dniDot[dv]||'')+'</td>'+
+      '<td style="padding:8px 12px; text-align:center;">'+(p.has_apto?'<span style="color:#22c55e;">&#10003;</span>':'<span style="color:#f87171;">&#10007;</span>')+'</td>'+
+    '</tr>';
+  });
+
+  var tbody = document.getElementById('reportBody');
+  if (tbody) tbody.innerHTML = rows || '<tr><td colspan="8" style="padding:20px; text-align:center; color:var(--muted);">Sin resultados para los filtros seleccionados</td></tr>';
+}
+
+function clearReportFilters() {
+  ['rFiltClub','rFiltCat','rFiltEstado','rFiltDni','rFiltApto'].forEach(function(id){
+    var el = document.getElementById(id); if(el) el.value = '';
+  });
+  renderReport();
+}
+
+function exportCSV() {
+  var data = getReportData();
+  var dniLabel = {ok:'Vigente', warn:'Vencido', white:'Sin fecha', no:'Sin foto'};
+  var colorLabel = {green:'VL Verde', yellow:'A analizar', red:'Extranjero', pink:'Sin domicilio'};
+  var headers = ['Nombre','DNI','Fecha Nac','Categoria','Club','Domicilio','Estado DNI','Apto Fisico'];
+  var rows = [headers];
+  data.forEach(function(p) {
+    var hasFoto = !!(p.foto_frente && p.foto_frente !== 'No encontrado' && p.foto_frente.trim() !== '');
+    var dv = dniVtoColor(p.fecha_vto, hasFoto);
+    rows.push([
+      p.nombre, p.dni, p.nacimiento||'', p.categoria, p.club,
+      colorLabel[p.color]||p.color,
+      dniLabel[dv]||dv,
+      p.has_apto ? 'Si' : 'No'
+    ]);
+  });
+  var csv = rows.map(function(r){
+    return r.map(function(cell){
+      var s = String(cell||'').replace(/"/g,'""');
+      return s.indexOf(',')>=0||s.indexOf('"')>=0||s.indexOf('\n')>=0 ? '"'+s+'"' : s;
+    }).join(',');
+  }).join('\n');
+
+  // BOM para Excel con UTF-8
+  var blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'cafi2026_reporte.csv';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+
+
+function renderStats() {
+  var c={green:0,yellow:0,red:0,pink:0};
+  filtered.forEach(function(p){if(c[p.color]!==undefined)c[p.color]++;});
+  var h='<div class="st"><span class="st-n">'+filtered.length+'</span><span class="st-l">Total</span></div>';
+  if(c.green)  h+='<div class="st"><span class="st-n" style="color:var(--green)">'+c.green+'</span><span class="st-l">VL \u2713</span></div>';
+  if(c.yellow) h+='<div class="st"><span class="st-n" style="color:var(--yellow)">'+c.yellow+'</span><span class="st-l">A analizar</span></div>';
+  if(c.red)    h+='<div class="st"><span class="st-n" style="color:var(--red)">'+c.red+'</span><span class="st-l">Extranjero</span></div>';
+  if(c.pink)   h+='<div class="st"><span class="st-n" style="color:var(--pink)">'+c.pink+'</span><span class="st-l">Sin domicilio</span></div>';
+  if(fotoFilt==='si') h+='<span class="last-update" style="color:var(--green);">&#9679; Mostrando solo fichados</span>';
+  else if(fotoFilt==='no') h+='<span class="last-update" style="color:var(--muted);">&#9675; Mostrando sin foto de fichaje</span>';
+  h+='<span class="last-update">&#128337; \u00daltima actualizaci\u00f3n: '+lastUpdate+'</span>';
+  document.getElementById('stats').innerHTML = h;
+}
+
+function renderGrid() {
+  var grid = document.getElementById('grid');
+  if (!grid) return;
+  if (!filtered.length) {
+    var msg = fotoFilt==='si' ? 'No hay jugadores fichados (con foto) en esta selecci\u00f3n' :
+              fotoFilt==='no' ? 'No hay jugadores sin foto en esta selecci\u00f3n' :
+              'No hay jugadores en esta selecci\u00f3n';
+    grid.innerHTML='<div class="empty">'+msg+'</div>'; return;
+  }
+
+  var h = '';
+  filtered.forEach(function(p, i) {
+    // Foto principal: foto de jugador (fichaje) si existe, sino foto frente DNI
+    var thumb  = (p.tiene_foto && getFotoJugador(p)) || driveThumb(p.foto_frente);
+    var hasDni = !!(p.foto_frente && p.foto_frente !== 'No encontrado' && p.foto_frente.trim() !== '');
+    var hasAp  = !!p.has_apto;
+
+    // Foto — onerror usa función global para evitar problemas de comillas
+    var photoInner;
+    if (thumb) {
+      photoInner = '<img src="' + esc(thumb) + '" loading="lazy" onerror="photoError(this)">';
+    } else {
+      photoInner = '<div class="photo-placeholder"><div class="photo-icon">' +
+        '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">' +
+        '<circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>' +
+        '</div><span class="photo-lbl">Sin foto</span></div>';
+    }
+
+    // Dirección declarada
+    var addrForm = [p.calle, p.numero].filter(Boolean).join(' ');
+    if (p.localidad) addrForm += ' \u2014 ' + p.localidad;
+
+    // Route to specialized renderers
+    if(p.tipo==='tecnico'){  h+=renderTecnicoCard(p,i); return; }
+    if(p.tipo==='delegado'){ h+=renderDelegadoCard(p,i); return; }
+
+    // Jugador normal
+    var cardCls='card '+p.color+(p.overridden?' overridden':'');
+    h+='<div class="'+cardCls+'" data-idx="'+i+'">'
+      +'<div class="chk" data-dni="'+esc(p.dni)+'">'+(selectedDnis[p.dni]?'\u2713':'')+'</div>' +
+      '<div class="photo">' + photoInner + '</div>' +
+      '<div class="cbar"></div>' +
+      '<div class="cinfo">' +
+        '<div class="cname">' + esc(p.nombre) + '</div>' +
+        '<div class="cmeta">' +
+          '<span class="ctag">DNI ' + esc(p.dni) + '</span>' +
+          (p.nacimiento ? '<span class="ctag">' + esc(p.nacimiento) + '</span>' : '') +
+          (p.club ? '<span class="ctag ctag-club">' + esc(p.club) + '</span>' : '') +
+        '</div>' +
+        (READONLY ? '' : '<button class="obs-card-btn" data-dni="' + esc(p.dni) + '">' + (p.overridden ? '\u270e Editado' : '\u270e Obs.') + '</button>') +
+        (p.obs ? '<div class="obs-snippet">' + esc(p.obs.substring(0,55)) + (p.obs.length>55?'...':'') + '</div>' : '') +
+        '<div class="doc-indicators">' +
+          (function(){var dv=dniVtoColor(p.fecha_vto,hasDni);return '<span class="doc-ind '+dv+'">'+(dv==='ok'?'\u2713 DNI':dv==='warn'?'\u26a0 DNI':dv==='white'?'\u25cb DNI':'\u2717 DNI')+'</span>';})() +
+          '<span class="doc-ind ' + (hasAp  ? 'ok' : 'no') + '">' + (hasAp  ? '\u2713 Apto' : '\u2717 Apto') + '</span>' +
+        '</div>' +
+        '<div class="cdivider"></div>' +
+        '<div class="caddr-block">' +
+          '<div class="caddr-section">' +
+            '<div class="caddr-label">\u2712 Declarado</div>' +
+            '<div class="caddr-val">' + (addrForm ? esc(addrForm) : '<em style="opacity:.4">sin datos</em>') + '</div>' +
+          '</div>' +
+          (p.datos_dni && p.datos_dni !== 'No detectado - Revisar' && p.datos_dni !== 'No encontrado'
+            ? '<div class="caddr-section">' +
+                '<div class="caddr-label">\ud83d\udcc4 DNI</div>' +
+                '<div class="caddr-val">' + esc(p.datos_dni) + '</div>' +
+              '</div>'
+            : '') +
+          (p.color === 'orange' ? '<span class="art23-tag">\u26a0 Verificar Art. 23</span>' : '') +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  });
+
+  grid.innerHTML = h;
+  // Single delegated listener handles chk, obs-btn, card clicks
+  grid.addEventListener('click', function(e) {
+    var chk=e.target.closest('.chk');
+    if(chk){e.stopPropagation();e.preventDefault();toggleSel(chk.getAttribute('data-dni'));return;}
+    var obs=e.target.closest('.obs-card-btn');
+    if(obs){e.stopPropagation();e.preventDefault();openObs(obs.getAttribute('data-dni'));return;}
+    var card=e.target.closest('.card,.card-tec,.card-del');
+    if(card){openModal(parseInt(card.getAttribute('data-idx')));}
+  });
+}
+
+function openModal(i) {
+  var p=filtered[i]; if(!p)return;
+  if(p.tipo==='tecnico'){openTecnicoModal(p);return;}
+  if(p.tipo==='delegado'){openDelegadoModal(p);return;}
+  var inVL  = p.color === 'green' || p.color === 'lightgreen';
+  var match = p.color === 'green' || p.color === 'yellow';
+
+  document.getElementById('mname').textContent = p.nombre;
+  document.getElementById('mbadge').innerHTML = '<span class="badge ' + p.color + '">' + LABELS[p.color] + '</span>';
+
+  var addr = [p.calle, p.numero].filter(Boolean).join(' ');
+
+  var h =
+    '<div class="msec"><div class="msec-t">Datos del jugador</div>' +
+      row('DNI', p.dni) +
+      row('Fecha de nacimiento', p.nacimiento || '\u2014') +
+      row('Club', p.club) +
+      row('Categor\u00eda', p.categoria) +
+    '</div>' +
+    (p.obs_sheet ? '<div class="msec" style="border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.05);"><div class="msec-t" style="color:#fbbf24;">\ud83d\udccc Observaciones</div>' + row('', esc(p.obs_sheet)) + '</div>' : '') +
+    '<div class="msec"><div class="msec-t">\u2712 Domicilio declarado</div>' +
+      row('Calle', addr) +
+      (p.piso ? row('Piso/Dpto', p.piso) : '') +
+      row('Localidad', p.localidad) +
+      row('Partido', p.partido) +
+      row('Provincia', p.provincia) +
+    '</div>';
+
+  if (p.datos_dni && p.datos_dni !== 'No encontrado') {
+    h += '<div class="msec"><div class="msec-t">\ud83d\udcc4 Texto del DNI</div>' +
+      '<div style="font-size:12px;color:var(--text);background:rgba(255,255,255,.04);border-radius:5px;padding:8px 10px;line-height:1.5;">' +
+      esc(p.datos_dni) + '</div></div>';
+  }
+
+  if (p.color === 'orange') {
+    h += '<div class="msec"><div class="msec-t">\u26a0 Art\u00edculo 23 \u2014 Verificar</div>' +
+      '<div class="art23-box"><div class="art23-box-title">Zonas lim\u00edtrofes habilitadas</div>' +
+      '<div class="art23-box-text">' + esc(ART23_TEXT) + '</div></div></div>';
+  } else if (p.datos_dni && p.datos_dni !== 'No encontrado') {
+    h += '<div class="msec"><div class="msec-t">Verificaci\u00f3n</div>' +
+      '<div class="mrow"><span class="ml">Calle en texto DNI</span>' +
+        '<span class="mr" style="color:' + (match ? 'var(--green)' : 'var(--red)') + '">' +
+        (match ? '\u2713 S\u00ed' : '\u2717 No') + '</span></div>' +
+      '<div class="mrow"><span class="ml">Domiciliado en Vicente L\u00f3pez</span>' +
+        '<span class="mr" style="color:' + (inVL ? 'var(--green)' : 'var(--yellow)') + '">' +
+        (inVL ? '\u2713 S\u00ed' : '\u2717 No') + '</span></div>' +
+    '</div>';
+  }
+
+  // Documentación
+  var hasFr = !!(p.foto_frente && p.foto_frente !== 'No encontrado' && p.foto_frente.trim() !== '');
+  var hasDo = !!(p.foto_dorso  && p.foto_dorso  !== 'No encontrado' && p.foto_dorso.trim()  !== '');
+  var hasAp = !!p.has_apto;
+
+  var dniVto = dniVtoColor(p.fecha_vto, hasFr);
+  h += '<div class="msec"><div class="msec-t">\ud83d\udcf8 Documentaci\u00f3n</div>';
+  h += '<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">';
+  h += '<span class="doc-ind ' + dniVto + '">' + (dniVto==='ok'?'\u2713':dniVto==='warn'?'\u26a0':dniVto==='white'?'\u25cb':'\u2717') + ' DNI</span>';
+  h += '<span class="doc-ind ' + (hasDo ? 'ok' : 'no') + '">' + (hasDo ? '\u2713' : '\u2717') + ' DNI Dorso</span>';
+  h += '<span class="doc-ind ' + (hasAp ? 'ok' : 'no') + '">' + (hasAp ? '\u2713' : '\u2717') + ' Apto F\u00edsico</span>';
+  h += '</div>';
+  // Campo para cargar/editar fecha de vencimiento del DNI
+  h += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">' +
+       '<span style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;min-width:110px;">Vto. DNI</span>' +
+       '<input type="date" id="vtoInput" value="' + esc(p.fecha_vto ? toDateInput(p.fecha_vto) : '') + '"' +
+       ' style="background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:4px 8px;font-size:12px;">' +
+       '<button onclick="saveVto(\'' + esc(p.dni) + '\')" style="background:var(--accent);color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;">Guardar</button>' +
+       '<span id="vtoStatus" style="font-size:11px;color:var(--muted);"></span>' +
+       '</div>';
+
+  if (hasFr || hasDo || hasAp) {
+    h += '<div class="img-grid">';
+    var docs = [];
+    if (hasFr) docs.push({ url: p.foto_frente, label: 'DNI Frente', full: false });
+    if (hasDo) docs.push({ url: p.foto_dorso,  label: 'DNI Dorso',  full: false });
+    if (hasAp) docs.push({ url: p.apto_fisico, label: 'Apto F\u00edsico', full: true });
+    docs.forEach(function(doc) {
+      var thumb = driveThumb(doc.url);
+      h += '<div class="img-box' + (doc.full ? ' apto' : '') + '">';
+      if (thumb) {
+        h += '<a href="' + esc(doc.url) + '" target="_blank">' +
+             '<img src="' + esc(thumb) + '" loading="lazy" ' +
+             'onerror="imgError(this)">' +
+             '</a>';
+      } else {
+        h += '<div class="img-error">No disponible</div>';
+      }
+      h += '<div class="img-label">' + esc(doc.label) + '</div>';
+      h += '<a class="img-link" href="' + esc(doc.url) + '" target="_blank">Abrir en Drive \u2197</a>';
+      h += '</div>';
+    });
+    h += '</div>';
+  }
+  h += '</div>';
+
+  // Obs section in modal
+  h+='<div class="msec"><div class="msec-t">Observaciones</div>';
+  if(p.obs) h+='<div style="font-size:12px;color:var(--text);background:rgba(255,255,255,.04);border-radius:5px;padding:8px 10px;line-height:1.5;margin-bottom:8px;">'+esc(p.obs)+'</div>';
+  if(p.obsHistory&&p.obsHistory.length){
+    h+='<div style="font-size:11px;color:var(--muted);margin-bottom:8px;">';
+    p.obsHistory.slice().reverse().forEach(function(hh){h+='<div style="padding:3px 0;border-bottom:1px solid rgba(255,255,255,.05)"><strong style="color:var(--text)">'+esc(hh.date)+'</strong> <span style="color:var(--accent);font-size:10px">['+hh.color+']</span> '+esc(hh.obs)+'</div>';});
+    h+='</div>';
+  }
+  h+='<button class="modal-obs-btn" data-dni="'+esc(p.dni)+'" style="font-family:Barlow Condensed,sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:var(--accent);border:none;color:#fff;border-radius:5px;padding:9px 16px;cursor:pointer;width:100%;">\u270e '+(p.overridden?'Editar observaci\u00f3n':'Agregar observaci\u00f3n')+'</button>';
+  h+='</div>';
+  document.getElementById('mbody').innerHTML=h;
+  var mBtn=document.querySelector('.modal-obs-btn');
+  if(mBtn)mBtn.addEventListener('click',function(){var d=this.getAttribute('data-dni');closeModal();setTimeout(function(){openObs(d);},150);});
+  document.getElementById('overlay').classList.add('open');
+}
+
+function row(l, v) {
+  return '<div class="mrow"><span class="ml">'+esc(l)+'</span><span class="mr">'+esc(v||'')+'</span></div>';
+}
+
+function closeModal() { document.getElementById('overlay').classList.remove('open'); }
+
+document.getElementById('overlay').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
+document.getElementById('mclose').addEventListener('click', closeModal);
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
+
+
+function photoError(el) {
+  el.parentNode.innerHTML =
+    '<div class="photo-placeholder">' +
+    '<div class="photo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">' +
+    '<circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>' +
+    '<span class="photo-lbl">Sin foto</span></div>';
+}
+function imgError(el) {
+  el.parentNode.innerHTML = '<div class="img-error">No se pudo cargar</div>';
+}
+
+// ── INIT ── (login dispara loadData)
+// loadData se llama desde doLogin()
+</script>
+
+<!-- REPORT SCREEN -->
+<div id="reportScreen" style="display:none; position:fixed; inset:0; z-index:8000; background:var(--bg); overflow-y:auto; padding:20px;">
+  <div style="max-width:1200px; margin:0 auto;">
+    <div style="display:flex; align-items:center; gap:16px; margin-bottom:20px; flex-wrap:wrap;">
+      <div style="font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:800; letter-spacing:.05em; text-transform:uppercase;">
+        CAFI <span style="color:var(--accent)">2026</span> &mdash; Reportes
+      </div>
+      <button onclick="toggleReport()" style="margin-left:auto; background:var(--surface); border:1px solid var(--border); color:var(--text); border-radius:8px; padding:6px 14px; font-size:12px; cursor:pointer; font-family:'Barlow Condensed',sans-serif; text-transform:uppercase; letter-spacing:.05em;">&#x2715; Cerrar</button>
+      <button onclick="exportCSV()" style="background:rgba(34,197,94,.15); border:1px solid rgba(34,197,94,.3); color:#22c55e; border-radius:8px; padding:6px 14px; font-size:12px; cursor:pointer; font-family:'Barlow Condensed',sans-serif; text-transform:uppercase; letter-spacing:.05em;">&#8595; Exportar CSV</button>
+    </div>
+
+    <!-- Filtros -->
+    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px;">
+      <div style="display:flex; flex-direction:column; gap:4px;">
+        <label style="font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em;">Club</label>
+        <select id="rFiltClub" onchange="renderReport()" style="background:var(--bg); border:1px solid var(--border); color:var(--text); border-radius:6px; padding:4px 8px; font-size:12px; min-width:180px;">
+          <option value="">Todos los clubes</option>
+        </select>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:4px;">
+        <label style="font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em;">Categoría</label>
+        <select id="rFiltCat" onchange="renderReport()" style="background:var(--bg); border:1px solid var(--border); color:var(--text); border-radius:6px; padding:4px 8px; font-size:12px;">
+          <option value="">Todas</option>
+        </select>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:4px;">
+        <label style="font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em;">Estado domicilio</label>
+        <select id="rFiltEstado" onchange="renderReport()" style="background:var(--bg); border:1px solid var(--border); color:var(--text); border-radius:6px; padding:4px 8px; font-size:12px;">
+          <option value="">Todos</option>
+          <option value="green">&#9679; VL (Verde)</option>
+          <option value="yellow">&#9679; A analizar (Amarillo)</option>
+          <option value="red">&#9679; Extranjero (Rojo)</option>
+          <option value="pink">&#9679; Sin domicilio (Rosa)</option>
+        </select>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:4px;">
+        <label style="font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em;">DNI</label>
+        <select id="rFiltDni" onchange="renderReport()" style="background:var(--bg); border:1px solid var(--border); color:var(--text); border-radius:6px; padding:4px 8px; font-size:12px;">
+          <option value="">Todos</option>
+          <option value="ok">&#9679; Vigente</option>
+          <option value="warn">&#9679; Vencido</option>
+          <option value="white">&#9679; Sin fecha</option>
+          <option value="no">&#9679; Sin foto DNI</option>
+        </select>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:4px;">
+        <label style="font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em;">Apto físico</label>
+        <select id="rFiltApto" onchange="renderReport()" style="background:var(--bg); border:1px solid var(--border); color:var(--text); border-radius:6px; padding:4px 8px; font-size:12px;">
+          <option value="">Todos</option>
+          <option value="si">Con apto</option>
+          <option value="no">Sin apto</option>
+        </select>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:4px; justify-content:flex-end;">
+        <button onclick="clearReportFilters()" style="background:var(--bg); border:1px solid var(--border); color:var(--muted); border-radius:6px; padding:5px 12px; font-size:11px; cursor:pointer; font-family:'Barlow Condensed',sans-serif; text-transform:uppercase; letter-spacing:.05em;">Limpiar filtros</button>
+      </div>
+    </div>
+
+    <!-- Contador -->
+    <div id="reportCount" style="font-size:12px; color:var(--muted); margin-bottom:10px;"></div>
+
+    <!-- Tabla -->
+    <div style="overflow-x:auto; border-radius:10px; border:1px solid var(--border);">
+      <table id="reportTable" style="width:100%; border-collapse:collapse; font-size:12px;">
+        <thead>
+          <tr style="background:var(--surface); border-bottom:1px solid var(--border);">
+            <th onclick="sortReport('nombre')" style="padding:10px 12px; text-align:left; font-family:'Barlow Condensed',sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); cursor:pointer; white-space:nowrap;">Nombre &#8597;</th>
+            <th onclick="sortReport('dni')" style="padding:10px 12px; text-align:left; font-family:'Barlow Condensed',sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); cursor:pointer; white-space:nowrap;">DNI &#8597;</th>
+            <th onclick="sortReport('nacimiento')" style="padding:10px 12px; text-align:left; font-family:'Barlow Condensed',sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); cursor:pointer; white-space:nowrap;">Fec. Nac &#8597;</th>
+            <th onclick="sortReport('categoria')" style="padding:10px 12px; text-align:left; font-family:'Barlow Condensed',sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); cursor:pointer; white-space:nowrap;">Cat &#8597;</th>
+            <th onclick="sortReport('club')" style="padding:10px 12px; text-align:left; font-family:'Barlow Condensed',sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); cursor:pointer; white-space:nowrap;">Club &#8597;</th>
+            <th style="padding:10px 12px; text-align:center; font-family:'Barlow Condensed',sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted);">Dom.</th>
+            <th style="padding:10px 12px; text-align:center; font-family:'Barlow Condensed',sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted);">DNI</th>
+            <th style="padding:10px 12px; text-align:center; font-family:'Barlow Condensed',sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted);">Apto</th>
+          </tr>
+        </thead>
+        <tbody id="reportBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- OBS MODAL -->
+<div class="obs-overlay" id="obsOverlay">
+  <div class="obs-modal">
+    <div><div class="obs-title" id="obsTitle"></div><div class="obs-sub" id="obsSub"></div></div>
+    <div><div class="obs-lbl">Observaci&oacute;n</div>
+    <div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap;">
+    <button onclick="document.getElementById('obsText').value='BAJA: Pase a club '+prompt('Nuevo club:')" style="background:rgba(248,113,113,.15);color:#f87171;border:1px solid rgba(248,113,113,.3);border-radius:6px;padding:3px 10px;font-size:11px;cursor:pointer;font-family:var(--font-ui);">&#8595; Dar de BAJA</button>
+    <button onclick="document.getElementById('obsText').value='ALTA: Ingresa desde club '+prompt('Club anterior:')" style="background:rgba(34,197,94,.15);color:#22c55e;border:1px solid rgba(34,197,94,.3);border-radius:6px;padding:3px 10px;font-size:11px;cursor:pointer;font-family:var(--font-ui);">&#8593; Dar de ALTA</button>
+    <button onclick="document.getElementById('obsText').value='TRANSFERENCIA: Pase de club '+prompt('De:')+' a '+prompt('A:')" style="background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.3);border-radius:6px;padding:3px 10px;font-size:11px;cursor:pointer;font-family:var(--font-ui);">&#8646; Transferencia</button>
+  </div>
+  <textarea class="obs-textarea" id="obsText" placeholder="Escribi el motivo del cambio…"></textarea></div>
+    <div><div class="obs-lbl">Nuevo estado</div>
+    <div class="color-picker" id="colorPicker">
+      <div><div class="color-opt" data-color="green"      style="background:var(--green-bg);border-color:var(--green-border)"></div><div class="color-opt-lbl">VL</div></div>
+      <div><div class="color-opt" data-color="lightgreen" style="background:var(--lgreen-bg);border-color:var(--lgreen-border)"></div><div class="color-opt-lbl">VL~</div></div>
+      <div><div class="color-opt" data-color="yellow"     style="background:var(--yellow-bg);border-color:var(--yellow-border)"></div><div class="color-opt-lbl">Fuera</div></div>
+      <div><div class="color-opt" data-color="orange"     style="background:var(--orange-bg);border-color:var(--orange-border)"></div><div class="color-opt-lbl">Art23</div></div>
+      <div><div class="color-opt" data-color="red"        style="background:var(--red-bg);border-color:var(--red-border)"></div><div class="color-opt-lbl">Rojo</div></div>
+      <div><div class="color-opt" data-color="gray"       style="background:var(--gray-bg);border-color:var(--gray-border)"></div><div class="color-opt-lbl">Gris</div></div>
+    </div></div>
+    <div id="obsHistoryWrap" style="display:none"><div class="obs-lbl">Historial</div>
+    <div class="obs-history" id="obsHistory"></div></div>
+    <div class="obs-actions">
+      <span class="obs-save-status" id="obsSaveStatus"></span>
+      <button class="obs-btn obs-btn-cancel" id="obsCancelBtn">Cancelar</button>
+      <button class="obs-btn obs-btn-clear"  id="obsClearBtn">Quitar override</button>
+      <button class="obs-btn obs-btn-save"   id="obsSaveBtn">Guardar</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
