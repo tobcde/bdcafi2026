@@ -354,6 +354,14 @@ body.readonly #estadoBar { display: none !important; }
 body.readonly .club-tabs-wrap { pointer-events: none; }
 body.readonly .img-link { display: none !important; }
 body.readonly a[target="_blank"] { pointer-events: none !important; color: var(--muted) !important; text-decoration: none !important; cursor: default !important; }
+
+@media print {
+  body > *:not(#listaScreen) { display: none !important; }
+  #listaScreen { position: static !important; overflow: visible !important; }
+  #listaPrintBar { display: none !important; }
+  #listaContent { width: 100% !important; padding: 0 !important; }
+  @page { margin: 10mm; size: A4; }
+}
 </style>
 </head>
 <body>
@@ -2093,15 +2101,14 @@ function row(l, v) {
 
 // â”€â”€ LISTA DE BUENA FE PDF â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function generarListaPDF(catFiltro) {
-  // Si no se pasa categorÃ­a, mostrar selector
-  if (catFiltro === undefined) {
-    var jugadores = ALL.filter(function(p){ return p.club === cur; });
-    if (!jugadores.length) { alert('No hay jugadores para este club.'); return; }
-    var cats = [];
-    var CATS_ORDER = ['2013','2014','2015','2016','2017','2018','2019/20'];
-    CATS_ORDER.forEach(function(c){ if(jugadores.some(function(p){ return p.categoria===c; })) cats.push(c); });
+  var jugadores = ALL.filter(function(p){ return p.club === cur; });
+  if (!jugadores.length) { alert('No hay jugadores para este club.'); return; }
 
-    // Construir modal selector
+  // Mostrar selector de categorÃ­a
+  if (catFiltro === undefined) {
+    var CATS_ORDER = ['2013','2014','2015','2016','2017','2018','2019/20'];
+    var cats = CATS_ORDER.filter(function(c){ return jugadores.some(function(p){ return p.categoria===c; }); });
+
     var existing = document.getElementById('pdfCatModal');
     if (existing) existing.remove();
 
@@ -2109,15 +2116,14 @@ function generarListaPDF(catFiltro) {
     modal.id = 'pdfCatModal';
     modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;display:flex;align-items:center;justify-content:center;';
     var box = document.createElement('div');
-    box.style.cssText = 'background:#1e2433;border:1px solid #2a3045;border-radius:12px;padding:24px;min-width:280px;display:flex;flex-direction:column;gap:12px;';
+    box.style.cssText = 'background:#1e2433;border:1px solid #2a3045;border-radius:12px;padding:24px;min-width:300px;display:flex;flex-direction:column;gap:10px;';
     box.innerHTML = '<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:16px;font-weight:800;text-transform:uppercase;color:#e8ecf4;letter-spacing:.04em;">\ud83d\udcc4 Generar Lista PDF</div>'
       + '<div style="font-size:12px;color:#8491a8;">Seleccion\u00e1 una categor\u00eda o toda la lista:</div>';
 
-    // BotÃ³n todas
     var btnAll = document.createElement('button');
     btnAll.textContent = 'Todas las categor\u00edas (' + jugadores.length + ' jugadores)';
     btnAll.style.cssText = 'background:#1e3a5f;color:#fff;border:none;border-radius:6px;padding:10px 16px;font-family:\'Barlow Condensed\',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;cursor:pointer;text-align:left;';
-    btnAll.onclick = function(){ modal.remove(); generarListaPDF('__ALL__'); };
+    btnAll.onclick = function(){ modal.remove(); _renderLista(jugadores, '__ALL__'); };
     box.appendChild(btnAll);
 
     cats.forEach(function(c){
@@ -2125,7 +2131,10 @@ function generarListaPDF(catFiltro) {
       var btn = document.createElement('button');
       btn.textContent = 'Categor\u00eda ' + c + ' \u2014 ' + n + ' jugadores';
       btn.style.cssText = 'background:#0d2e1a;color:#22c55e;border:1px solid #16a34a;border-radius:6px;padding:9px 16px;font-family:\'Barlow Condensed\',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;cursor:pointer;text-align:left;';
-      btn.onclick = (function(cat){ return function(){ modal.remove(); generarListaPDF(cat); }; })(c);
+      btn.onclick = (function(cat){ return function(){
+        modal.remove();
+        _renderLista(jugadores.filter(function(p){ return p.categoria===cat; }), cat);
+      }; })(c);
       box.appendChild(btn);
     });
 
@@ -2134,27 +2143,20 @@ function generarListaPDF(catFiltro) {
     btnCancel.style.cssText = 'background:transparent;color:#8491a8;border:none;padding:6px;cursor:pointer;font-size:12px;';
     btnCancel.onclick = function(){ modal.remove(); };
     box.appendChild(btnCancel);
-
     modal.appendChild(box);
     modal.onclick = function(e){ if(e.target===modal) modal.remove(); };
     document.body.appendChild(modal);
     return;
   }
+}
 
-  var jugadores = ALL.filter(function(p){
-    if (p.club !== cur) return false;
-    if (catFiltro !== '__ALL__' && p.categoria !== catFiltro) return false;
-    return true;
-  });
-  if (!jugadores.length) { alert('No hay jugadores para esta selecci\u00f3n.'); return; }
-
+function _renderLista(jugadores, catFiltro) {
   var escudoSrc = (typeof ESCUDOS !== 'undefined' && ESCUDOS[cur]) ? ESCUDOS[cur] : '';
   var cafiSrc   = (typeof CAFI_LOGO !== 'undefined') ? CAFI_LOGO : '';
   var fecha = new Date().toLocaleDateString('es-AR');
   var total = jugadores.length;
   var catTitulo = catFiltro === '__ALL__' ? 'Todas las categor\u00edas' : 'Categor\u00eda ' + catFiltro;
 
-  // Agrupar por categorÃ­a
   var CATS_ORDER = ['2013','2014','2015','2016','2017','2018','2019/20'];
   var grupos = {};
   jugadores.forEach(function(p){
@@ -2167,7 +2169,7 @@ function generarListaPDF(catFiltro) {
     var fotoUrl = getFotoJugador(p);
     var photoHtml;
     if (fotoUrl) {
-      photoHtml = '<img src="'+fotoUrl+'" style="width:100%;height:100%;object-fit:cover;object-position:top;" crossorigin="anonymous">';
+      photoHtml = '<img src="'+esc(fotoUrl)+'" style="width:100%;height:100%;object-fit:cover;object-position:top;">';
     } else {
       photoHtml = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">'
         + '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>'
@@ -2175,23 +2177,19 @@ function generarListaPDF(catFiltro) {
     }
     var nombre = p.nombre || '';
     var partes = nombre.trim().split(' ');
-    // Apellido = primeras 2 palabras, nombre = resto
     var apellido = partes.slice(0,2).join(' ');
     var pnombre  = partes.slice(2).join(' ');
 
     return '<div style="border:1px solid #ccc;border-radius:6px;overflow:hidden;display:flex;flex-direction:column;">'
       + '<div style="width:100%;height:80px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">'
-      + photoHtml
-      + '</div>'
+      + photoHtml + '</div>'
       + '<div style="padding:5px 6px;background:#f8f8f8;flex:1;">'
-      + '<div style="font-size:8.5px;font-weight:800;text-transform:uppercase;color:#111;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + apellido + '</div>'
-      + (pnombre ? '<div style="font-size:7.5px;font-weight:400;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + pnombre + '</div>' : '')
+      + '<div style="font-size:8.5px;font-weight:800;text-transform:uppercase;color:#111;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + esc(apellido) + '</div>'
+      + (pnombre ? '<div style="font-size:7.5px;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + esc(pnombre) + '</div>' : '')
       + '<div style="display:flex;gap:3px;flex-wrap:wrap;margin-top:3px;">'
-      + '<span style="font-size:8px;font-weight:700;color:#222;background:#ddd;border-radius:2px;padding:1px 5px;">DNI ' + p.dni + '</span>'
-      + (p.nacimiento ? '<span style="font-size:8px;font-weight:600;color:#333;background:#ddd;border-radius:2px;padding:1px 5px;">' + p.nacimiento + '</span>' : '')
-      + '</div>'
-      + '</div>'
-      + '</div>';
+      + '<span style="font-size:8px;font-weight:700;color:#222;background:#ddd;border-radius:2px;padding:1px 5px;">DNI ' + esc(p.dni) + '</span>'
+      + (p.nacimiento ? '<span style="font-size:8px;font-weight:600;color:#333;background:#ddd;border-radius:2px;padding:1px 5px;">' + esc(p.nacimiento) + '</span>' : '')
+      + '</div></div></div>';
   }
 
   var gridContent = '';
@@ -2205,42 +2203,35 @@ function generarListaPDF(catFiltro) {
     jugadores.forEach(function(p){ gridContent += cardHTML(p); });
   }
 
-  var html = '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">'
-    + '<title>Lista Buena Fe \u2014 ' + cur + (catFiltro!=='__ALL__'?' \u2014 Cat.'+catFiltro:'') + '</title>'
-    + '<style>'
-    + '* { margin:0; padding:0; box-sizing:border-box; }'
-    + 'body { font-family:Arial,sans-serif; background:white; }'
-    + '@media print { body { margin:0; } @page { margin:10mm; size:A4; } }'
-    + '.page { width:210mm; margin:0 auto; padding:10mm; }'
-    + '.grid { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-top:8px; }'
-    + '</style></head><body>'
-    + '<div class="page">'
-    + '<div style="display:flex;align-items:center;gap:16px;border-bottom:3px solid #1e3a5f;padding-bottom:10px;margin-bottom:12px;">'
+  var html =
+    '<div style="display:flex;align-items:center;gap:16px;border-bottom:3px solid #1e3a5f;padding-bottom:10px;margin-bottom:12px;">'
     + (escudoSrc ? '<img src="'+escudoSrc+'" style="width:70px;height:70px;object-fit:contain;flex-shrink:0;">' : '<div style="width:70px;height:70px;border:2px dashed #ccc;border-radius:6px;"></div>')
     + '<div style="flex:1;">'
     + '<div style="font-size:22px;font-weight:800;text-transform:uppercase;color:#1e3a5f;letter-spacing:.04em;">Lista de Buena Fe</div>'
-    + '<div style="font-size:14px;font-weight:700;color:#333;margin-top:2px;">'+cur+'</div>'
-    + '<div style="font-size:12px;color:#666;margin-top:3px;">' + catTitulo + ' \u2014 Temporada 2026 \u2014 CAFI</div>'
+    + '<div style="font-size:14px;font-weight:700;color:#333;margin-top:2px;">'+esc(cur)+'</div>'
+    + '<div style="font-size:12px;color:#666;margin-top:3px;">'+esc(catTitulo)+' \u2014 Temporada 2026 \u2014 CAFI</div>'
     + '</div>'
     + '<div style="text-align:right;font-size:10px;color:#888;flex-shrink:0;">'
     + '<strong style="display:block;font-size:26px;color:#1e3a5f;font-weight:800;">'+total+'</strong>jugadores'
     + (cafiSrc ? '<br><img src="'+cafiSrc+'" style="width:36px;height:36px;object-fit:contain;margin-top:4px;">' : '')
-    + '</div>'
-    + '</div>'
-    + '<div class="grid">'+gridContent+'</div>'
-    + '<div style="margin-top:14px;border-top:1px solid #ccc;padding-top:6px;display:flex;justify-content:space-between;align-items:center;">'
+    + '</div></div>'
+    + '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px;">'+gridContent+'</div>'
+    + '<div style="margin-top:60px;border-top:1px solid #ccc;padding-top:6px;display:flex;justify-content:space-between;align-items:center;">'
     + '<div style="font-size:8px;color:#aaa;">Municipalidad de Vicente L\u00f3pez \u2014 Temporada 2026</div>'
     + '<div style="font-size:10px;font-weight:800;color:#1e3a5f;letter-spacing:.05em;">CAFI 2026</div>'
     + '<div style="font-size:8px;color:#aaa;">Generado: '+fecha+'</div>'
-    + '</div>'
-    + '</div>'
-    + '<script>window.onload=function(){ window.print(); }<\/script>'
-    + '</body></html>';
+    + '</div>';
 
-  var win = window.open('', '_blank');
-  if (win) { win.document.write(html); win.document.close(); }
-  else { alert('Habilit\u00e1 las ventanas emergentes para generar el PDF.'); }
+  document.getElementById('listaContent').innerHTML = html;
+  document.getElementById('listaPrintInfo').textContent = esc(cur) + ' \u2014 ' + catTitulo + ' \u2014 ' + total + ' jugadores';
+  document.getElementById('listaScreen').style.display = 'block';
+  window.scrollTo(0,0);
 }
+
+function cerrarLista() {
+  document.getElementById('listaScreen').style.display = 'none';
+}
+
 
 function closeModal() { document.getElementById('overlay').classList.remove('open'); }
 
@@ -2263,6 +2254,18 @@ function imgError(el) {
 // \u2500\u2500 INIT \u2500\u2500 (login dispara loadData)
 // loadData se llama desde doLogin()
 </script>
+
+<!-- LISTA IMPRIMIBLE -->
+<div id="listaScreen" style="display:none; position:fixed; inset:0; z-index:8500; background:white; overflow-y:auto;">
+  <div id="listaContent" style="width:210mm; margin:0 auto; padding:10mm; font-family:Arial,sans-serif;"></div>
+  <div id="listaPrintBar" style="position:fixed; bottom:0; left:0; right:0; background:#1e3a5f; padding:12px 24px; display:flex; align-items:center; gap:12px; box-shadow:0 -4px 20px rgba(0,0,0,.3);">
+    <span style="font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:white;" id="listaPrintInfo"></span>
+    <div style="margin-left:auto; display:flex; gap:10px;">
+      <button onclick="window.print()" style="background:#22c55e; border:none; color:white; border-radius:6px; padding:10px 20px; font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; cursor:pointer;">ðŸ–¨ Imprimir / Guardar PDF</button>
+      <button onclick="cerrarLista()" style="background:rgba(255,255,255,.15); border:none; color:white; border-radius:6px; padding:10px 20px; font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; cursor:pointer;">âœ• Cerrar</button>
+    </div>
+  </div>
+</div>
 
 <!-- REPORT SCREEN -->
 <div id="reportScreen" style="display:none; position:fixed; inset:0; z-index:8000; background:var(--bg); overflow-y:auto; padding:20px;">
@@ -2380,7 +2383,7 @@ function imgError(el) {
   font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
   text-transform:uppercase;letter-spacing:.06em;
   color:rgba(255,255,255,.25);pointer-events:none;user-select:none;">
-  v2.1
+  v2.2
 </div>
 </body>
 </html>
