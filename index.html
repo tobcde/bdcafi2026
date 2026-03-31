@@ -349,6 +349,8 @@ body.readonly .obs-card-btn { display: none !important; }
 body.readonly #selBar { display: none !important; }
 body.readonly #estadoBar { display: none !important; }
 body.readonly .club-tabs-wrap { pointer-events: none; }
+body.readonly .img-link { display: none !important; }
+body.readonly a[target="_blank"] { pointer-events: none !important; color: var(--muted) !important; text-decoration: none !important; cursor: default !important; }
 </style>
 </head>
 <body>
@@ -447,20 +449,20 @@ body.readonly .club-tabs-wrap { pointer-events: none; }
 
 <script>
 
-// â”€â”€ LOGIN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// \u2500\u2500 LOGIN \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 var UH  = '08c140dd2326dc108f3dcd9dc4f1f7a28ce45526ae48afcd53c25d878a324699'; // cafi2026
 var PH  = '38497b0d0206bea858ba35c5e4f0ce22bb658676dea0103f2b5b188ad335859b'; // 20futbol26
 var UIH = 'dd8ca4bb0afa52abc9c30ea5dab2e71019c92e9bd8d2a25869aa66dcade65010'; // informe
 var PIH = 'e9496f98372e52644dde09a2b96ca3ee652f1ae73b425d70d5d55607d3ba7f9a'; // c4fiVt3Lop3z
 
-// â”€â”€ MODO CLUB (solo lectura via ?club=NombreClub) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// \u2500\u2500 MODO CLUB (solo lectura via ?club=NombreClub) \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 var _urlParams  = new URLSearchParams(window.location.search);
 var CLUB_MODE   = _urlParams.get('club') ? decodeURIComponent(_urlParams.get('club')) : null;
 var READONLY    = !!CLUB_MODE;
 var REPORT_MODE = false; // true = modo informe
 
 function sha256(str) {
-  // ImplementaciÃ³n simple de SHA-256 en JS puro
+  // Implementaci\u00f3n simple de SHA-256 en JS puro
   function rightRotate(value, amount) {
     return (value >>> amount) | (value << (32 - amount));
   }
@@ -527,14 +529,14 @@ function sha256(str) {
 }
 
 
-// â”€â”€ URLS EXTRA
+// \u2500\u2500 URLS EXTRA
 var DEL_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vROD3KC8278MhofGlbUdJN3hC1Syehmk_Dr9C6WL0PF32DoJjRZBK9qVd-FlPOInK0pjaHWOrrLRWqc/pub?gid=188066866&single=true&output=csv';
 var TEC_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vROD3KC8278MhofGlbUdJN3hC1Syehmk_Dr9C6WL0PF32DoJjRZBK9qVd-FlPOInK0pjaHWOrrLRWqc/pub?gid=502723740&single=true&output=csv';
 var DELEGADOS = [], TECNICOS = [];
-var TEC_CLUB = 'â–¶ TÃ‰CNICOS';
+var TEC_CLUB = '\u25b6 T\u00c9CNICOS';
 var DEL_CAT  = 'Delegados';
 
-// â”€â”€ isVL mejorado (texto truncado)
+// \u2500\u2500 isVL mejorado (texto truncado)
 var _origIsVL = isVL;
 function isVL(k) {
   if (!k) return false;
@@ -564,7 +566,7 @@ function isDomicilioLegible(texto) {
          d.indexOf('sin datos') < 0;
 }
 
-// â”€â”€ OVERRIDES (localStorage + Sheets JSONP)
+// \u2500\u2500 OVERRIDES (localStorage + Sheets JSONP)
 function getOverrides() { try { return JSON.parse(localStorage.getItem('cafi_overrides')||'{}'); } catch(e){ return {}; } }
 function saveLocalOverrides(ov) { try { localStorage.setItem('cafi_overrides', JSON.stringify(ov)); } catch(e){} }
 function applyOverrides(players) {
@@ -598,7 +600,7 @@ function loadOverridesFromSheets(callback) {
         Object.keys(res.vtos).forEach(function(d){vtos[d]=res.vtos[d];});
         try{localStorage.setItem('cafi_vtos',JSON.stringify(vtos));}catch(e){}
       }
-      // Guardar Ã­ndice de fotos si viene del Apps Script
+      // Guardar \u00edndice de fotos si viene del Apps Script
       if(res.fotos){
         try{localStorage.setItem('cafi_fotos',JSON.stringify(res.fotos));}catch(e){}
         window.FOTO_INDEX = res.fotos;
@@ -637,15 +639,15 @@ function clearOverride(dni,callback) {
 }
 function reloadOverrides() {
   var ind=document.getElementById('syncInd');
-  if(ind){ind.textContent='â†» Sync...';ind.style.color='var(--muted)';}
+  if(ind){ind.textContent='\u21bb Sync...';ind.style.color='var(--muted)';}
   loadOverridesFromSheets(function(ov){
     saveLocalOverrides(ov);applyOverrides(ALL);applyOverrides(DELEGADOS);renderAll();
-    if(ind){ind.textContent='âœ“ '+Object.keys(ov).length+' obs.';ind.style.color='var(--green)';
+    if(ind){ind.textContent='\u2713 '+Object.keys(ov).length+' obs.';ind.style.color='var(--green)';
       setTimeout(function(){if(ind)ind.textContent='';},3000);}
   });
 }
 
-// â”€â”€ OBS MODAL STATE
+// \u2500\u2500 OBS MODAL STATE
 var obsTarget=null, obsSelectedColor=null;
 function openObs(dni) {
   if(READONLY) return; // modo informe: sin acceso a obs
@@ -655,7 +657,7 @@ function openObs(dni) {
   if(!p)return;
   obsTarget=p; obsSelectedColor=p.color;
   document.getElementById('obsTitle').textContent=p.nombre;
-  document.getElementById('obsSub').textContent='DNI '+p.dni+' â€” '+(p.club||'');
+  document.getElementById('obsSub').textContent='DNI '+p.dni+' \u2014 '+(p.club||'');
   document.getElementById('obsText').value=p.obs||'';
   document.getElementById('obsSaveStatus').textContent='';
   document.querySelectorAll('.color-opt').forEach(function(el){el.classList.toggle('selected',el.getAttribute('data-color')===p.color);});
@@ -679,14 +681,14 @@ function saveObs() {
   if(obsTarget.dnis){
     var dnis=obsTarget.dnis,total=dnis.length,done=0;
     st.style.color='var(--muted)';
-    function next(i){if(i>=total){st.textContent='âœ“ '+total+' actualizados';st.style.color='var(--green)';btn.disabled=false;applyOverrides(ALL);applyOverrides(DELEGADOS);renderAll();clearSel();setTimeout(closeObs,1000);return;}
+    function next(i){if(i>=total){st.textContent='\u2713 '+total+' actualizados';st.style.color='var(--green)';btn.disabled=false;applyOverrides(ALL);applyOverrides(DELEGADOS);renderAll();clearSel();setTimeout(closeObs,1000);return;}
       st.textContent='Guardando '+(i+1)+' de '+total+'...';
       saveOverride(dnis[i],color,obs,function(){next(i+1);});}
     next(0);
   } else {
     st.textContent=SCRIPT_URL?'Guardando en Sheets...':'Guardando...'; st.style.color='var(--muted)';
     saveOverride(obsTarget.dni,color,obs,function(res){
-      st.textContent=(res&&res.ok&&!res.local)?'âœ“ Guardado en Sheets':(res&&res.ok?'âœ“ Guardado local':'âš  Solo local');
+      st.textContent=(res&&res.ok&&!res.local)?'\u2713 Guardado en Sheets':(res&&res.ok?'\u2713 Guardado local':'\u26a0 Solo local');
       st.style.color=(res&&res.ok)?'var(--green)':'var(--yellow)';
       btn.disabled=false; applyOverrides(ALL); applyOverrides(DELEGADOS); renderAll();
       setTimeout(closeObs,800);
@@ -699,11 +701,11 @@ function closeObs(){document.getElementById('obsOverlay').classList.remove('open
 
 
 
-// â”€â”€ ESTADO FILTER
+// \u2500\u2500 ESTADO FILTER
 var estadoFilter='all', fotoFilt='all', selectedDnis={}, searchTerm='';
 function setFotoFilt(v) {
   fotoFilt = v;
-  // Guard: si estadoFilter quedÃ³ null por click de otro listener, restaurar
+  // Guard: si estadoFilter qued\u00f3 null por click de otro listener, restaurar
   if(!estadoFilter) estadoFilter = 'all';
   ['fotoFiltAll','fotoFiltSi','fotoFiltNo'].forEach(function(id){
     var el=document.getElementById(id);
@@ -717,7 +719,7 @@ function setFotoFilt(v) {
 function initEstadoBar(){
   if(READONLY){ var eb=document.getElementById('estadoBar'); if(eb)eb.style.display='none'; return; }
   document.getElementById('estadoBar').querySelectorAll('.estado-btn').forEach(function(btn){
-    // Saltar botones de foto â€” solo bindear los de estado real
+    // Saltar botones de foto \u2014 solo bindear los de estado real
     var id = btn.id || '';
     if(id==='fotoFiltAll'||id==='fotoFiltSi'||id==='fotoFiltNo') return;
     if(!btn.getAttribute('data-estado')) return;
@@ -741,11 +743,11 @@ function updateCounts(){
   document.getElementById('ec-pink') && (document.getElementById('ec-pink').textContent=cnt.pink);
 }
 
-// â”€â”€ SELECTION
+// \u2500\u2500 SELECTION
 function toggleSel(dni){
   if(selectedDnis[dni]){delete selectedDnis[dni];}else{selectedDnis[dni]=true;}
   document.querySelectorAll('.chk[data-dni="'+dni+'"]').forEach(function(el){
-    el.textContent=selectedDnis[dni]?'âœ“':'';
+    el.textContent=selectedDnis[dni]?'\u2713':'';
     var card=el.closest('.card'); if(card)card.classList.toggle('selected',!!selectedDnis[dni]);
   });
   updateSelBar();
@@ -768,7 +770,7 @@ function openMassObs(){
   obsTarget={dni:'__mass__',dnis:dnis,nombre:dnis.length+' jugadores',color:'green',obs:'',obsHistory:[]};
   obsSelectedColor='green';
   document.getElementById('obsTitle').textContent=dnis.length+' jugadores';
-  document.getElementById('obsSub').textContent=names.slice(0,3).join(', ')+(names.length>3?' y '+(names.length-3)+' mÃ¡s':'');
+  document.getElementById('obsSub').textContent=names.slice(0,3).join(', ')+(names.length>3?' y '+(names.length-3)+' m\u00e1s':'');
   document.getElementById('obsText').value='';
   document.getElementById('obsSaveStatus').textContent='';
   document.getElementById('obsHistoryWrap').style.display='none';
@@ -777,7 +779,7 @@ function openMassObs(){
   setTimeout(function(){document.getElementById('obsText').focus();},100);
 }
 
-// â”€â”€ DELEGADOS / TECNICOS loaders
+// \u2500\u2500 DELEGADOS / TECNICOS loaders
 function loadDelegados(cb){
   var urls=[DEL_URL,
     'https://corsproxy.io/?'+encodeURIComponent(DEL_URL),
@@ -818,19 +820,19 @@ function loadTecnicos(cb){
           nacimiento:(r[4]||'').trim(),foto_carnet:(r[5]||'').trim(),
           foto_frente:(r[6]||'').trim(),foto_dorso:(r[7]||'').trim(),
           foto_principal:(r[8]||'').trim(),
-          club:TEC_CLUB,categoria:'TÃ©cnicos',color:'blue',overridden:false,obs:'',obsHistory:[]});
+          club:TEC_CLUB,categoria:'T\u00e9cnicos',color:'blue',overridden:false,obs:'',obsHistory:[]});
       }
       if(cb)cb();
     }).catch(function(){tryNext(i+1);});}
   tryNext(0);
 }
 
-// â”€â”€ CARD RENDERERS for delegados/tecnicos
+// \u2500\u2500 CARD RENDERERS for delegados/tecnicos
 function renderTecnicoCard(p,i){
   var thumb=driveThumb(p.foto_principal)||driveThumb(p.foto_frente);
   var photo=thumb?'<img src="'+esc(thumb)+'" loading="lazy" onerror="photoError(this)">':'<div class="photo-placeholder"><div class="photo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><span class="photo-lbl">Sin foto</span></div>';
   return '<div class="card-tec" data-idx="'+i+'">'
-    +'<span class="tec-badge">TÃ©cnico</span>'
+    +'<span class="tec-badge">T\u00e9cnico</span>'
     +'<div class="tec-photo">'+photo+'</div>'
     +'<div class="tec-info">'
       +'<div class="tec-name">'+esc(p.nombre)+'</div>'
@@ -857,12 +859,12 @@ function renderDelegadoCard(p,i){
   +'</div>';
 }
 
-// â”€â”€ MODALS for delegados/tecnicos
+// \u2500\u2500 MODALS for delegados/tecnicos
 function openTecnicoModal(p){
   document.getElementById('mname').textContent=p.nombre;
-  document.getElementById('mbadge').innerHTML='<span class="badge" style="background:rgba(59,130,246,.15);color:var(--accent);border:1px solid rgba(59,130,246,.4)">TÃ©cnico</span>';
-  var h='<div class="msec"><div class="msec-t">Datos del tÃ©cnico</div>'
-    +row('DNI',p.dni)+row('Fecha de nacimiento',p.nacimiento||'â€”')+(p.matricula?row('N\u00b0 Matr\u00edcula',p.matricula):'')+'</div>';
+  document.getElementById('mbadge').innerHTML='<span class="badge" style="background:rgba(59,130,246,.15);color:var(--accent);border:1px solid rgba(59,130,246,.4)">T\u00e9cnico</span>';
+  var h='<div class="msec"><div class="msec-t">Datos del t\u00e9cnico</div>'
+    +row('DNI',p.dni)+row('Fecha de nacimiento',p.nacimiento||'\u2014')+(p.matricula?row('N\u00b0 Matr\u00edcula',p.matricula):'')+'</div>';
   var hasPr=!!(p.foto_principal&&p.foto_principal.trim()),hasFr=!!(p.foto_frente&&p.foto_frente.trim()),hasDo=!!(p.foto_dorso&&p.foto_dorso.trim()),hasCar=!!(p.foto_carnet&&p.foto_carnet.trim());
   h+='<div class="msec"><div class="msec-t">Documentaci\u00f3n</div>';
   h+='<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">';
@@ -892,11 +894,11 @@ function openTecnicoModal(p){
 }
 function openDelegadoModal(p){
   document.getElementById('mname').textContent=p.nombre;
-  document.getElementById('mbadge').innerHTML='<span class="badge" style="background:rgba(168,85,247,.15);color:#a855f7;border:1px solid rgba(168,85,247,.4)">Delegado â€” '+esc(p.club)+'</span>';
+  document.getElementById('mbadge').innerHTML='<span class="badge" style="background:rgba(168,85,247,.15);color:#a855f7;border:1px solid rgba(168,85,247,.4)">Delegado \u2014 '+esc(p.club)+'</span>';
   var h='<div class="msec"><div class="msec-t">Datos del delegado</div>'
-    +row('DNI',p.dni)+row('Fecha de nacimiento',p.nacimiento||'â€”')
-    +row('TelÃ©fono',p.telefono||'â€”')+row('Email',p.email||'â€”')+row('Club',p.club)
-    +row('Domicilio',[p.calle,p.numero].filter(Boolean).join(' ')+(p.localidad?' â€” '+p.localidad:''))
+    +row('DNI',p.dni)+row('Fecha de nacimiento',p.nacimiento||'\u2014')
+    +row('Tel\u00e9fono',p.telefono||'\u2014')+row('Email',p.email||'\u2014')+row('Club',p.club)
+    +row('Domicilio',[p.calle,p.numero].filter(Boolean).join(' ')+(p.localidad?' \u2014 '+p.localidad:''))
     +'</div>';
   var hasFr=!!(p.foto_frente&&p.foto_frente!=='No encontrado'&&p.foto_frente.trim());
   var hasDo=!!(p.foto_dorso&&p.foto_dorso!=='No encontrado'&&p.foto_dorso.trim());
@@ -916,7 +918,7 @@ function openDelegadoModal(p){
   document.getElementById('overlay').classList.add('open');
 }
 
-// â”€â”€ SEARCH
+// \u2500\u2500 SEARCH
 function searchGlobal(term){
   var t=term.toLowerCase();
   var found=ALL.concat(DELEGADOS).concat(TECNICOS).filter(function(p){
@@ -948,7 +950,7 @@ function doLogin() {
       adminEls.forEach(function(el){ el.style.display='none'; });
       var ls = document.getElementById('logoSub');
       if (ls) ls.textContent = CLUB_MODE;
-      // Mostrar reportes DESPUÃ‰S de ocultar admin-only
+      // Mostrar reportes DESPU\u00c9S de ocultar admin-only
       var rb=document.getElementById('reportBtn');
       if(rb){ rb.style.display='inline-flex'; rb.style.setProperty('display','inline-flex','important'); }
       loadData();
@@ -962,12 +964,12 @@ function doLogin() {
 
   // Login normal (sin ?club=)
   if (hu === UH && hp === PH) {
-    // Admin â€” acceso completo
+    // Admin \u2014 acceso completo
     document.getElementById('loginScreen').style.display = 'none';
     var rb=document.getElementById('reportBtn'); if(rb) rb.style.display='inline-flex';
     loadData();
   } else if (hu === UIH && hp === PIH) {
-    // Informe â€” solo lectura + reportes
+    // Informe \u2014 solo lectura + reportes
     REPORT_MODE = true;
     READONLY = true;
     document.body.classList.add('readonly');
@@ -983,7 +985,7 @@ function doLogin() {
 
 document.addEventListener('DOMContentLoaded', function() {
   // Si modo club: ocultar login y cargar directo
-  // Login listeners â€” siempre, en cualquier modo
+  // Login listeners \u2014 siempre, en cualquier modo
   document.getElementById('loginBtn').addEventListener('click', doLogin);
   document.getElementById('loginPwd').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') doLogin();
@@ -1024,27 +1026,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-// â”€â”€ CONFIG â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// \u2500\u2500 CONFIG \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 var SHEET_ID = '1T9inNuk44hxJdzHwfoOVSj9cSq68kr48t9g9M_JwQZs';
 var FOTO_FOLDER_ID = '1ybxtj0RFw8mBkIkCfwA8yMuCra0ILha0'; // carpeta fotos 2026
 var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby7vs8GeB_kHWTQrD2Y6LXa-JoUo8FzrANd48jsOpdNeQh-nFa46FJqQ0UMdzkre1_n/exec';
 
-var ART23_TEXT = 'ARTÃCULO 23 â€” Zonas limÃ­trofes habilitadas\n\nCAPITAL FEDERAL\n1. Desde Av. Gral. Paz hasta Crisologo Larralde (entre RÃ­o de la Plata y GalvÃ¡n)\n2. Desde Crisologo Larralde y GalvÃ¡n hasta JosÃ© P. Tamborini\n3. Desde Av. Gral. Paz hasta Ezeiza (entre Av. Constituyentes y Av. Gral. Paz)\n\nSAN MARTÃN\n1. Desde Av. De Los Constituyentes hasta Guillermo Hudson (entre M. Campos y Av. Gral. Paz)\n2. Desde Av. De Los Constituyentes hasta Catamarca (entre M. Campos y Entre RÃ­os)\n3. Desde A. Alcorta hasta Catamarca (entre Entre RÃ­os y Alvear)\n4. Desde A. Alcorta hasta Libertad (entre Alvear y M. Moreno)\n5. Desde Amancio Alcorta hasta Libertad (entre Mariano Moreno y Zeballos)\n\nSAN ISIDRO (incluye Villa Adelina)\n1. Desde ParanÃ¡ hasta Perito Moreno (entre Av. Panamericana y Yerbal)\n2. Desde ParanÃ¡ hasta Boedo (entre Yerbal y Amancio Alcorta)\n3. Desde ParanÃ¡ hasta HipÃ³lito Irigoyen (entre Av. Panamericana y Av. Sta. Fe)\n4. Desde ParanÃ¡ hasta Gral. Alvear (entre Av. Sta. Fe y el RÃ­o de la Plata)';
+var ART23_TEXT = 'ART\u00cdCULO 23 \u2014 Zonas lim\u00edtrofes habilitadas\n\nCAPITAL FEDERAL\n1. Desde Av. Gral. Paz hasta Crisologo Larralde (entre R\u00edo de la Plata y Galv\u00e1n)\n2. Desde Crisologo Larralde y Galv\u00e1n hasta Jos\u00e9 P. Tamborini\n3. Desde Av. Gral. Paz hasta Ezeiza (entre Av. Constituyentes y Av. Gral. Paz)\n\nSAN MART\u00cdN\n1. Desde Av. De Los Constituyentes hasta Guillermo Hudson (entre M. Campos y Av. Gral. Paz)\n2. Desde Av. De Los Constituyentes hasta Catamarca (entre M. Campos y Entre R\u00edos)\n3. Desde A. Alcorta hasta Catamarca (entre Entre R\u00edos y Alvear)\n4. Desde A. Alcorta hasta Libertad (entre Alvear y M. Moreno)\n5. Desde Amancio Alcorta hasta Libertad (entre Mariano Moreno y Zeballos)\n\nSAN ISIDRO (incluye Villa Adelina)\n1. Desde Paran\u00e1 hasta Perito Moreno (entre Av. Panamericana y Yerbal)\n2. Desde Paran\u00e1 hasta Boedo (entre Yerbal y Amancio Alcorta)\n3. Desde Paran\u00e1 hasta Hip\u00f3lito Irigoyen (entre Av. Panamericana y Av. Sta. Fe)\n4. Desde Paran\u00e1 hasta Gral. Alvear (entre Av. Sta. Fe y el R\u00edo de la Plata)';
 
 var LABELS = {
-  green:      'Vive en Vicente LÃ³pez Â· Domicilios coinciden',
-  lightgreen: 'DirecciÃ³n distinta Â· DNI en Vicente LÃ³pez',
-  yellow:     'A analizar â€” Domicilios no concluyentes',
-  orange:     'A analizar â€” Zona limÃ­trofe',
-  red:        'Extranjero â€” Fuera de Vicente LÃ³pez y limÃ­trofes',
+  green:      'Vive en Vicente L\u00f3pez \u00b7 Domicilios coinciden',
+  lightgreen: 'Direcci\u00f3n distinta \u00b7 DNI en Vicente L\u00f3pez',
+  yellow:     'A analizar \u2014 Domicilios no concluyentes',
+  orange:     'A analizar \u2014 Zona lim\u00edtrofe',
+  red:        'Extranjero \u2014 Fuera de Vicente L\u00f3pez y lim\u00edtrofes',
   gray:       'Sin datos de DNI',
-  pink:       'Sin domicilio legible â€” Revisar manualmente'
+  pink:       'Sin domicilio legible \u2014 Revisar manualmente'
 };
 
 var VL_LOCS = ['carapachay','florida oeste','florida','la lucila','munro',
                'olivos','vicente lopez','villa adelina','villa martelli'];
 var VL_PART = ['vte lopez','vte. lopez','v.lopez','v. lopez','vte.lopez'];
-// Partidos/barrios limÃ­trofes a Vicente LÃ³pez (no son VL pero tampoco extranjeros)
+// Partidos/barrios lim\u00edtrofes a Vicente L\u00f3pez (no son VL pero tampoco extranjeros)
 var LIMITROFES = [
   'martinez','villa adelina',
   'villa ballester','villa concepcion','villa loyola','villa maipu','villa maipo',
@@ -1055,10 +1057,10 @@ var LIMITROFES = [
 ];
 var CATS    = ['2013','2014','2015','2016','2017','2018','2019/20'];
 
-// â”€â”€ STATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// \u2500\u2500 STATE \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 var ALL = [], CLUBS = [], cur = '', cat = null, filtered = [], lastUpdate = '';
 
-// â”€â”€ UTILS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// \u2500\u2500 UTILS \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 function norm(s) {
   if (!s) return '';
   s = String(s).toLowerCase().trim();
@@ -1066,16 +1068,16 @@ function norm(s) {
 }
 
 function fotoJugadorUrl(numFoto) {
-  // numFoto = "4501" â†’ busca 100_4501.JPG en la carpeta de fotos
+  // numFoto = "4501" \u2192 busca 100_4501.JPG en la carpeta de fotos
   if (!numFoto || !numFoto.toString().trim()) return null;
   var n = numFoto.toString().trim().replace(/[^0-9]/g,'');
   if (!n) return null;
   // Construir nombre del archivo: 100_XXXX.JPG
   var nombre = '100_' + n + '.JPG';
-  // URL de bÃºsqueda en la carpeta de Drive
+  // URL de b\u00fasqueda en la carpeta de Drive
   // Usamos el thumbnail directo: necesitamos el file ID
-  // Como no tenemos el ID directamente, usamos la URL de bÃºsqueda en carpeta
-  // La foto se sirve como thumbnail via query de nombre en la carpeta pÃºblica
+  // Como no tenemos el ID directamente, usamos la URL de b\u00fasqueda en carpeta
+  // La foto se sirve como thumbnail via query de nombre en la carpeta p\u00fablica
   return 'https://drive.google.com/thumbnail?id=' + n + '&sz=w300'; // fallback
 }
 
@@ -1084,9 +1086,9 @@ function fotoJugadorThumb(numFoto) {
   if (!numFoto || !numFoto.toString().trim()) return null;
   var n = numFoto.toString().trim().replace(/[^0-9]/g,'');
   if (!n) return null;
-  // El archivo se llama 100_XXXX.JPG y estÃ¡ en la carpeta
+  // El archivo se llama 100_XXXX.JPG y est\u00e1 en la carpeta
   // Usamos la URL directa de Drive con el nombre del archivo
-  // Como las fotos estÃ¡n compartidas pÃºblicamente en la carpeta:
+  // Como las fotos est\u00e1n compartidas p\u00fablicamente en la carpeta:
   var filename = '100_' + n + '.JPG';
   // Search URL via folder
   return '_foto_' + filename; // marcador, se resuelve via API
@@ -1141,7 +1143,7 @@ function addrMatch(calle, k) {
 }
 
 function parseFechaVto(fecha_vto) {
-  // Parsea mÃºltiples formatos:
+  // Parsea m\u00faltiples formatos:
   // dd/mm/yyyy, yyyy-mm-dd, "Thu Jun 29 2028 00:00:00 GMT...", "21092031" (sin separadores)
   if (!fecha_vto || !fecha_vto.trim()) return null;
   var f = fecha_vto.trim();
@@ -1182,7 +1184,7 @@ function syncAllVtosToSheets() {
   var vtos = {};
   try { vtos = JSON.parse(localStorage.getItem('cafi_vtos') || '{}'); } catch(e) {}
   var dnis = Object.keys(vtos);
-  if (!dnis.length) { alert('No hay fechas de vto en cachÃ© local para sincronizar'); return; }
+  if (!dnis.length) { alert('No hay fechas de vto en cach\u00e9 local para sincronizar'); return; }
 
   var total = dnis.length, done = 0, errors = 0;
   var btn = document.getElementById('syncVtoBtn');
@@ -1242,7 +1244,7 @@ function saveVto(dni) {
     var p = val.split('-');
     if (p.length === 3) display = p[2] + '/' + p[1] + '/' + p[0];
   }
-  status.textContent = 'Guardandoâ€¦';
+  status.textContent = 'Guardando\u2026';
   status.style.color = 'var(--muted)';
 
   // Guardar en localStorage inmediatamente
@@ -1262,7 +1264,7 @@ function saveVto(dni) {
     window[cb] = function(res) {
       clearTimeout(t); window[cb] = null;
       if (res && res.ok) {
-        status.textContent = 'âœ“ Guardado';
+        status.textContent = '\u2713 Guardado';
         status.style.color = 'var(--green)';
       } else {
         status.textContent = 'Guardado local';
@@ -1275,7 +1277,7 @@ function saveVto(dni) {
     s.onerror = function(){ clearTimeout(t); window[cb]=null; status.textContent='Guardado local'; status.style.color='var(--yellow)'; };
     document.head.appendChild(s);
   } else {
-    status.textContent = 'âœ“ Guardado local';
+    status.textContent = '\u2713 Guardado local';
     status.style.color = 'var(--green)';
     setTimeout(function(){ if(status) status.textContent=''; }, 3000);
   }
@@ -1299,7 +1301,7 @@ function addrMatchFuzzy(calle, numero, datos_dni) {
   }
 
   // Nivel 3 (typos graves como bencalada/blanco encalada):
-  // Si tenemos nÃºmero Y al menos 4 chars seguidos de la calle aparecen en DNI
+  // Si tenemos n\u00famero Y al menos 4 chars seguidos de la calle aparecen en DNI
   if (!calleOk && numero && numero.trim()) {
     var n = numero.replace(/[^0-9]/g,'');
     if (n.length >= 2 && d.indexOf(n) >= 0) {
@@ -1314,7 +1316,7 @@ function addrMatchFuzzy(calle, numero, datos_dni) {
 
   if (!calleOk) return false;
 
-  // Verificar nÃºmero si estÃ¡ disponible
+  // Verificar n\u00famero si est\u00e1 disponible
   if (numero && numero.trim()) {
     var n = numero.replace(/[^0-9]/g,'');
     if (n.length >= 2) return d.indexOf(n) >= 0;
@@ -1337,20 +1339,20 @@ function classify(calle, datos_dni, localidad_decl, partido_decl, numero) {
 
   // VERDE: ambos en VL (aunque no coincidan las calles)
   if (vlDni && vlDecl) return 'green';
-  // VERDE: calle+nÃºmero coinciden Y al menos uno estÃ¡ en VL
+  // VERDE: calle+n\u00famero coinciden Y al menos uno est\u00e1 en VL
   var calleCoincide = addrMatchFuzzy(calle, numero, datos_dni);
   if (calleCoincide && (vlDni || vlDecl)) return 'green';
 
-  // Para rojo: ambos domicilios legibles y ambos fuera de VL y limÃ­trofes
+  // Para rojo: ambos domicilios legibles y ambos fuera de VL y lim\u00edtrofes
   var limDni  = dniLegible  ? isLimitrofe(datos_dni)  : false;
   var limDecl = declLegible ? isLimitrofe(decl_texto) : false;
   var extDni  = dniLegible  && !vlDni  && !limDni;
   var extDecl = declLegible && !vlDecl && !limDecl;
 
-  // ROJO: ambos fuera de VL y limÃ­trofes
+  // ROJO: ambos fuera de VL y lim\u00edtrofes
   if (dniLegible && declLegible && extDni && extDecl) return 'red';
 
-  // AMARILLO: todo lo demÃ¡s
+  // AMARILLO: todo lo dem\u00e1s
   return 'yellow';
 }
 
@@ -1359,7 +1361,7 @@ function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// â”€â”€ CSV PARSER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// \u2500\u2500 CSV PARSER \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 function parseCSV(text) {
   var rows = [], re = /("(?:[^"]|"")*"|[^,\n\r]*)/g, cur = [], cell = '';
   var lines = text.split(/\r?\n/);
@@ -1387,21 +1389,21 @@ function parseCSV(text) {
   return rows;
 }
 
-// â”€â”€ LOAD DATA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// \u2500\u2500 LOAD DATA \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 function loadData() {
   document.getElementById('mainContent').innerHTML =
-    '<div class="fullscreen-msg"><div class="spinner"></div><div class="msg-title">Cargando datosâ€¦</div></div>';
+    '<div class="fullscreen-msg"><div class="spinner"></div><div class="msg-title">Cargando datos\u2026</div></div>';
   document.getElementById('clubTabs').innerHTML = '';
-  document.getElementById('catBar').innerHTML = '<span class="cat-label">CategorÃ­a:</span>';
+  document.getElementById('catBar').innerHTML = '<span class="cat-label">Categor\u00eda:</span>';
   document.getElementById('stats').innerHTML = '';
 
   var CSV_PUB = 'https://docs.google.com/spreadsheets/d/1T9inNuk44hxJdzHwfoOVSj9cSq68kr48t9g9M_JwQZs/export?format=csv&gid=0';
   function tryFetch(urls, i) {
-    if (i >= urls.length) { showError('No se pudo cargar la hoja. VerificÃ¡ tu conexiÃ³n.'); return; }
+    if (i >= urls.length) { showError('No se pudo cargar la hoja. Verific\u00e1 tu conexi\u00f3n.'); return; }
     fetch(urls[i], { cache: 'no-store' })
       .then(function(r){ if (!r.ok) throw new Error('HTTP '+r.status); return r.text(); })
       .then(function(text){
-        if (!text || text.trim().length < 20) throw new Error('VacÃ­o');
+        if (!text || text.trim().length < 20) throw new Error('Vac\u00edo');
         var rows = parseCSV(text);
         if (rows.length < 2) throw new Error('Sin datos');
         processDataRows(rows);
@@ -1439,39 +1441,39 @@ function processDataRows(rows) {
     var r = rows[i];
     // Nueva hoja: 1T9inNuk44hxJdzHwfoOVSj9cSq68kr48t9g9M_JwQZs
     var nombre    = ((r[28]||'').trim() + ' ' + (r[27]||'').trim()).trim(); // AC nombre + AB apellido
-    var nombre_ocr = (r[28]||'').trim();   // AC â€” Nombre OCR
-    var apellido_ocr = (r[27]||'').trim(); // AB â€” Apellido OCR
-    var dni       = (r[2]  || '').trim();  // C â€” DNI
-    var naciStr   = (r[3]  || '').trim();  // D â€” Fecha nac
-    var fotoFr    = (r[4]  || '').trim();  // E â€” Foto frente DNI
-    var fotoDo    = (r[5]  || '').trim();  // F â€” Foto dorso DNI
+    var nombre_ocr = (r[28]||'').trim();   // AC \u2014 Nombre OCR
+    var apellido_ocr = (r[27]||'').trim(); // AB \u2014 Apellido OCR
+    var dni       = (r[2]  || '').trim();  // C \u2014 DNI
+    var naciStr   = (r[3]  || '').trim();  // D \u2014 Fecha nac
+    var fotoFr    = (r[4]  || '').trim();  // E \u2014 Foto frente DNI
+    var fotoDo    = (r[5]  || '').trim();  // F \u2014 Foto dorso DNI
     var calle     = (r[6]  || '').trim();  // G
     var numero    = (r[7]  || '').trim();  // H
     var piso      = (r[8]  || '').trim();  // I
     var localidad = (r[9]  || '').trim();  // J
     var partido   = (r[10] || '').trim();  // K
     var provincia = (r[11] || '').trim();  // L
-    var club      = (r[14] || '').trim();  // O â€” InstituciÃ³n
-    var categoria = (r[15] || '').trim();  // P â€” CategorÃ­a
-    var datos_dni = (r[20] || '').trim();  // U â€” DirecciÃ³n DNI (texto OCR domicilio)
-    var apto      = (r[24] || '').trim();  // Y â€” Apto FÃ­sico
-    var num_foto  = (r[31] || '').trim();  // AF â€” NÃºmero de foto jugador
-    var foto_id   = (r[36] || '').trim();  // AK â€” File ID de foto jugador (escrito por Apps Script)
-    var fecha_vto = (r[34] || '').trim();  // AI â€” Fecha vto DNI
-    var obs_sheet = (r[35] || '').trim();  // AJ â€” Observaciones
+    var club      = (r[14] || '').trim();  // O \u2014 Instituci\u00f3n
+    var categoria = (r[15] || '').trim();  // P \u2014 Categor\u00eda
+    var datos_dni = (r[20] || '').trim();  // U \u2014 Direcci\u00f3n DNI (texto OCR domicilio)
+    var apto      = (r[24] || '').trim();  // Y \u2014 Apto F\u00edsico
+    var num_foto  = (r[31] || '').trim();  // AF \u2014 N\u00famero de foto jugador
+    var foto_id   = (r[36] || '').trim();  // AK \u2014 File ID de foto jugador (escrito por Apps Script)
+    var fecha_vto = (r[34] || '').trim();  // AI \u2014 Fecha vto DNI
+    var obs_sheet = (r[35] || '').trim();  // AJ \u2014 Observaciones
     // Fallback nombre: si no hay OCR, usar col B original
     if (!nombre.trim() || nombre.trim() === ' ') nombre = (r[1]||'').trim();
 
-    // Filtrar filas vÃ¡lidas
+    // Filtrar filas v\u00e1lidas
     if (!dni || !club || !categoria) continue;
-    // Filtrar clubs invÃ¡lidos: emails, muy cortos, o que son categorÃ­as
+    // Filtrar clubs inv\u00e1lidos: emails, muy cortos, o que son categor\u00edas
     if (club.indexOf('@') >= 0) continue;  // emails
     if (club.length < 4) continue;          // muy corto
-    if (['2013','2014','2015','2016','2017','2018','2019/20'].indexOf(club) >= 0) continue; // categorÃ­as en col club
-    // Filtrar DNI no numÃ©rico
+    if (['2013','2014','2015','2016','2017','2018','2019/20'].indexOf(club) >= 0) continue; // categor\u00edas en col club
+    // Filtrar DNI no num\u00e9rico
     var dniNum = parseFloat(dni.replace(/[-. ]/g,''));
     if (isNaN(dniNum)) continue;
-    // Deduplicar por DNI â€” si ya fue cargado, saltar
+    // Deduplicar por DNI \u2014 si ya fue cargado, saltar
     var dniKey = String(Math.round(dniNum));
     if (_seen[dniKey]) continue;
     _seen[dniKey] = true;
@@ -1479,7 +1481,7 @@ function processDataRows(rows) {
     var color = classify(calle, datos_dni, localidad, partido, numero);
     var hasApto = apto && apto !== 'No encontrado' && apto.trim() !== '';
 
-    // URL de foto de jugador: usar foto_id (col AK) si existe, sino buscar en Ã­ndice
+    // URL de foto de jugador: usar foto_id (col AK) si existe, sino buscar en \u00edndice
     var _fotoFileId = foto_id || (function(){
       if (!num_foto) return null;
       var n = num_foto.replace(/[^0-9]/g,'');
@@ -1531,12 +1533,12 @@ function processDataRows(rows) {
       applyOverrides(DELEGADOS);
       buildTabs();
       update();
-      // En modo informe: abrir reportes automÃ¡ticamente
+      // En modo informe: abrir reportes autom\u00e1ticamente
       if (REPORT_MODE) {
         toggleReport();
       }
       var si=document.getElementById('syncInd');
-      if(si&&SCRIPT_URL){var n=Object.keys(ov).length;si.textContent=n>0?'âœ“ '+n+' obs.':'';si.style.color='var(--green)';setTimeout(function(){if(si)si.textContent='';},3000);}
+      if(si&&SCRIPT_URL){var n=Object.keys(ov).length;si.textContent=n>0?'\u2713 '+n+' obs.':'';si.style.color='var(--green)';setTimeout(function(){if(si)si.textContent='';},3000);}
     });
   }
   function _safeLoad(fn){ try{ fn(_onDone); }catch(e){ _onDone(); } }
@@ -1552,7 +1554,7 @@ function processDataRows(rows) {
   renderAll();
 }
 
-// â”€â”€ UI â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// \u2500\u2500 UI \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 function buildTabs() {
   var allClubs=CLUBS.slice();
   DELEGADOS.forEach(function(d){if(allClubs.indexOf(d.club)<0)allClubs.push(d.club);});
@@ -1592,7 +1594,7 @@ function update() {
   av.forEach(function(c){
     h += '<button class="cat-btn' + (cat===c?' active':'') + '" data-cat="' + encodeURIComponent(c) + '">' + esc(c) + '</button>';
   });
-  // Agregar botÃ³n Delegados si hay para este club
+  // Agregar bot\u00f3n Delegados si hay para este club
   var hasDel = DELEGADOS.some(function(d){return d.club===cur;});
   if(hasDel){
     h += '<button class="cat-btn del-btn' + (cat===DEL_CAT?' active':'') + '" data-cat="' + encodeURIComponent(DEL_CAT) + '">Delegados</button>';
@@ -1646,7 +1648,7 @@ function renderAll() {
   updateCounts();
 }
 
-// â”€â”€ REPORTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// \u2500\u2500 REPORTES \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 var _reportSort = {col:'nombre', asc:true};
 
 function toggleReport() {
@@ -1746,7 +1748,7 @@ function renderReport() {
     rows += '<tr class="report-row" style="border-bottom:1px solid rgba(255,255,255,.04);'+bg+'">' +
       '<td style="padding:8px 12px; color:var(--text);">'+esc(p.nombre)+'</td>'+
       '<td style="padding:8px 12px; color:var(--muted); font-family:monospace;">'+esc(p.dni)+'</td>'+
-      '<td style="padding:8px 12px; color:var(--muted);">'+esc(p.nacimiento||'â€”')+'</td>'+
+      '<td style="padding:8px 12px; color:var(--muted);">'+esc(p.nacimiento||'\u2014')+'</td>'+
       '<td style="padding:8px 12px; text-align:center;"><span style="background:rgba(59,130,246,.15);color:var(--accent);border-radius:4px;padding:1px 6px;font-size:11px;font-weight:700;">'+esc(p.categoria)+'</span></td>'+
       '<td style="padding:8px 12px; color:var(--text); font-size:11px; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">'+esc(p.club)+'</td>'+
       '<td style="padding:8px 12px; text-align:center;">'+(colorDot[p.color]||'<span style="color:var(--muted);">?</span>')+'</td>'+
@@ -1766,36 +1768,62 @@ function clearReportFilters() {
   renderReport();
 }
 
-function exportCSV() {
+function exportXLSX() {
   var data = getReportData();
   var dniLabel = {ok:'Vigente', warn:'Vencido', white:'Sin fecha', no:'Sin foto'};
-  var colorLabel = {green:'VL Verde', yellow:'A analizar', red:'Extranjero', pink:'Sin domicilio'};
-  var headers = ['Nombre','DNI','Fecha Nac','Categoria','Club','Domicilio','Estado DNI','Apto Fisico'];
-  var rows = [headers];
-  data.forEach(function(p) {
-    var hasFoto = !!(p.foto_frente && p.foto_frente !== 'No encontrado' && p.foto_frente.trim() !== '');
-    var dv = dniVtoColor(p.fecha_vto, hasFoto);
-    rows.push([
-      p.nombre, p.dni, p.nacimiento||'', p.categoria, p.club,
-      colorLabel[p.color]||p.color,
-      dniLabel[dv]||dv,
-      p.has_apto ? 'Si' : 'No'
-    ]);
-  });
-  var csv = rows.map(function(r){
-    return r.map(function(cell){
-      var s = String(cell||'').replace(/"/g,'""');
-      return s.indexOf(',')>=0||s.indexOf('"')>=0||s.indexOf('\n')>=0 ? '"'+s+'"' : s;
-    }).join(',');
-  }).join('\n');
+  var colorLabel = {green:'VL â€” Coincide', yellow:'A analizar', red:'Extranjero', pink:'Sin domicilio'};
 
-  // BOM para Excel con UTF-8
-  var blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url; a.download = 'cafi2026_reporte.csv';
-  document.body.appendChild(a); a.click();
-  document.body.removeChild(a); URL.revokeObjectURL(url);
+  // Cargar SheetJS si no estÃ¡ cargado
+  function doExport() {
+    var XLSX = window.XLSX;
+    var wb = XLSX.utils.book_new();
+
+    // Armar rows con encabezados y datos
+    var wsData = [
+      ['Apellido y Nombre','DNI','Fecha Nac','CategorÃ­a','Club','Estado Domicilio','DNI Vto.','Apto FÃ­sico']
+    ];
+    data.forEach(function(p) {
+      var hasFoto = !!(p.foto_frente && p.foto_frente !== 'No encontrado' && p.foto_frente.trim() !== '');
+      var dv = dniVtoColor(p.fecha_vto, hasFoto);
+      wsData.push([
+        p.nombre,
+        p.dni,
+        p.nacimiento || '',
+        p.categoria,
+        p.club,
+        colorLabel[p.color] || p.color,
+        dniLabel[dv] || dv,
+        p.has_apto ? 'SÃ­' : 'No'
+      ]);
+    });
+
+    var ws = XLSX.utils.aoa_to_sheet(wsData);
+
+    // Ancho de columnas
+    ws['!cols'] = [
+      {wch:35}, // Nombre
+      {wch:12}, // DNI
+      {wch:12}, // Fecha Nac
+      {wch:10}, // Cat
+      {wch:40}, // Club
+      {wch:20}, // Estado
+      {wch:12}, // DNI Vto
+      {wch:12}, // Apto
+    ];
+
+    XLSX.utils.book_append_sheet(wb, ws, 'Jugadores');
+    XLSX.writeFile(wb, 'CAFI2026_Reporte.xlsx');
+  }
+
+  if (window.XLSX) {
+    doExport();
+  } else {
+    var s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    s.onload = doExport;
+    s.onerror = function(){ alert('No se pudo cargar el exportador. VerificÃ¡ tu conexiÃ³n.'); };
+    document.head.appendChild(s);
+  }
 }
 
 
@@ -1833,7 +1861,7 @@ function renderGrid() {
     var hasDni = !!(p.foto_frente && p.foto_frente !== 'No encontrado' && p.foto_frente.trim() !== '');
     var hasAp  = !!p.has_apto;
 
-    // Foto â€” onerror usa funciÃ³n global para evitar problemas de comillas
+    // Foto \u2014 onerror usa funci\u00f3n global para evitar problemas de comillas
     var photoInner;
     if (thumb) {
       photoInner = '<img src="' + esc(thumb) + '" loading="lazy" onerror="photoError(this)">';
@@ -1844,7 +1872,7 @@ function renderGrid() {
         '</div><span class="photo-lbl">Sin foto</span></div>';
     }
 
-    // DirecciÃ³n declarada
+    // Direcci\u00f3n declarada
     var addrForm = [p.calle, p.numero].filter(Boolean).join(' ');
     if (p.localidad) addrForm += ' \u2014 ' + p.localidad;
 
@@ -1950,7 +1978,7 @@ function openModal(i) {
     '</div>';
   }
 
-  // DocumentaciÃ³n
+  // Documentaci\u00f3n
   var hasFr = !!(p.foto_frente && p.foto_frente !== 'No encontrado' && p.foto_frente.trim() !== '');
   var hasDo = !!(p.foto_dorso  && p.foto_dorso  !== 'No encontrado' && p.foto_dorso.trim()  !== '');
   var hasAp = !!p.has_apto;
@@ -1996,7 +2024,7 @@ function openModal(i) {
   }
   h += '</div>';
 
-  // Obs section in modal â€” oculto en modo informe
+  // Obs section in modal \u2014 oculto en modo informe
   if(!READONLY) {
   h+='<div class="msec"><div class="msec-t">Observaciones</div>';
   if(p.obs) h+='<div style="font-size:12px;color:var(--text);background:rgba(255,255,255,.04);border-radius:5px;padding:8px 10px;line-height:1.5;margin-bottom:8px;">'+esc(p.obs)+'</div>';
@@ -2036,7 +2064,7 @@ function imgError(el) {
   el.parentNode.innerHTML = '<div class="img-error">No se pudo cargar</div>';
 }
 
-// â”€â”€ INIT â”€â”€ (login dispara loadData)
+// \u2500\u2500 INIT \u2500\u2500 (login dispara loadData)
 // loadData se llama desde doLogin()
 </script>
 
@@ -2048,7 +2076,7 @@ function imgError(el) {
         CAFI <span style="color:var(--accent)">2026</span> &mdash; Reportes
       </div>
       <button onclick="toggleReport()" style="margin-left:auto; background:var(--surface); border:1px solid var(--border); color:var(--text); border-radius:8px; padding:6px 14px; font-size:12px; cursor:pointer; font-family:'Barlow Condensed',sans-serif; text-transform:uppercase; letter-spacing:.05em;">&#x2715; Cerrar</button>
-      <button onclick="exportCSV()" style="background:rgba(34,197,94,.15); border:1px solid rgba(34,197,94,.3); color:#22c55e; border-radius:8px; padding:6px 14px; font-size:12px; cursor:pointer; font-family:'Barlow Condensed',sans-serif; text-transform:uppercase; letter-spacing:.05em;">&#8595; Exportar CSV</button>
+      <button onclick="exportXLSX()" style="background:rgba(34,197,94,.15); border:1px solid rgba(34,197,94,.3); color:#22c55e; border-radius:8px; padding:6px 14px; font-size:12px; cursor:pointer; font-family:'Barlow Condensed',sans-serif; text-transform:uppercase; letter-spacing:.05em;">&#8595; Exportar Excel</button>
     </div>
 
     <!-- Filtros -->
@@ -2151,6 +2179,12 @@ function imgError(el) {
       <button class="obs-btn obs-btn-save"   id="obsSaveBtn">Guardar</button>
     </div>
   </div>
+</div>
+<div style="position:fixed;bottom:10px;right:12px;z-index:9999;
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;
+  color:rgba(255,255,255,.25);pointer-events:none;user-select:none;">
+  v1.3
 </div>
 </body>
 </html>
