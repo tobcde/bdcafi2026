@@ -360,7 +360,15 @@ body.readonly a[target="_blank"] { pointer-events: none !important; color: var(-
   #listaScreen { position: static !important; overflow: visible !important; }
   #listaPrintBar { display: none !important; }
   #listaContent { width: 100% !important; padding: 0 !important; }
-  @page { margin: 10mm; size: A4 landscape; }
+  @page {
+    size: A4 landscape;
+    margin: 8mm;
+    /* Suprimir headers y footers del browser */
+    margin-top: 8mm;
+    margin-bottom: 8mm;
+  }
+  /* Ocultar URL y fecha que agrega el browser */
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
 </style>
 </head>
@@ -984,7 +992,6 @@ function doLogin() {
     document.getElementById('loginScreen').style.display = 'none';
     var rb=document.getElementById('reportBtn'); if(rb) rb.style.display='inline-flex';
     var lpb=document.getElementById('listaPdfBtn'); if(lpb) lpb.style.display='inline-flex';
-    var efb=document.getElementById('editorFotoBtn'); if(efb) efb.style.display='inline-flex';
     loadData();
   } else if (hu === UIH && hp === PIH) {
     // Informe \u2014 solo lectura + reportes
@@ -994,7 +1001,6 @@ function doLogin() {
     document.getElementById('loginScreen').style.display = 'none';
     var rb=document.getElementById('reportBtn'); if(rb) rb.style.display='inline-flex';
     var lpb=document.getElementById('listaPdfBtn'); if(lpb) lpb.style.display='inline-flex';
-    var efb=document.getElementById('editorFotoBtn'); if(efb) efb.style.display='inline-flex';
     loadData();
   } else {
     err.classList.add('visible');
@@ -2205,7 +2211,7 @@ function _renderLista(jugadores, catFiltro) {
   if (catFiltro === '__ALL__') {
     CATS_ORDER.forEach(function(cat){
       if (!grupos[cat] || !grupos[cat].length) return;
-      gridContent += '<div style="grid-column:1/-1;background:#1e3a5f;color:white;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:3px 8px;border-radius:3px;margin-top:4px;">Categor\u00eda ' + cat + ' \u2014 ' + grupos[cat].length + ' jugadores</div>';
+      gridContent += '<div style="grid-column:1/-1;background:#1e3a5f;color:white;font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;padding:8px 14px;border-radius:4px;margin-top:8px;">Categor\u00eda ' + cat + ' \u2014 ' + grupos[cat].length + ' jugadores</div>';
       grupos[cat].forEach(function(p){ gridContent += cardHTML(p); });
     });
   } else {
@@ -2224,7 +2230,7 @@ function _renderLista(jugadores, catFiltro) {
     + '<strong style="display:block;font-size:26px;color:#1e3a5f;font-weight:800;">'+total+'</strong>jugadores'
     + (cafiSrc ? '<br><img src="'+cafiSrc+'" style="width:36px;height:36px;object-fit:contain;margin-top:4px;">' : '')
     + '</div></div>'
-    + '<div style="display:grid;grid-template-columns:repeat('+(window._pdfCols||4)+',1fr);gap:6px;margin-top:8px;">'+gridContent+'</div>'
+    + '<div style="display:grid;grid-template-columns:repeat('+(window._pdfCols||4)+',1fr);gap:4px;margin-top:6px;">'+gridContent+'</div>'
     + '<div style="margin-top:60px;border-top:1px solid #ccc;padding-top:6px;display:flex;justify-content:space-between;align-items:center;">'
     + '<div style="font-size:8px;color:#aaa;">Municipalidad de Vicente L\u00f3pez \u2014 Temporada 2026</div>'
     + '<div style="font-size:10px;font-weight:800;color:#1e3a5f;letter-spacing:.05em;">CAFI 2026</div>'
@@ -2235,59 +2241,6 @@ function _renderLista(jugadores, catFiltro) {
   document.getElementById('listaPrintInfo').textContent = esc(cur) + ' \u2014 ' + catTitulo + ' \u2014 ' + total + ' jugadores';
   document.getElementById('listaScreen').style.display = 'block';
   window.scrollTo(0,0);
-}
-
-function abrirEditor() {
-  // Tomar 8 jugadores del club actual que tengan foto
-  var conFoto = ALL.filter(function(p){ return p.club===cur && getFotoJugador(p); }).slice(0,8);
-  var sinFoto = ALL.filter(function(p){ return p.club===cur && !getFotoJugador(p); }).slice(0, 8-conFoto.length);
-  window._edJugadores = conFoto.concat(sinFoto);
-  if (!window._edJugadores.length) { alert('No hay jugadores en este club.'); return; }
-  document.getElementById('editorScreen').style.display = 'block';
-  edUpdate();
-}
-
-function edUpdate() {
-  var h    = document.getElementById('edH').value;
-  var fit  = document.getElementById('edFit').value;
-  var pos  = document.getElementById('edPos').value;
-  var cols = document.getElementById('edCols').value;
-  document.getElementById('edHVal').textContent   = h + 'px';
-  document.getElementById('edPosVal').textContent = pos + '%';
-  document.getElementById('edPreviewGrid').style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
-
-  var html = '';
-  (window._edJugadores || []).forEach(function(p) {
-    var fotoUrl = getFotoJugador(p);
-    var photoHtml = fotoUrl
-      ? '<img src="' + esc(fotoUrl) + '" style="width:100%;height:100%;object-fit:' + fit + ';object-position:center ' + pos + '%;">'
-      : '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>';
-    var apellido = (p.apellido_ocr||'').trim() || p.nombre.split(' ').slice(0,2).join(' ');
-    var pnombre  = (p.nombre_ocr||'').trim()  || p.nombre.split(' ').slice(2).join(' ');
-    html += '<div style="border:1px solid #ccc;border-radius:6px;overflow:hidden;display:flex;flex-direction:column;">'
-      + '<div style="width:100%;height:' + h + 'px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">' + photoHtml + '</div>'
-      + '<div style="padding:5px 6px;background:#f8f8f8;">'
-      + '<div style="font-size:8.5px;font-weight:800;text-transform:uppercase;color:#111;">' + esc(apellido) + '</div>'
-      + (pnombre ? '<div style="font-size:7.5px;color:#333;">' + esc(pnombre) + '</div>' : '')
-      + '<div style="display:flex;gap:3px;margin-top:3px;">'
-      + '<span style="font-size:7.5px;font-weight:700;color:#222;background:#ddd;border-radius:2px;padding:1px 5px;">DNI ' + esc(p.dni) + '</span>'
-      + (p.nacimiento ? '<span style="font-size:7.5px;color:#333;background:#ddd;border-radius:2px;padding:1px 5px;">' + esc(p.nacimiento) + '</span>' : '')
-      + '</div></div></div>';
-  });
-  document.getElementById('edPreviewGrid').innerHTML = html;
-}
-
-function edAplicar() {
-  window._pdfFotoH   = parseInt(document.getElementById('edH').value);
-  window._pdfFotoFit = document.getElementById('edFit').value;
-  window._pdfFotoPos = document.getElementById('edPos').value;
-  window._pdfCols    = parseInt(document.getElementById('edCols').value);
-  cerrarEditor();
-  alert('\u2713 Valores aplicados. La pr\u00f3xima lista PDF va a usar esta configuraci\u00f3n.');
-}
-
-function cerrarEditor() {
-  document.getElementById('editorScreen').style.display = 'none';
 }
 
 function cerrarLista() {
@@ -2325,47 +2278,6 @@ function imgError(el) {
     <div style="margin-left:auto; display:flex; gap:10px;">
       <button onclick="window.print()" style="background:#22c55e; border:none; color:white; border-radius:6px; padding:10px 20px; font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; cursor:pointer;">&#128424; Imprimir / Guardar PDF</button>
       <button onclick="cerrarLista()" style="background:rgba(255,255,255,.15); border:none; color:white; border-radius:6px; padding:10px 20px; font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; cursor:pointer;">&#10005; Cerrar</button>
-    </div>
-  </div>
-</div>
-
-<!-- EDITOR FOTO PDF -->
-<div id="editorScreen" style="display:none; position:fixed; inset:0; z-index:8600; background:#1a1a2e; overflow-y:auto;">
-  <div style="position:fixed;top:0;left:0;right:0;z-index:10;background:#0f3460;padding:12px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;box-shadow:0 2px 10px rgba(0,0,0,.5);">
-    <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;text-transform:uppercase;color:#a0c4ff;letter-spacing:.05em;">&#9881; Editor Lista PDF</span>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <label style="font-size:11px;font-weight:700;text-transform:uppercase;color:#a0c4ff;">Altura foto</label>
-      <input type="range" id="edH" min="80" max="400" value="150" step="10" style="width:140px;accent-color:#e94560;" oninput="edUpdate()">
-      <span id="edHVal" style="font-size:13px;font-weight:800;color:#e94560;min-width:40px;">150px</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <label style="font-size:11px;font-weight:700;text-transform:uppercase;color:#a0c4ff;">object-fit</label>
-      <select id="edFit" onchange="edUpdate()" style="background:#1a1a2e;color:#eee;border:1px solid #333;border-radius:4px;padding:4px 8px;font-size:12px;">
-        <option value="contain">contain (completa)</option>
-        <option value="cover" selected>cover (recorta)</option>
-      </select>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <label style="font-size:11px;font-weight:700;text-transform:uppercase;color:#a0c4ff;">Pos. Y</label>
-      <input type="range" id="edPos" min="0" max="100" value="50" step="5" style="width:120px;accent-color:#e94560;" oninput="edUpdate()">
-      <span id="edPosVal" style="font-size:13px;font-weight:800;color:#e94560;min-width:35px;">50%</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <label style="font-size:11px;font-weight:700;text-transform:uppercase;color:#a0c4ff;">Columnas</label>
-      <select id="edCols" onchange="edUpdate()" style="background:#1a1a2e;color:#eee;border:1px solid #333;border-radius:4px;padding:4px 8px;font-size:12px;">
-        <option value="3">3</option>
-        <option value="4" selected>4</option>
-        <option value="5">5</option>
-      </select>
-    </div>
-    <div style="margin-left:auto;display:flex;gap:8px;">
-      <button onclick="edAplicar()" style="background:#22c55e;border:none;color:white;border-radius:6px;padding:8px 16px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;cursor:pointer;">&#10003; Usar estos valores</button>
-      <button onclick="cerrarEditor()" style="background:rgba(255,255,255,.15);border:none;color:white;border-radius:6px;padding:8px 16px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;cursor:pointer;">&#10005; Cerrar</button>
-    </div>
-  </div>
-  <div style="padding:80px 20px 20px; max-width:900px; margin:0 auto;">
-    <div style="background:white;padding:16px;border-radius:8px;">
-      <div id="edPreviewGrid" style="display:grid;gap:8px;margin-top:8px;"></div>
     </div>
   </div>
 </div>
@@ -2486,7 +2398,7 @@ function imgError(el) {
   font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
   text-transform:uppercase;letter-spacing:.06em;
   color:rgba(255,255,255,.25);pointer-events:none;user-select:none;">
-  v3.7
+  v4.0
 </div>
 </body>
 </html>
