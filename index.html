@@ -357,18 +357,26 @@ body.readonly a[target="_blank"] { pointer-events: none !important; color: var(-
 
 @media print {
   body > *:not(#listaScreen) { display: none !important; }
-  #listaScreen { position: static !important; overflow: visible !important; }
-  #listaPrintBar { display: none !important; }
-  #listaContent { width: 100% !important; padding: 0 !important; }
-  @page {
-    size: A4 landscape;
-    margin: 8mm;
-    /* Suprimir headers y footers del browser */
-    margin-top: 8mm;
-    margin-bottom: 8mm;
+  #listaScreen {
+    position: static !important;
+    overflow: visible !important;
+    background: white !important;
+    height: auto !important;
+    min-height: 0 !important;
   }
-  /* Ocultar URL y fecha que agrega el browser */
-  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  #listaPrintBar { display: none !important; }
+  #listaContent {
+    width: 100% !important;
+    padding: 0 !important;
+    background: white !important;
+    margin: 0 !important;
+  }
+  body, html {
+    background: white !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  @page { size: A4 landscape; margin: 8mm; }
 }
 </style>
 </head>
@@ -2398,7 +2406,7 @@ function imgError(el) {
   font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
   text-transform:uppercase;letter-spacing:.06em;
   color:rgba(255,255,255,.25);pointer-events:none;user-select:none;">
-  v4.1
+  v4.3
 </div>
 </body>
 </html>
