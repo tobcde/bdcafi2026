@@ -648,6 +648,7 @@ function reloadOverrides() {
 // â”€â”€ OBS MODAL STATE
 var obsTarget=null, obsSelectedColor=null;
 function openObs(dni) {
+  if(READONLY) return; // modo informe: sin acceso a obs
   var p=null;
   var all3=ALL.concat(DELEGADOS).concat(TECNICOS);
   for(var i=0;i<all3.length;i++){if(all3[i].dni===String(dni)){p=all3[i];break;}}
@@ -669,6 +670,7 @@ function openObs(dni) {
   setTimeout(function(){document.getElementById('obsText').focus();},100);
 }
 function saveObs() {
+  if(READONLY) return; // modo informe: sin acceso a obs
   if(!obsTarget)return;
   var obs=document.getElementById('obsText').value.trim();
   var color=obsSelectedColor||obsTarget.color;
@@ -760,6 +762,7 @@ function clearSel(){
   document.getElementById('selBar').classList.remove('visible');
 }
 function openMassObs(){
+  if(READONLY) return;
   var dnis=Object.keys(selectedDnis); if(!dnis.length)return;
   var names=[]; dnis.forEach(function(d){var p=ALL.filter(function(x){return x.dni===d;})[0];if(p)names.push(p.nombre);});
   obsTarget={dni:'__mass__',dnis:dnis,nombre:dnis.length+' jugadores',color:'green',obs:'',obsHistory:[]};
@@ -1228,6 +1231,7 @@ function toDateInput(fecha) {
 }
 
 function saveVto(dni) {
+  if(READONLY) return; // modo informe: sin acceso a vto
   var input = document.getElementById('vtoInput');
   var status = document.getElementById('vtoStatus');
   if (!input) return;
@@ -1959,7 +1963,7 @@ function openModal(i) {
   h += '<span class="doc-ind ' + (hasAp ? 'ok' : 'no') + '">' + (hasAp ? '\u2713' : '\u2717') + ' Apto F\u00edsico</span>';
   h += '</div>';
   // Campo para cargar/editar fecha de vencimiento del DNI
-  h += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">' +
+  if(!READONLY) h += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">' +
        '<span style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;min-width:110px;">Vto. DNI</span>' +
        '<input type="date" id="vtoInput" value="' + esc(p.fecha_vto ? toDateInput(p.fecha_vto) : '') + '"' +
        ' style="background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:4px 8px;font-size:12px;">' +
@@ -1992,7 +1996,8 @@ function openModal(i) {
   }
   h += '</div>';
 
-  // Obs section in modal
+  // Obs section in modal â€” oculto en modo informe
+  if(!READONLY) {
   h+='<div class="msec"><div class="msec-t">Observaciones</div>';
   if(p.obs) h+='<div style="font-size:12px;color:var(--text);background:rgba(255,255,255,.04);border-radius:5px;padding:8px 10px;line-height:1.5;margin-bottom:8px;">'+esc(p.obs)+'</div>';
   if(p.obsHistory&&p.obsHistory.length){
@@ -2002,6 +2007,7 @@ function openModal(i) {
   }
   h+='<button class="modal-obs-btn" data-dni="'+esc(p.dni)+'" style="font-family:Barlow Condensed,sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:var(--accent);border:none;color:#fff;border-radius:5px;padding:9px 16px;cursor:pointer;width:100%;">\u270e '+(p.overridden?'Editar observaci\u00f3n':'Agregar observaci\u00f3n')+'</button>';
   h+='</div>';
+  } // end if(!READONLY) obs section
   document.getElementById('mbody').innerHTML=h;
   var mBtn=document.querySelector('.modal-obs-btn');
   if(mBtn)mBtn.addEventListener('click',function(){var d=this.getAttribute('data-dni');closeModal();setTimeout(function(){openObs(d);},150);});
