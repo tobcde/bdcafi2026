@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Listas de Buena Fe — CAFI 2026</title>
+<title>Listas de Buena Fe â€” CAFI 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -72,7 +72,7 @@ header { background:var(--surface); border-bottom:2px solid var(--accent); paddi
 .photo-icon svg { opacity:.25; }
 .photo-lbl { font-size:8px; text-transform:uppercase; letter-spacing:.1em; opacity:.25; font-family:'Barlow Condensed',sans-serif; }
 
-/* Apto físico badge */
+/* Apto fÃ­sico badge */
 .apto-badge {
   position:absolute; bottom:5px; right:5px;
   font-family:'Barlow Condensed',sans-serif; font-size:8px; font-weight:700;
@@ -163,7 +163,7 @@ header { background:var(--surface); border-bottom:2px solid var(--accent); paddi
 .doc-ind.no    { background:rgba(248,113,113,.18); color:#f87171; border-color:rgba(248,113,113,.5); }
 @media(max-width:580px){ .legend{display:none;} .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));} }
 
-/* ── LOGIN ──────────────────────────────────────────────── */
+/* â”€â”€ LOGIN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #loginScreen {
   position:fixed; inset:0; z-index:9999;
   background:var(--bg);
@@ -235,14 +235,14 @@ header { background:var(--surface); border-bottom:2px solid var(--accent); paddi
 .login-error.visible { display:block; }
 
 
-/* ── OVERRIDES */
+/* â”€â”€ OVERRIDES */
 .card { position:relative; }
 .card.overridden::after { content:'\270E'; position:absolute; top:5px; right:7px; font-size:12px; color:rgba(255,255,255,.45); pointer-events:none; }
 .card.selected { outline:2px solid rgba(255,255,255,.7); outline-offset:1px; }
 .card .chk { position:absolute; top:6px; left:7px; width:20px; height:20px; border-radius:5px; background:rgba(0,0,0,.45); border:1.5px solid rgba(255,255,255,.35); display:flex; align-items:center; justify-content:center; font-size:12px; color:#fff; cursor:pointer; z-index:10; transition:all .12s; }
 .card.selected .chk { background:var(--accent); border-color:var(--accent); }
 
-/* ── OBS MODAL */
+/* â”€â”€ OBS MODAL */
 .obs-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.8); z-index:300; align-items:center; justify-content:center; backdrop-filter:blur(3px); }
 .obs-overlay.open { display:flex; }
 .obs-modal { background:var(--surface); border:1px solid var(--border); border-radius:12px; width:460px; max-width:94vw; padding:24px; display:flex; flex-direction:column; gap:16px; }
@@ -268,10 +268,10 @@ header { background:var(--surface); border-bottom:2px solid var(--accent); paddi
 .obs-card-btn:hover { background:rgba(255,255,255,.1); color:var(--text); }
 .obs-snippet { font-size:9px; color:var(--muted); font-style:italic; line-height:1.3; margin-top:2px; }
 
-/* ── DOC INDICATORS */
+/* â”€â”€ DOC INDICATORS */
 
 
-/* ── ESTADO FILTER */
+/* â”€â”€ ESTADO FILTER */
 .estado-bar { background:var(--bg); border-bottom:1px solid var(--border); padding:6px 20px; display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
 .estado-btn { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; padding:4px 10px; border-radius:20px; cursor:pointer; border:2px solid transparent; transition:all .12s; }
 .estado-btn.active { box-shadow:0 0 0 2px rgba(255,255,255,.6); }
@@ -284,7 +284,7 @@ header { background:var(--surface); border-bottom:2px solid var(--accent); paddi
 .estado-btn.eb-gray   { background:var(--gray-bg);   color:var(--gray);   border-color:var(--gray-border); }
 .ecnt { font-size:9px; background:rgba(255,255,255,.15); border-radius:8px; padding:1px 5px; margin-left:2px; }
 
-/* ── SEL BAR */
+/* â”€â”€ SEL BAR */
 .sel-bar { display:none; background:var(--accent); padding:8px 20px; align-items:center; gap:12px; flex-wrap:wrap; }
 .sel-bar.visible { display:flex; }
 .sel-txt { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:#fff; }
@@ -293,14 +293,14 @@ header { background:var(--surface); border-bottom:2px solid var(--accent); paddi
 .sel-btn-obs    { background:#fff; color:var(--accent); }
 .sel-btn-cancel { background:rgba(255,255,255,.2); color:#fff; }
 
-/* ── SEARCH */
+/* â”€â”€ SEARCH */
 .search-wrap { display:flex; align-items:center; gap:6px; margin-left:8px; }
 .search-input { background:var(--surface2); border:1px solid var(--border); border-radius:6px; color:var(--text); font-family:'Barlow',sans-serif; font-size:13px; padding:6px 12px; outline:none; width:180px; transition:border-color .15s; }
 .search-input:focus { border-color:var(--accent); }
 .search-clear { background:none; border:none; color:var(--muted); cursor:pointer; font-size:16px; line-height:1; padding:0 4px; display:none; }
 .search-clear.visible { display:block; }
 
-/* ── TECNICOS */
+/* â”€â”€ TECNICOS */
 .card-tec { border-radius:8px; border:1px solid var(--accent); background:rgba(59,130,246,.08); overflow:hidden; cursor:pointer; transition:transform .12s,box-shadow .12s; display:flex; flex-direction:column; position:relative; }
 .card-tec:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.5); }
 .tec-photo { width:100%; height:160px; background:rgba(255,255,255,.04); display:flex; align-items:center; justify-content:center; overflow:hidden; border-bottom:1px solid rgba(59,130,246,.3); flex-shrink:0; padding:10px; box-sizing:border-box; }
@@ -311,7 +311,7 @@ header { background:var(--surface); border-bottom:2px solid var(--accent); paddi
 .tec-meta { display:flex; gap:6px; flex-wrap:wrap; }
 .tec-mat { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; background:rgba(59,130,246,.2); color:var(--accent); border:1px solid rgba(59,130,246,.4); border-radius:3px; padding:2px 6px; }
 
-/* ── DELEGADOS */
+/* â”€â”€ DELEGADOS */
 .card-del { border-radius:8px; border:1px solid #a855f7; background:rgba(168,85,247,.08); overflow:hidden; cursor:pointer; transition:transform .12s,box-shadow .12s; display:flex; flex-direction:column; position:relative; }
 .card-del:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.5); }
 .del-bar { height:3px; background:#a855f7; flex-shrink:0; }
@@ -321,7 +321,7 @@ header { background:var(--surface); border-bottom:2px solid var(--accent); paddi
 .sync-indicator { font-family:'Barlow Condensed',sans-serif; font-size:10px; text-transform:uppercase; letter-spacing:.05em; padding:3px 8px; border-radius:3px; background:rgba(34,197,94,.15); color:var(--green); border:1px solid rgba(34,197,94,.3); }
 
 
-/* ── DELEGADOS / TÉCNICOS */
+/* â”€â”€ DELEGADOS / TÃ‰CNICOS */
 .card.delegado { background:#1a1f35; border-color:#6366f1; }
 .card.delegado .cbar { background:#6366f1; }
 .card.tecnico  { background:#1a2535; border-color:#0ea5e9; }
@@ -335,13 +335,13 @@ header { background:var(--surface); border-bottom:2px solid var(--accent); paddi
 .matricula-badge { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:#38bdf8; background:rgba(14,165,233,.1); border:1px solid rgba(14,165,233,.3); border-radius:4px; padding:3px 8px; display:inline-block; }
 
 
-/* ── REPORTES ─────────────────────────────────────────────────────────── */
+/* â”€â”€ REPORTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #reportScreen select:focus { outline:none; border-color:var(--accent); }
 #reportTable th:hover { color:var(--text); }
 .report-row:hover { background:rgba(59,130,246,.06) !important; }
 #reportTable td { vertical-align:middle; }
 
-/* ── MODO CLUB / READONLY ───────────────────────────── */
+/* â”€â”€ MODO CLUB / READONLY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 body.readonly .admin-only { display: none !important; }
 body.readonly .report-btn { display: none; } /* starts hidden, shown after login */
 body.readonly .chk { display: none !important; }
@@ -384,7 +384,7 @@ body.readonly .club-tabs-wrap { pointer-events: none; }
     <div class="leg"><div class="leg-dot" style="background:#f472b6"></div>Sin domicilio</div>
   </div>
   <div class="search-wrap">
-    <input class="search-input" id="searchInput" type="text" placeholder="Buscar DNI o nombre…" autocomplete="off">
+    <input class="search-input" id="searchInput" type="text" placeholder="Buscar DNI o nombreâ€¦" autocomplete="off">
     <button class="search-clear" id="searchClear">&#x2715;</button>
   </div>
   <button class="reload-btn report-btn" id="reportBtn" onclick="toggleReport()" style="background:rgba(168,85,247,.15);color:#a855f7;border-color:rgba(168,85,247,.3);display:none;">
@@ -447,20 +447,20 @@ body.readonly .club-tabs-wrap { pointer-events: none; }
 
 <script>
 
-// ── LOGIN ─────────────────────────────────────────────────
+// â”€â”€ LOGIN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 var UH  = '08c140dd2326dc108f3dcd9dc4f1f7a28ce45526ae48afcd53c25d878a324699'; // cafi2026
 var PH  = '38497b0d0206bea858ba35c5e4f0ce22bb658676dea0103f2b5b188ad335859b'; // 20futbol26
 var UIH = 'dd8ca4bb0afa52abc9c30ea5dab2e71019c92e9bd8d2a25869aa66dcade65010'; // informe
 var PIH = 'e9496f98372e52644dde09a2b96ca3ee652f1ae73b425d70d5d55607d3ba7f9a'; // c4fiVt3Lop3z
 
-// ── MODO CLUB (solo lectura via ?club=NombreClub) ───────────────────────────
+// â”€â”€ MODO CLUB (solo lectura via ?club=NombreClub) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 var _urlParams  = new URLSearchParams(window.location.search);
 var CLUB_MODE   = _urlParams.get('club') ? decodeURIComponent(_urlParams.get('club')) : null;
 var READONLY    = !!CLUB_MODE;
 var REPORT_MODE = false; // true = modo informe
 
 function sha256(str) {
-  // Implementación simple de SHA-256 en JS puro
+  // ImplementaciÃ³n simple de SHA-256 en JS puro
   function rightRotate(value, amount) {
     return (value >>> amount) | (value << (32 - amount));
   }
@@ -527,14 +527,14 @@ function sha256(str) {
 }
 
 
-// ── URLS EXTRA
+// â”€â”€ URLS EXTRA
 var DEL_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vROD3KC8278MhofGlbUdJN3hC1Syehmk_Dr9C6WL0PF32DoJjRZBK9qVd-FlPOInK0pjaHWOrrLRWqc/pub?gid=188066866&single=true&output=csv';
 var TEC_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vROD3KC8278MhofGlbUdJN3hC1Syehmk_Dr9C6WL0PF32DoJjRZBK9qVd-FlPOInK0pjaHWOrrLRWqc/pub?gid=502723740&single=true&output=csv';
 var DELEGADOS = [], TECNICOS = [];
-var TEC_CLUB = '▶ TÉCNICOS';
+var TEC_CLUB = 'â–¶ TÃ‰CNICOS';
 var DEL_CAT  = 'Delegados';
 
-// ── isVL mejorado (texto truncado)
+// â”€â”€ isVL mejorado (texto truncado)
 var _origIsVL = isVL;
 function isVL(k) {
   if (!k) return false;
@@ -564,7 +564,7 @@ function isDomicilioLegible(texto) {
          d.indexOf('sin datos') < 0;
 }
 
-// ── OVERRIDES (localStorage + Sheets JSONP)
+// â”€â”€ OVERRIDES (localStorage + Sheets JSONP)
 function getOverrides() { try { return JSON.parse(localStorage.getItem('cafi_overrides')||'{}'); } catch(e){ return {}; } }
 function saveLocalOverrides(ov) { try { localStorage.setItem('cafi_overrides', JSON.stringify(ov)); } catch(e){} }
 function applyOverrides(players) {
@@ -598,7 +598,7 @@ function loadOverridesFromSheets(callback) {
         Object.keys(res.vtos).forEach(function(d){vtos[d]=res.vtos[d];});
         try{localStorage.setItem('cafi_vtos',JSON.stringify(vtos));}catch(e){}
       }
-      // Guardar índice de fotos si viene del Apps Script
+      // Guardar Ã­ndice de fotos si viene del Apps Script
       if(res.fotos){
         try{localStorage.setItem('cafi_fotos',JSON.stringify(res.fotos));}catch(e){}
         window.FOTO_INDEX = res.fotos;
@@ -637,15 +637,15 @@ function clearOverride(dni,callback) {
 }
 function reloadOverrides() {
   var ind=document.getElementById('syncInd');
-  if(ind){ind.textContent='↻ Sync...';ind.style.color='var(--muted)';}
+  if(ind){ind.textContent='â†» Sync...';ind.style.color='var(--muted)';}
   loadOverridesFromSheets(function(ov){
     saveLocalOverrides(ov);applyOverrides(ALL);applyOverrides(DELEGADOS);renderAll();
-    if(ind){ind.textContent='✓ '+Object.keys(ov).length+' obs.';ind.style.color='var(--green)';
+    if(ind){ind.textContent='âœ“ '+Object.keys(ov).length+' obs.';ind.style.color='var(--green)';
       setTimeout(function(){if(ind)ind.textContent='';},3000);}
   });
 }
 
-// ── OBS MODAL STATE
+// â”€â”€ OBS MODAL STATE
 var obsTarget=null, obsSelectedColor=null;
 function openObs(dni) {
   var p=null;
@@ -654,7 +654,7 @@ function openObs(dni) {
   if(!p)return;
   obsTarget=p; obsSelectedColor=p.color;
   document.getElementById('obsTitle').textContent=p.nombre;
-  document.getElementById('obsSub').textContent='DNI '+p.dni+' — '+(p.club||'');
+  document.getElementById('obsSub').textContent='DNI '+p.dni+' â€” '+(p.club||'');
   document.getElementById('obsText').value=p.obs||'';
   document.getElementById('obsSaveStatus').textContent='';
   document.querySelectorAll('.color-opt').forEach(function(el){el.classList.toggle('selected',el.getAttribute('data-color')===p.color);});
@@ -677,14 +677,14 @@ function saveObs() {
   if(obsTarget.dnis){
     var dnis=obsTarget.dnis,total=dnis.length,done=0;
     st.style.color='var(--muted)';
-    function next(i){if(i>=total){st.textContent='✓ '+total+' actualizados';st.style.color='var(--green)';btn.disabled=false;applyOverrides(ALL);applyOverrides(DELEGADOS);renderAll();clearSel();setTimeout(closeObs,1000);return;}
+    function next(i){if(i>=total){st.textContent='âœ“ '+total+' actualizados';st.style.color='var(--green)';btn.disabled=false;applyOverrides(ALL);applyOverrides(DELEGADOS);renderAll();clearSel();setTimeout(closeObs,1000);return;}
       st.textContent='Guardando '+(i+1)+' de '+total+'...';
       saveOverride(dnis[i],color,obs,function(){next(i+1);});}
     next(0);
   } else {
     st.textContent=SCRIPT_URL?'Guardando en Sheets...':'Guardando...'; st.style.color='var(--muted)';
     saveOverride(obsTarget.dni,color,obs,function(res){
-      st.textContent=(res&&res.ok&&!res.local)?'✓ Guardado en Sheets':(res&&res.ok?'✓ Guardado local':'⚠ Solo local');
+      st.textContent=(res&&res.ok&&!res.local)?'âœ“ Guardado en Sheets':(res&&res.ok?'âœ“ Guardado local':'âš  Solo local');
       st.style.color=(res&&res.ok)?'var(--green)':'var(--yellow)';
       btn.disabled=false; applyOverrides(ALL); applyOverrides(DELEGADOS); renderAll();
       setTimeout(closeObs,800);
@@ -697,11 +697,11 @@ function closeObs(){document.getElementById('obsOverlay').classList.remove('open
 
 
 
-// ── ESTADO FILTER
+// â”€â”€ ESTADO FILTER
 var estadoFilter='all', fotoFilt='all', selectedDnis={}, searchTerm='';
 function setFotoFilt(v) {
   fotoFilt = v;
-  // Guard: si estadoFilter quedó null por click de otro listener, restaurar
+  // Guard: si estadoFilter quedÃ³ null por click de otro listener, restaurar
   if(!estadoFilter) estadoFilter = 'all';
   ['fotoFiltAll','fotoFiltSi','fotoFiltNo'].forEach(function(id){
     var el=document.getElementById(id);
@@ -715,7 +715,7 @@ function setFotoFilt(v) {
 function initEstadoBar(){
   if(READONLY){ var eb=document.getElementById('estadoBar'); if(eb)eb.style.display='none'; return; }
   document.getElementById('estadoBar').querySelectorAll('.estado-btn').forEach(function(btn){
-    // Saltar botones de foto — solo bindear los de estado real
+    // Saltar botones de foto â€” solo bindear los de estado real
     var id = btn.id || '';
     if(id==='fotoFiltAll'||id==='fotoFiltSi'||id==='fotoFiltNo') return;
     if(!btn.getAttribute('data-estado')) return;
@@ -739,11 +739,11 @@ function updateCounts(){
   document.getElementById('ec-pink') && (document.getElementById('ec-pink').textContent=cnt.pink);
 }
 
-// ── SELECTION
+// â”€â”€ SELECTION
 function toggleSel(dni){
   if(selectedDnis[dni]){delete selectedDnis[dni];}else{selectedDnis[dni]=true;}
   document.querySelectorAll('.chk[data-dni="'+dni+'"]').forEach(function(el){
-    el.textContent=selectedDnis[dni]?'✓':'';
+    el.textContent=selectedDnis[dni]?'âœ“':'';
     var card=el.closest('.card'); if(card)card.classList.toggle('selected',!!selectedDnis[dni]);
   });
   updateSelBar();
@@ -765,7 +765,7 @@ function openMassObs(){
   obsTarget={dni:'__mass__',dnis:dnis,nombre:dnis.length+' jugadores',color:'green',obs:'',obsHistory:[]};
   obsSelectedColor='green';
   document.getElementById('obsTitle').textContent=dnis.length+' jugadores';
-  document.getElementById('obsSub').textContent=names.slice(0,3).join(', ')+(names.length>3?' y '+(names.length-3)+' más':'');
+  document.getElementById('obsSub').textContent=names.slice(0,3).join(', ')+(names.length>3?' y '+(names.length-3)+' mÃ¡s':'');
   document.getElementById('obsText').value='';
   document.getElementById('obsSaveStatus').textContent='';
   document.getElementById('obsHistoryWrap').style.display='none';
@@ -774,7 +774,7 @@ function openMassObs(){
   setTimeout(function(){document.getElementById('obsText').focus();},100);
 }
 
-// ── DELEGADOS / TECNICOS loaders
+// â”€â”€ DELEGADOS / TECNICOS loaders
 function loadDelegados(cb){
   var urls=[DEL_URL,
     'https://corsproxy.io/?'+encodeURIComponent(DEL_URL),
@@ -815,19 +815,19 @@ function loadTecnicos(cb){
           nacimiento:(r[4]||'').trim(),foto_carnet:(r[5]||'').trim(),
           foto_frente:(r[6]||'').trim(),foto_dorso:(r[7]||'').trim(),
           foto_principal:(r[8]||'').trim(),
-          club:TEC_CLUB,categoria:'Técnicos',color:'blue',overridden:false,obs:'',obsHistory:[]});
+          club:TEC_CLUB,categoria:'TÃ©cnicos',color:'blue',overridden:false,obs:'',obsHistory:[]});
       }
       if(cb)cb();
     }).catch(function(){tryNext(i+1);});}
   tryNext(0);
 }
 
-// ── CARD RENDERERS for delegados/tecnicos
+// â”€â”€ CARD RENDERERS for delegados/tecnicos
 function renderTecnicoCard(p,i){
   var thumb=driveThumb(p.foto_principal)||driveThumb(p.foto_frente);
   var photo=thumb?'<img src="'+esc(thumb)+'" loading="lazy" onerror="photoError(this)">':'<div class="photo-placeholder"><div class="photo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><span class="photo-lbl">Sin foto</span></div>';
   return '<div class="card-tec" data-idx="'+i+'">'
-    +'<span class="tec-badge">Técnico</span>'
+    +'<span class="tec-badge">TÃ©cnico</span>'
     +'<div class="tec-photo">'+photo+'</div>'
     +'<div class="tec-info">'
       +'<div class="tec-name">'+esc(p.nombre)+'</div>'
@@ -854,12 +854,12 @@ function renderDelegadoCard(p,i){
   +'</div>';
 }
 
-// ── MODALS for delegados/tecnicos
+// â”€â”€ MODALS for delegados/tecnicos
 function openTecnicoModal(p){
   document.getElementById('mname').textContent=p.nombre;
-  document.getElementById('mbadge').innerHTML='<span class="badge" style="background:rgba(59,130,246,.15);color:var(--accent);border:1px solid rgba(59,130,246,.4)">Técnico</span>';
-  var h='<div class="msec"><div class="msec-t">Datos del técnico</div>'
-    +row('DNI',p.dni)+row('Fecha de nacimiento',p.nacimiento||'—')+(p.matricula?row('N\u00b0 Matr\u00edcula',p.matricula):'')+'</div>';
+  document.getElementById('mbadge').innerHTML='<span class="badge" style="background:rgba(59,130,246,.15);color:var(--accent);border:1px solid rgba(59,130,246,.4)">TÃ©cnico</span>';
+  var h='<div class="msec"><div class="msec-t">Datos del tÃ©cnico</div>'
+    +row('DNI',p.dni)+row('Fecha de nacimiento',p.nacimiento||'â€”')+(p.matricula?row('N\u00b0 Matr\u00edcula',p.matricula):'')+'</div>';
   var hasPr=!!(p.foto_principal&&p.foto_principal.trim()),hasFr=!!(p.foto_frente&&p.foto_frente.trim()),hasDo=!!(p.foto_dorso&&p.foto_dorso.trim()),hasCar=!!(p.foto_carnet&&p.foto_carnet.trim());
   h+='<div class="msec"><div class="msec-t">Documentaci\u00f3n</div>';
   h+='<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">';
@@ -889,11 +889,11 @@ function openTecnicoModal(p){
 }
 function openDelegadoModal(p){
   document.getElementById('mname').textContent=p.nombre;
-  document.getElementById('mbadge').innerHTML='<span class="badge" style="background:rgba(168,85,247,.15);color:#a855f7;border:1px solid rgba(168,85,247,.4)">Delegado — '+esc(p.club)+'</span>';
+  document.getElementById('mbadge').innerHTML='<span class="badge" style="background:rgba(168,85,247,.15);color:#a855f7;border:1px solid rgba(168,85,247,.4)">Delegado â€” '+esc(p.club)+'</span>';
   var h='<div class="msec"><div class="msec-t">Datos del delegado</div>'
-    +row('DNI',p.dni)+row('Fecha de nacimiento',p.nacimiento||'—')
-    +row('Teléfono',p.telefono||'—')+row('Email',p.email||'—')+row('Club',p.club)
-    +row('Domicilio',[p.calle,p.numero].filter(Boolean).join(' ')+(p.localidad?' — '+p.localidad:''))
+    +row('DNI',p.dni)+row('Fecha de nacimiento',p.nacimiento||'â€”')
+    +row('TelÃ©fono',p.telefono||'â€”')+row('Email',p.email||'â€”')+row('Club',p.club)
+    +row('Domicilio',[p.calle,p.numero].filter(Boolean).join(' ')+(p.localidad?' â€” '+p.localidad:''))
     +'</div>';
   var hasFr=!!(p.foto_frente&&p.foto_frente!=='No encontrado'&&p.foto_frente.trim());
   var hasDo=!!(p.foto_dorso&&p.foto_dorso!=='No encontrado'&&p.foto_dorso.trim());
@@ -913,7 +913,7 @@ function openDelegadoModal(p){
   document.getElementById('overlay').classList.add('open');
 }
 
-// ── SEARCH
+// â”€â”€ SEARCH
 function searchGlobal(term){
   var t=term.toLowerCase();
   var found=ALL.concat(DELEGADOS).concat(TECNICOS).filter(function(p){
@@ -945,7 +945,7 @@ function doLogin() {
       adminEls.forEach(function(el){ el.style.display='none'; });
       var ls = document.getElementById('logoSub');
       if (ls) ls.textContent = CLUB_MODE;
-      // Mostrar reportes DESPUÉS de ocultar admin-only
+      // Mostrar reportes DESPUÃ‰S de ocultar admin-only
       var rb=document.getElementById('reportBtn');
       if(rb){ rb.style.display='inline-flex'; rb.style.setProperty('display','inline-flex','important'); }
       loadData();
@@ -959,12 +959,12 @@ function doLogin() {
 
   // Login normal (sin ?club=)
   if (hu === UH && hp === PH) {
-    // Admin — acceso completo
+    // Admin â€” acceso completo
     document.getElementById('loginScreen').style.display = 'none';
     var rb=document.getElementById('reportBtn'); if(rb) rb.style.display='inline-flex';
     loadData();
   } else if (hu === UIH && hp === PIH) {
-    // Informe — solo lectura + reportes
+    // Informe â€” solo lectura + reportes
     REPORT_MODE = true;
     READONLY = true;
     document.body.classList.add('readonly');
@@ -980,7 +980,7 @@ function doLogin() {
 
 document.addEventListener('DOMContentLoaded', function() {
   // Si modo club: ocultar login y cargar directo
-  // Login listeners — siempre, en cualquier modo
+  // Login listeners â€” siempre, en cualquier modo
   document.getElementById('loginBtn').addEventListener('click', doLogin);
   document.getElementById('loginPwd').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') doLogin();
@@ -1021,27 +1021,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-// ── CONFIG ────────────────────────────────────────────────────────────────────
+// â”€â”€ CONFIG â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 var SHEET_ID = '1T9inNuk44hxJdzHwfoOVSj9cSq68kr48t9g9M_JwQZs';
 var FOTO_FOLDER_ID = '1ybxtj0RFw8mBkIkCfwA8yMuCra0ILha0'; // carpeta fotos 2026
 var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby7vs8GeB_kHWTQrD2Y6LXa-JoUo8FzrANd48jsOpdNeQh-nFa46FJqQ0UMdzkre1_n/exec';
 
-var ART23_TEXT = 'ARTÍCULO 23 — Zonas limítrofes habilitadas\n\nCAPITAL FEDERAL\n1. Desde Av. Gral. Paz hasta Crisologo Larralde (entre Río de la Plata y Galván)\n2. Desde Crisologo Larralde y Galván hasta José P. Tamborini\n3. Desde Av. Gral. Paz hasta Ezeiza (entre Av. Constituyentes y Av. Gral. Paz)\n\nSAN MARTÍN\n1. Desde Av. De Los Constituyentes hasta Guillermo Hudson (entre M. Campos y Av. Gral. Paz)\n2. Desde Av. De Los Constituyentes hasta Catamarca (entre M. Campos y Entre Ríos)\n3. Desde A. Alcorta hasta Catamarca (entre Entre Ríos y Alvear)\n4. Desde A. Alcorta hasta Libertad (entre Alvear y M. Moreno)\n5. Desde Amancio Alcorta hasta Libertad (entre Mariano Moreno y Zeballos)\n\nSAN ISIDRO (incluye Villa Adelina)\n1. Desde Paraná hasta Perito Moreno (entre Av. Panamericana y Yerbal)\n2. Desde Paraná hasta Boedo (entre Yerbal y Amancio Alcorta)\n3. Desde Paraná hasta Hipólito Irigoyen (entre Av. Panamericana y Av. Sta. Fe)\n4. Desde Paraná hasta Gral. Alvear (entre Av. Sta. Fe y el Río de la Plata)';
+var ART23_TEXT = 'ARTÃCULO 23 â€” Zonas limÃ­trofes habilitadas\n\nCAPITAL FEDERAL\n1. Desde Av. Gral. Paz hasta Crisologo Larralde (entre RÃ­o de la Plata y GalvÃ¡n)\n2. Desde Crisologo Larralde y GalvÃ¡n hasta JosÃ© P. Tamborini\n3. Desde Av. Gral. Paz hasta Ezeiza (entre Av. Constituyentes y Av. Gral. Paz)\n\nSAN MARTÃN\n1. Desde Av. De Los Constituyentes hasta Guillermo Hudson (entre M. Campos y Av. Gral. Paz)\n2. Desde Av. De Los Constituyentes hasta Catamarca (entre M. Campos y Entre RÃ­os)\n3. Desde A. Alcorta hasta Catamarca (entre Entre RÃ­os y Alvear)\n4. Desde A. Alcorta hasta Libertad (entre Alvear y M. Moreno)\n5. Desde Amancio Alcorta hasta Libertad (entre Mariano Moreno y Zeballos)\n\nSAN ISIDRO (incluye Villa Adelina)\n1. Desde ParanÃ¡ hasta Perito Moreno (entre Av. Panamericana y Yerbal)\n2. Desde ParanÃ¡ hasta Boedo (entre Yerbal y Amancio Alcorta)\n3. Desde ParanÃ¡ hasta HipÃ³lito Irigoyen (entre Av. Panamericana y Av. Sta. Fe)\n4. Desde ParanÃ¡ hasta Gral. Alvear (entre Av. Sta. Fe y el RÃ­o de la Plata)';
 
 var LABELS = {
-  green:      'Vive en Vicente López · Domicilios coinciden',
-  lightgreen: 'Dirección distinta · DNI en Vicente López',
-  yellow:     'A analizar — Domicilios no concluyentes',
-  orange:     'A analizar — Zona limítrofe',
-  red:        'Extranjero — Fuera de Vicente López y limítrofes',
+  green:      'Vive en Vicente LÃ³pez Â· Domicilios coinciden',
+  lightgreen: 'DirecciÃ³n distinta Â· DNI en Vicente LÃ³pez',
+  yellow:     'A analizar â€” Domicilios no concluyentes',
+  orange:     'A analizar â€” Zona limÃ­trofe',
+  red:        'Extranjero â€” Fuera de Vicente LÃ³pez y limÃ­trofes',
   gray:       'Sin datos de DNI',
-  pink:       'Sin domicilio legible — Revisar manualmente'
+  pink:       'Sin domicilio legible â€” Revisar manualmente'
 };
 
 var VL_LOCS = ['carapachay','florida oeste','florida','la lucila','munro',
                'olivos','vicente lopez','villa adelina','villa martelli'];
 var VL_PART = ['vte lopez','vte. lopez','v.lopez','v. lopez','vte.lopez'];
-// Partidos/barrios limítrofes a Vicente López (no son VL pero tampoco extranjeros)
+// Partidos/barrios limÃ­trofes a Vicente LÃ³pez (no son VL pero tampoco extranjeros)
 var LIMITROFES = [
   'martinez','villa adelina',
   'villa ballester','villa concepcion','villa loyola','villa maipu','villa maipo',
@@ -1052,10 +1052,10 @@ var LIMITROFES = [
 ];
 var CATS    = ['2013','2014','2015','2016','2017','2018','2019/20'];
 
-// ── STATE ─────────────────────────────────────────────────────────────────────
+// â”€â”€ STATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 var ALL = [], CLUBS = [], cur = '', cat = null, filtered = [], lastUpdate = '';
 
-// ── UTILS ─────────────────────────────────────────────────────────────────────
+// â”€â”€ UTILS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function norm(s) {
   if (!s) return '';
   s = String(s).toLowerCase().trim();
@@ -1063,16 +1063,16 @@ function norm(s) {
 }
 
 function fotoJugadorUrl(numFoto) {
-  // numFoto = "4501" → busca 100_4501.JPG en la carpeta de fotos
+  // numFoto = "4501" â†’ busca 100_4501.JPG en la carpeta de fotos
   if (!numFoto || !numFoto.toString().trim()) return null;
   var n = numFoto.toString().trim().replace(/[^0-9]/g,'');
   if (!n) return null;
   // Construir nombre del archivo: 100_XXXX.JPG
   var nombre = '100_' + n + '.JPG';
-  // URL de búsqueda en la carpeta de Drive
+  // URL de bÃºsqueda en la carpeta de Drive
   // Usamos el thumbnail directo: necesitamos el file ID
-  // Como no tenemos el ID directamente, usamos la URL de búsqueda en carpeta
-  // La foto se sirve como thumbnail via query de nombre en la carpeta pública
+  // Como no tenemos el ID directamente, usamos la URL de bÃºsqueda en carpeta
+  // La foto se sirve como thumbnail via query de nombre en la carpeta pÃºblica
   return 'https://drive.google.com/thumbnail?id=' + n + '&sz=w300'; // fallback
 }
 
@@ -1081,27 +1081,27 @@ function fotoJugadorThumb(numFoto) {
   if (!numFoto || !numFoto.toString().trim()) return null;
   var n = numFoto.toString().trim().replace(/[^0-9]/g,'');
   if (!n) return null;
-  // El archivo se llama 100_XXXX.JPG y está en la carpeta
+  // El archivo se llama 100_XXXX.JPG y estÃ¡ en la carpeta
   // Usamos la URL directa de Drive con el nombre del archivo
-  // Como las fotos están compartidas públicamente en la carpeta:
+  // Como las fotos estÃ¡n compartidas pÃºblicamente en la carpeta:
   var filename = '100_' + n + '.JPG';
   // Search URL via folder
   return '_foto_' + filename; // marcador, se resuelve via API
 }
 
 function getFotoJugador(p) {
-  // Usa foto_id del jugador (col AK) si existe, sino busca en índice
-  var fileId = p.foto_id || null;
-  if (!fileId && p.num_foto) {
-    var n = p.num_foto.toString().replace(/[^0-9]/g,'');
-    var filename = '100_' + n + '.JPG';
-    var idx = window.FOTO_INDEX || {};
-    try {
-      var stored = JSON.parse(localStorage.getItem('cafi_fotos') || '{}');
-      Object.assign(idx, stored);
-    } catch(e) {}
-    fileId = idx[filename] || idx[filename.toLowerCase()] || null;
-  }
+  if (!p.num_foto) return null;
+  var n = p.num_foto.toString().replace(/[^0-9]/g,'');
+  if (!n) return null;
+  // Buscar en indice (cargado desde Apps Script o localStorage)
+  var idx = window.FOTO_INDEX || {};
+  try {
+    var stored = JSON.parse(localStorage.getItem('cafi_fotos') || '{}');
+    if (Object.keys(stored).length > Object.keys(idx).length) idx = stored;
+  } catch(e) {}
+  var filename = '100_' + n + '.JPG';
+  var fileId = idx[filename] || idx[filename.toLowerCase()] || 
+               idx['100_' + n + '.jpg'] || p.foto_id || null;
   return fileId ? 'https://drive.google.com/thumbnail?id=' + fileId + '&sz=w400' : null;
 }
 
@@ -1138,7 +1138,7 @@ function addrMatch(calle, k) {
 }
 
 function parseFechaVto(fecha_vto) {
-  // Parsea múltiples formatos:
+  // Parsea mÃºltiples formatos:
   // dd/mm/yyyy, yyyy-mm-dd, "Thu Jun 29 2028 00:00:00 GMT...", "21092031" (sin separadores)
   if (!fecha_vto || !fecha_vto.trim()) return null;
   var f = fecha_vto.trim();
@@ -1179,7 +1179,7 @@ function syncAllVtosToSheets() {
   var vtos = {};
   try { vtos = JSON.parse(localStorage.getItem('cafi_vtos') || '{}'); } catch(e) {}
   var dnis = Object.keys(vtos);
-  if (!dnis.length) { alert('No hay fechas de vto en caché local para sincronizar'); return; }
+  if (!dnis.length) { alert('No hay fechas de vto en cachÃ© local para sincronizar'); return; }
 
   var total = dnis.length, done = 0, errors = 0;
   var btn = document.getElementById('syncVtoBtn');
@@ -1238,7 +1238,7 @@ function saveVto(dni) {
     var p = val.split('-');
     if (p.length === 3) display = p[2] + '/' + p[1] + '/' + p[0];
   }
-  status.textContent = 'Guardando…';
+  status.textContent = 'Guardandoâ€¦';
   status.style.color = 'var(--muted)';
 
   // Guardar en localStorage inmediatamente
@@ -1258,7 +1258,7 @@ function saveVto(dni) {
     window[cb] = function(res) {
       clearTimeout(t); window[cb] = null;
       if (res && res.ok) {
-        status.textContent = '✓ Guardado';
+        status.textContent = 'âœ“ Guardado';
         status.style.color = 'var(--green)';
       } else {
         status.textContent = 'Guardado local';
@@ -1271,7 +1271,7 @@ function saveVto(dni) {
     s.onerror = function(){ clearTimeout(t); window[cb]=null; status.textContent='Guardado local'; status.style.color='var(--yellow)'; };
     document.head.appendChild(s);
   } else {
-    status.textContent = '✓ Guardado local';
+    status.textContent = 'âœ“ Guardado local';
     status.style.color = 'var(--green)';
     setTimeout(function(){ if(status) status.textContent=''; }, 3000);
   }
@@ -1295,7 +1295,7 @@ function addrMatchFuzzy(calle, numero, datos_dni) {
   }
 
   // Nivel 3 (typos graves como bencalada/blanco encalada):
-  // Si tenemos número Y al menos 4 chars seguidos de la calle aparecen en DNI
+  // Si tenemos nÃºmero Y al menos 4 chars seguidos de la calle aparecen en DNI
   if (!calleOk && numero && numero.trim()) {
     var n = numero.replace(/[^0-9]/g,'');
     if (n.length >= 2 && d.indexOf(n) >= 0) {
@@ -1310,7 +1310,7 @@ function addrMatchFuzzy(calle, numero, datos_dni) {
 
   if (!calleOk) return false;
 
-  // Verificar número si está disponible
+  // Verificar nÃºmero si estÃ¡ disponible
   if (numero && numero.trim()) {
     var n = numero.replace(/[^0-9]/g,'');
     if (n.length >= 2) return d.indexOf(n) >= 0;
@@ -1333,20 +1333,20 @@ function classify(calle, datos_dni, localidad_decl, partido_decl, numero) {
 
   // VERDE: ambos en VL (aunque no coincidan las calles)
   if (vlDni && vlDecl) return 'green';
-  // VERDE: calle+número coinciden Y al menos uno está en VL
+  // VERDE: calle+nÃºmero coinciden Y al menos uno estÃ¡ en VL
   var calleCoincide = addrMatchFuzzy(calle, numero, datos_dni);
   if (calleCoincide && (vlDni || vlDecl)) return 'green';
 
-  // Para rojo: ambos domicilios legibles y ambos fuera de VL y limítrofes
+  // Para rojo: ambos domicilios legibles y ambos fuera de VL y limÃ­trofes
   var limDni  = dniLegible  ? isLimitrofe(datos_dni)  : false;
   var limDecl = declLegible ? isLimitrofe(decl_texto) : false;
   var extDni  = dniLegible  && !vlDni  && !limDni;
   var extDecl = declLegible && !vlDecl && !limDecl;
 
-  // ROJO: ambos fuera de VL y limítrofes
+  // ROJO: ambos fuera de VL y limÃ­trofes
   if (dniLegible && declLegible && extDni && extDecl) return 'red';
 
-  // AMARILLO: todo lo demás
+  // AMARILLO: todo lo demÃ¡s
   return 'yellow';
 }
 
@@ -1355,7 +1355,7 @@ function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// ── CSV PARSER ────────────────────────────────────────────────────────────────
+// â”€â”€ CSV PARSER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function parseCSV(text) {
   var rows = [], re = /("(?:[^"]|"")*"|[^,\n\r]*)/g, cur = [], cell = '';
   var lines = text.split(/\r?\n/);
@@ -1383,21 +1383,21 @@ function parseCSV(text) {
   return rows;
 }
 
-// ── LOAD DATA ─────────────────────────────────────────────────────────────────
+// â”€â”€ LOAD DATA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function loadData() {
   document.getElementById('mainContent').innerHTML =
-    '<div class="fullscreen-msg"><div class="spinner"></div><div class="msg-title">Cargando datos…</div></div>';
+    '<div class="fullscreen-msg"><div class="spinner"></div><div class="msg-title">Cargando datosâ€¦</div></div>';
   document.getElementById('clubTabs').innerHTML = '';
-  document.getElementById('catBar').innerHTML = '<span class="cat-label">Categoría:</span>';
+  document.getElementById('catBar').innerHTML = '<span class="cat-label">CategorÃ­a:</span>';
   document.getElementById('stats').innerHTML = '';
 
   var CSV_PUB = 'https://docs.google.com/spreadsheets/d/1T9inNuk44hxJdzHwfoOVSj9cSq68kr48t9g9M_JwQZs/export?format=csv&gid=0';
   function tryFetch(urls, i) {
-    if (i >= urls.length) { showError('No se pudo cargar la hoja. Verificá tu conexión.'); return; }
+    if (i >= urls.length) { showError('No se pudo cargar la hoja. VerificÃ¡ tu conexiÃ³n.'); return; }
     fetch(urls[i], { cache: 'no-store' })
       .then(function(r){ if (!r.ok) throw new Error('HTTP '+r.status); return r.text(); })
       .then(function(text){
-        if (!text || text.trim().length < 20) throw new Error('Vacío');
+        if (!text || text.trim().length < 20) throw new Error('VacÃ­o');
         var rows = parseCSV(text);
         if (rows.length < 2) throw new Error('Sin datos');
         processDataRows(rows);
@@ -1435,39 +1435,39 @@ function processDataRows(rows) {
     var r = rows[i];
     // Nueva hoja: 1T9inNuk44hxJdzHwfoOVSj9cSq68kr48t9g9M_JwQZs
     var nombre    = ((r[28]||'').trim() + ' ' + (r[27]||'').trim()).trim(); // AC nombre + AB apellido
-    var nombre_ocr = (r[28]||'').trim();   // AC — Nombre OCR
-    var apellido_ocr = (r[27]||'').trim(); // AB — Apellido OCR
-    var dni       = (r[2]  || '').trim();  // C — DNI
-    var naciStr   = (r[3]  || '').trim();  // D — Fecha nac
-    var fotoFr    = (r[4]  || '').trim();  // E — Foto frente DNI
-    var fotoDo    = (r[5]  || '').trim();  // F — Foto dorso DNI
+    var nombre_ocr = (r[28]||'').trim();   // AC â€” Nombre OCR
+    var apellido_ocr = (r[27]||'').trim(); // AB â€” Apellido OCR
+    var dni       = (r[2]  || '').trim();  // C â€” DNI
+    var naciStr   = (r[3]  || '').trim();  // D â€” Fecha nac
+    var fotoFr    = (r[4]  || '').trim();  // E â€” Foto frente DNI
+    var fotoDo    = (r[5]  || '').trim();  // F â€” Foto dorso DNI
     var calle     = (r[6]  || '').trim();  // G
     var numero    = (r[7]  || '').trim();  // H
     var piso      = (r[8]  || '').trim();  // I
     var localidad = (r[9]  || '').trim();  // J
     var partido   = (r[10] || '').trim();  // K
     var provincia = (r[11] || '').trim();  // L
-    var club      = (r[14] || '').trim();  // O — Institución
-    var categoria = (r[15] || '').trim();  // P — Categoría
-    var datos_dni = (r[20] || '').trim();  // U — Dirección DNI (texto OCR domicilio)
-    var apto      = (r[24] || '').trim();  // Y — Apto Físico
-    var num_foto  = (r[31] || '').trim();  // AF — Número de foto jugador
-    var foto_id   = (r[36] || '').trim();  // AK — File ID de foto jugador (escrito por Apps Script)
-    var fecha_vto = (r[34] || '').trim();  // AI — Fecha vto DNI
-    var obs_sheet = (r[35] || '').trim();  // AJ — Observaciones
+    var club      = (r[14] || '').trim();  // O â€” InstituciÃ³n
+    var categoria = (r[15] || '').trim();  // P â€” CategorÃ­a
+    var datos_dni = (r[20] || '').trim();  // U â€” DirecciÃ³n DNI (texto OCR domicilio)
+    var apto      = (r[24] || '').trim();  // Y â€” Apto FÃ­sico
+    var num_foto  = (r[31] || '').trim();  // AF â€” NÃºmero de foto jugador
+    var foto_id   = (r[36] || '').trim();  // AK â€” File ID de foto jugador (escrito por Apps Script)
+    var fecha_vto = (r[34] || '').trim();  // AI â€” Fecha vto DNI
+    var obs_sheet = (r[35] || '').trim();  // AJ â€” Observaciones
     // Fallback nombre: si no hay OCR, usar col B original
     if (!nombre.trim() || nombre.trim() === ' ') nombre = (r[1]||'').trim();
 
-    // Filtrar filas válidas
+    // Filtrar filas vÃ¡lidas
     if (!dni || !club || !categoria) continue;
-    // Filtrar clubs inválidos: emails, muy cortos, o que son categorías
+    // Filtrar clubs invÃ¡lidos: emails, muy cortos, o que son categorÃ­as
     if (club.indexOf('@') >= 0) continue;  // emails
     if (club.length < 4) continue;          // muy corto
-    if (['2013','2014','2015','2016','2017','2018','2019/20'].indexOf(club) >= 0) continue; // categorías en col club
-    // Filtrar DNI no numérico
+    if (['2013','2014','2015','2016','2017','2018','2019/20'].indexOf(club) >= 0) continue; // categorÃ­as en col club
+    // Filtrar DNI no numÃ©rico
     var dniNum = parseFloat(dni.replace(/[-. ]/g,''));
     if (isNaN(dniNum)) continue;
-    // Deduplicar por DNI — si ya fue cargado, saltar
+    // Deduplicar por DNI â€” si ya fue cargado, saltar
     var dniKey = String(Math.round(dniNum));
     if (_seen[dniKey]) continue;
     _seen[dniKey] = true;
@@ -1475,7 +1475,7 @@ function processDataRows(rows) {
     var color = classify(calle, datos_dni, localidad, partido, numero);
     var hasApto = apto && apto !== 'No encontrado' && apto.trim() !== '';
 
-    // URL de foto de jugador: usar foto_id (col AK) si existe, sino buscar en índice
+    // URL de foto de jugador: usar foto_id (col AK) si existe, sino buscar en Ã­ndice
     var _fotoFileId = foto_id || (function(){
       if (!num_foto) return null;
       var n = num_foto.replace(/[^0-9]/g,'');
@@ -1502,7 +1502,7 @@ function processDataRows(rows) {
       num_foto: num_foto,
       foto_id: _fotoFileId,
       foto_jugador: num_foto ? '100_' + num_foto.replace(/[^0-9]/g,'') + '.JPG' : '',
-      tiene_foto: !!(foto_id && foto_id.trim().length > 5),
+      tiene_foto: !!(num_foto && String(num_foto).replace(/[^0-9]/g,'').length > 0),
       fecha_vto: fecha_vto,
       obs_sheet: obs_sheet,
       color: color
@@ -1527,12 +1527,12 @@ function processDataRows(rows) {
       applyOverrides(DELEGADOS);
       buildTabs();
       update();
-      // En modo informe: abrir reportes automáticamente
+      // En modo informe: abrir reportes automÃ¡ticamente
       if (REPORT_MODE) {
         toggleReport();
       }
       var si=document.getElementById('syncInd');
-      if(si&&SCRIPT_URL){var n=Object.keys(ov).length;si.textContent=n>0?'✓ '+n+' obs.':'';si.style.color='var(--green)';setTimeout(function(){if(si)si.textContent='';},3000);}
+      if(si&&SCRIPT_URL){var n=Object.keys(ov).length;si.textContent=n>0?'âœ“ '+n+' obs.':'';si.style.color='var(--green)';setTimeout(function(){if(si)si.textContent='';},3000);}
     });
   }
   function _safeLoad(fn){ try{ fn(_onDone); }catch(e){ _onDone(); } }
@@ -1548,7 +1548,7 @@ function processDataRows(rows) {
   renderAll();
 }
 
-// ── UI ────────────────────────────────────────────────────────────────────────
+// â”€â”€ UI â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function buildTabs() {
   var allClubs=CLUBS.slice();
   DELEGADOS.forEach(function(d){if(allClubs.indexOf(d.club)<0)allClubs.push(d.club);});
@@ -1588,7 +1588,7 @@ function update() {
   av.forEach(function(c){
     h += '<button class="cat-btn' + (cat===c?' active':'') + '" data-cat="' + encodeURIComponent(c) + '">' + esc(c) + '</button>';
   });
-  // Agregar botón Delegados si hay para este club
+  // Agregar botÃ³n Delegados si hay para este club
   var hasDel = DELEGADOS.some(function(d){return d.club===cur;});
   if(hasDel){
     h += '<button class="cat-btn del-btn' + (cat===DEL_CAT?' active':'') + '" data-cat="' + encodeURIComponent(DEL_CAT) + '">Delegados</button>';
@@ -1642,7 +1642,7 @@ function renderAll() {
   updateCounts();
 }
 
-// ── REPORTES ──────────────────────────────────────────────────────────────────
+// â”€â”€ REPORTES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 var _reportSort = {col:'nombre', asc:true};
 
 function toggleReport() {
@@ -1742,7 +1742,7 @@ function renderReport() {
     rows += '<tr class="report-row" style="border-bottom:1px solid rgba(255,255,255,.04);'+bg+'">' +
       '<td style="padding:8px 12px; color:var(--text);">'+esc(p.nombre)+'</td>'+
       '<td style="padding:8px 12px; color:var(--muted); font-family:monospace;">'+esc(p.dni)+'</td>'+
-      '<td style="padding:8px 12px; color:var(--muted);">'+esc(p.nacimiento||'—')+'</td>'+
+      '<td style="padding:8px 12px; color:var(--muted);">'+esc(p.nacimiento||'â€”')+'</td>'+
       '<td style="padding:8px 12px; text-align:center;"><span style="background:rgba(59,130,246,.15);color:var(--accent);border-radius:4px;padding:1px 6px;font-size:11px;font-weight:700;">'+esc(p.categoria)+'</span></td>'+
       '<td style="padding:8px 12px; color:var(--text); font-size:11px; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">'+esc(p.club)+'</td>'+
       '<td style="padding:8px 12px; text-align:center;">'+(colorDot[p.color]||'<span style="color:var(--muted);">?</span>')+'</td>'+
@@ -1823,11 +1823,13 @@ function renderGrid() {
   var h = '';
   filtered.forEach(function(p, i) {
     // Foto principal: foto de jugador (fichaje) si existe, sino foto frente DNI
-    var thumb  = (p.tiene_foto && getFotoJugador(p)) || driveThumb(p.foto_frente);
+    var fotoUrl = getFotoJugador(p);
+    var thumb  = fotoUrl || driveThumb(p.foto_frente);
+    var tiene_foto_real = !!fotoUrl;
     var hasDni = !!(p.foto_frente && p.foto_frente !== 'No encontrado' && p.foto_frente.trim() !== '');
     var hasAp  = !!p.has_apto;
 
-    // Foto — onerror usa función global para evitar problemas de comillas
+    // Foto â€” onerror usa funciÃ³n global para evitar problemas de comillas
     var photoInner;
     if (thumb) {
       photoInner = '<img src="' + esc(thumb) + '" loading="lazy" onerror="photoError(this)">';
@@ -1838,7 +1840,7 @@ function renderGrid() {
         '</div><span class="photo-lbl">Sin foto</span></div>';
     }
 
-    // Dirección declarada
+    // DirecciÃ³n declarada
     var addrForm = [p.calle, p.numero].filter(Boolean).join(' ');
     if (p.localidad) addrForm += ' \u2014 ' + p.localidad;
 
@@ -1944,7 +1946,7 @@ function openModal(i) {
     '</div>';
   }
 
-  // Documentación
+  // DocumentaciÃ³n
   var hasFr = !!(p.foto_frente && p.foto_frente !== 'No encontrado' && p.foto_frente.trim() !== '');
   var hasDo = !!(p.foto_dorso  && p.foto_dorso  !== 'No encontrado' && p.foto_dorso.trim()  !== '');
   var hasAp = !!p.has_apto;
@@ -2028,7 +2030,7 @@ function imgError(el) {
   el.parentNode.innerHTML = '<div class="img-error">No se pudo cargar</div>';
 }
 
-// ── INIT ── (login dispara loadData)
+// â”€â”€ INIT â”€â”€ (login dispara loadData)
 // loadData se llama desde doLogin()
 </script>
 
@@ -2052,7 +2054,7 @@ function imgError(el) {
         </select>
       </div>
       <div style="display:flex; flex-direction:column; gap:4px;">
-        <label style="font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em;">Categoría</label>
+        <label style="font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em;">CategorÃ­a</label>
         <select id="rFiltCat" onchange="renderReport()" style="background:var(--bg); border:1px solid var(--border); color:var(--text); border-radius:6px; padding:4px 8px; font-size:12px;">
           <option value="">Todas</option>
         </select>
@@ -2078,7 +2080,7 @@ function imgError(el) {
         </select>
       </div>
       <div style="display:flex; flex-direction:column; gap:4px;">
-        <label style="font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em;">Apto físico</label>
+        <label style="font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em;">Apto fÃ­sico</label>
         <select id="rFiltApto" onchange="renderReport()" style="background:var(--bg); border:1px solid var(--border); color:var(--text); border-radius:6px; padding:4px 8px; font-size:12px;">
           <option value="">Todos</option>
           <option value="si">Con apto</option>
@@ -2124,7 +2126,7 @@ function imgError(el) {
     <button onclick="document.getElementById('obsText').value='ALTA: Ingresa desde club '+prompt('Club anterior:')" style="background:rgba(34,197,94,.15);color:#22c55e;border:1px solid rgba(34,197,94,.3);border-radius:6px;padding:3px 10px;font-size:11px;cursor:pointer;font-family:var(--font-ui);">&#8593; Dar de ALTA</button>
     <button onclick="document.getElementById('obsText').value='TRANSFERENCIA: Pase de club '+prompt('De:')+' a '+prompt('A:')" style="background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.3);border-radius:6px;padding:3px 10px;font-size:11px;cursor:pointer;font-family:var(--font-ui);">&#8646; Transferencia</button>
   </div>
-  <textarea class="obs-textarea" id="obsText" placeholder="Escribi el motivo del cambio…"></textarea></div>
+  <textarea class="obs-textarea" id="obsText" placeholder="Escribi el motivo del cambioâ€¦"></textarea></div>
     <div><div class="obs-lbl">Nuevo estado</div>
     <div class="color-picker" id="colorPicker">
       <div><div class="color-opt" data-color="green"      style="background:var(--green-bg);border-color:var(--green-border)"></div><div class="color-opt-lbl">VL</div></div>
