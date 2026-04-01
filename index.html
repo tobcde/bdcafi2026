@@ -2074,14 +2074,19 @@ function openModal(i) {
   var hasFr = !!(p.foto_frente && p.foto_frente !== 'No encontrado' && p.foto_frente.trim() !== '');
   var hasDo = !!(p.foto_dorso  && p.foto_dorso  !== 'No encontrado' && p.foto_dorso.trim()  !== '');
   var hasAp = !!p.has_apto;
+  var fotoJug = getFotoJugador(p);
+  var hasFotoJug = !!fotoJug;
 
   var dniVto = dniVtoColor(p.fecha_vto, hasFr);
   h += '<div class="msec"><div class="msec-t">\ud83d\udcf8 Documentaci\u00f3n</div>';
   h += '<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">';
+  h += '<span class="doc-ind ' + (hasFotoJug ? 'ok' : 'no') + '">' + (hasFotoJug ? '\u2713' : '\u2717') + ' Foto jugador</span>';
   h += '<span class="doc-ind ' + dniVto + '">' + (dniVto==='ok'?'\u2713':dniVto==='warn'?'\u26a0':dniVto==='white'?'\u25cb':'\u2717') + ' DNI</span>';
   h += '<span class="doc-ind ' + (hasDo ? 'ok' : 'no') + '">' + (hasDo ? '\u2713' : '\u2717') + ' DNI Dorso</span>';
   h += '<span class="doc-ind ' + (hasAp ? 'ok' : 'no') + '">' + (hasAp ? '\u2713' : '\u2717') + ' Apto F\u00edsico</span>';
   h += '</div>';
+  // Foto del jugador (fichaje)
+  if(hasFotoJug) h += '<div class="img-grid" style="margin-bottom:12px;"><div class="img-box apto"><img src="' + esc(fotoJug) + '" loading="lazy" onerror="imgError(this)" style="width:100%;display:block;"><div class="img-label">Foto jugador</div></div></div>';
   // Campo para cargar/editar fecha de vencimiento del DNI
   if(!READONLY) h += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">' +
        '<span style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;min-width:110px;">Vto. DNI</span>' +
@@ -2426,7 +2431,7 @@ function imgError(el) {
   font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
   text-transform:uppercase;letter-spacing:.06em;
   color:rgba(255,255,255,.25);pointer-events:none;user-select:none;">
-  v4.6
+  v4.7
 </div>
 </body>
 </html>
