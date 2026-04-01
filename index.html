@@ -1136,8 +1136,7 @@ var LIMITROFES = [
   'villa ballester','villa concepcion','villa loyola','villa maipu','villa maipo',
   'saavedra','coghlan','nunez',
   'san isidro','caba','capital federal','ciudad de buenos aires','ciudad autonoma',
-  'san martin','gral san martin','general san martin','tres de febrero',
-  'tigre','san fernando'
+  'san martin','gral san martin','general san martin','tres de febrero'
 ];
 var CATS    = ['2013','2014','2015','2016','2017','2018','2019/20'];
 
@@ -1442,6 +1441,9 @@ function classify(calle, datos_dni, localidad_decl, partido_decl, numero) {
 
   // ROJO: ambos fuera de VL y lim\u00edtrofes
   if (dniLegible && declLegible && extDni && extDecl) return 'red';
+
+  // ROJO: declarado claramente extranjero aunque no haya DNI legible
+  if (declLegible && !vlDecl && !limDecl && !dniLegible) return 'red';
 
   // AMARILLO: todo lo dem\u00e1s
   return 'yellow';
@@ -2431,7 +2433,7 @@ function imgError(el) {
   font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
   text-transform:uppercase;letter-spacing:.06em;
   color:rgba(255,255,255,.25);pointer-events:none;user-select:none;">
-  v4.7
+  v4.9
 </div>
 </body>
 </html>
