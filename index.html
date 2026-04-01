@@ -1547,7 +1547,7 @@ function processDataRows(rows) {
     var club      = (r[14] || '').trim();  // O \u2014 Instituci\u00f3n
     var categoria = (r[15] || '').trim();  // P \u2014 Categor\u00eda
     var datos_dni = (r[20] || '').trim();  // U \u2014 Direcci\u00f3n DNI (texto OCR domicilio)
-    var apto      = (r[24] || '').trim();  // Y \u2014 Apto F\u00edsico
+    var apto      = (r[21] || '').trim();  // V \u2014 Apto F\u00edsico
     var num_foto  = (r[31] || '').trim();  // AF \u2014 N\u00famero de foto jugador
     var foto_id   = (r[36] || '').trim();  // AK \u2014 File ID de foto jugador (escrito por Apps Script)
     var fecha_vto = (r[34] || '').trim();  // AI \u2014 Fecha vto DNI
@@ -2426,7 +2426,7 @@ function imgError(el) {
   font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
   text-transform:uppercase;letter-spacing:.06em;
   color:rgba(255,255,255,.25);pointer-events:none;user-select:none;">
-  v4.5
+  v4.6
 </div>
 </body>
 </html>
