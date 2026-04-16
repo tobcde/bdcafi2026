@@ -454,10 +454,7 @@ body.readonly a[target="_blank"] { pointer-events: none !important; color: var(-
 <div class="club-bar"><div class="club-tabs" id="clubTabs"></div></div>
 <div class="cat-bar" id="catBar"><span class="cat-label">Categor&iacute;a:</span></div>
 <div class="estado-bar" id="estadoBar" class="admin-only">
-  <span class="cat-label" style="margin-left:12px;border-left:1px solid var(--border);padding-left:12px;">Fichaje:</span>
-  <button class="foto-btn eb-all active" id="fotoFiltAll" onclick="setFotoFilt('all')" style="background:rgba(168,85,247,.15);border:1.5px solid rgba(168,85,247,.4);color:#a855f7;border-radius:20px;padding:4px 12px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;">Todos</button>
-  <button class="foto-btn" id="fotoFiltSi"  onclick="setFotoFilt('si')"  style="background:rgba(34,197,94,.12);border:1.5px solid rgba(34,197,94,.35);color:#22c55e;border-radius:20px;padding:4px 12px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;">&#9679; Con foto</button>
-  <button class="foto-btn" id="fotoFiltNo"  onclick="setFotoFilt('no')"  style="background:rgba(148,163,184,.1);border:1.5px solid rgba(148,163,184,.3);color:#94a3b8;border-radius:20px;padding:4px 12px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;">&#9675; Sin foto</button>
+
   <span class="cat-label">Estado:</span>
   <button class="estado-btn eb-all active" data-estado="all">Todos</button>
   <button class="estado-btn eb-green"  data-estado="green">&#9679; VL <span class="ecnt" id="ec-green">0</span></button>
@@ -573,7 +570,7 @@ function sha256(str) {
 
 
 // \u2500\u2500 URLS EXTRA
-var DEL_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vROD3KC8278MhofGlbUdJN3hC1Syehmk_Dr9C6WL0PF32DoJjRZBK9qVd-FlPOInK0pjaHWOrrLRWqc/pub?gid=188066866&single=true&output=csv';
+var DEL_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vROD3KC8278MhofGlbUdJN3hC1Syehmk_Dr9C6WL0PF32DoJjRZBK9qVd-FlPOInK0pjaHWOrrLRWqc/pub?gid=188066866&single=true&output=csv&range=A:W';
 var TEC_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vROD3KC8278MhofGlbUdJN3hC1Syehmk_Dr9C6WL0PF32DoJjRZBK9qVd-FlPOInK0pjaHWOrrLRWqc/pub?gid=502723740&single=true&output=csv';
 var DELEGADOS = [], TECNICOS = [];
 var TEC_CLUB = '\u25b6 T\u00c9CNICOS';
@@ -633,7 +630,7 @@ function applyOverrides(players) {
 }
 function loadOverridesFromSheets(callback) {
   if (!SCRIPT_URL) { callback(getOverrides()); return; }
-  var cb='_cafiR'+Date.now(), t=setTimeout(function(){window[cb]=null;callback(getOverrides());},10000);
+  var cb='_cafiR'+Date.now(), t=setTimeout(function(){window[cb]=null;callback(getOverrides());},20000);
   window[cb]=function(res){clearTimeout(t);window[cb]=null;
     if(res&&res.ok){
       if(res.data) saveLocalOverrides(res.data);
@@ -647,6 +644,47 @@ function loadOverridesFromSheets(callback) {
       if(res.fotos){
         try{localStorage.setItem('cafi_fotos',JSON.stringify(res.fotos));}catch(e){}
         window.FOTO_INDEX = res.fotos;
+      }
+      if(res.fotos_del){
+        window.FOTO_DEL_INDEX = res.fotos_del;
+        // Patch delegados con foto
+        setTimeout(function(){
+          document.querySelectorAll('.card[data-idx]').forEach(function(card) {
+            if (!card.querySelector('.photo-placeholder')) return;
+            var i = parseInt(card.getAttribute('data-idx'));
+            var p = filtered[i];
+            if (!p || p.tipo !== 'delegado') return;
+            var numFoto = window.FOTO_DEL_INDEX[p.dni];
+            if (!numFoto) return;
+            var idx2 = window.FOTO_INDEX || {};
+            var fname = '100_' + numFoto + '.JPG';
+            var fileId = idx2[fname] || idx2[fname.toLowerCase()] || null;
+            if (!fileId) return;
+            var url = 'https://drive.google.com/thumbnail?id=' + fileId + '&sz=w200';
+            var photoDiv = card.querySelector('.photo');
+            if (photoDiv) photoDiv.innerHTML = '<img src="'+url+'" loading="lazy" decoding="async" onerror="photoError(this)">';
+          });
+        }, 200);
+      }
+      if(true){//dummy
+        // Actualizar cards sin foto sin re-renderizar todo
+        setTimeout(function(){
+          var cards = document.querySelectorAll('.card[data-idx]');
+          var updated = 0;
+          cards.forEach(function(card) {
+            if (!card.querySelector('.photo-placeholder')) return;
+            var i = parseInt(card.getAttribute('data-idx'));
+            var p = filtered[i];
+            if (!p) return;
+            var fotoUrl = getFotoJugador(p);
+            if (!fotoUrl) return;
+            var photoDiv = card.querySelector('.photo');
+            if (photoDiv) {
+              photoDiv.innerHTML = '<img src="'+fotoUrl+'" loading="lazy" decoding="async" onerror="photoError(this)">';
+              updated++;
+            }
+          });
+        }, 100);
       }
       callback(res.data||getOverrides());
     } else { callback(getOverrides()); }};  
@@ -835,8 +873,11 @@ function loadDelegados(cb){
       for(var j=1;j<rows.length;j++){
         var r=rows[j], nombre=(r[2]||'').trim(), dni=(r[3]||'').trim().replace(/[^0-9]/g,''), club=(r[15]||'').trim();
         if(!nombre||!dni||!club)continue;
+        var foto_del = r.length > 17 ? (r[17]||'').trim() : ''; // col R â€” foto delegado
+        // delegados sin foto en W aparecen igual, solo sin foto de portada
         DELEGADOS.push({tipo:'delegado',nombre:nombre,dni:dni,nacimiento:(r[4]||'').trim(),
           foto_frente:(r[5]||'').trim(),foto_dorso:(r[6]||'').trim(),
+          foto_jugador:foto_del,
           calle:(r[7]||'').trim(),numero:(r[8]||'').trim(),localidad:(r[10]||'').trim(),
           partido:(r[11]||'').trim(),telefono:(r[13]||'').trim(),email:(r[14]||'').trim(),
           club:club,categoria:DEL_CAT,color:'purple',overridden:false,obs:'',obsHistory:[]});
@@ -873,7 +914,7 @@ function loadTecnicos(cb){
 // \u2500\u2500 CARD RENDERERS for delegados/tecnicos
 function renderTecnicoCard(p,i){
   var thumb=driveThumb(p.foto_principal)||driveThumb(p.foto_frente);
-  var photo=thumb?'<img src="'+esc(thumb)+'" loading="lazy" onerror="photoError(this)">':'<div class="photo-placeholder"><div class="photo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><span class="photo-lbl">Sin foto</span></div>';
+  var photo=thumb?'<img src="'+esc(thumb)+'" loading="lazy" decoding="async" onerror="photoError(this)">':'<div class="photo-placeholder"><div class="photo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><span class="photo-lbl">Sin foto</span></div>';
   return '<div class="card-tec" data-idx="'+i+'">'
     +'<span class="tec-badge">T\u00e9cnico</span>'
     +'<div class="tec-photo">'+photo+'</div>'
@@ -888,8 +929,17 @@ function renderTecnicoCard(p,i){
   +'</div>';
 }
 function renderDelegadoCard(p,i){
-  var thumb=driveThumb(p.foto_frente);
-  var photo=thumb?'<img src="'+esc(thumb)+'" loading="lazy" onerror="photoError(this)">':'<div class="photo-placeholder"><div class="photo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><span class="photo-lbl">Sin foto</span></div>';
+  // Usar FOTO_DEL_INDEX para portada delegado
+  var thumbJug = null;
+  if (window.FOTO_DEL_INDEX && window.FOTO_DEL_INDEX[p.dni] && window.FOTO_INDEX) {
+    var nf = window.FOTO_DEL_INDEX[p.dni];
+    var fname = '100_' + nf + '.JPG';
+    var fid = window.FOTO_INDEX[fname] || window.FOTO_INDEX[fname.toLowerCase()] || null;
+    if (fid) thumbJug = 'https://drive.google.com/thumbnail?id=' + fid + '&sz=w200';
+  }
+  if (!thumbJug && p.foto_jugador) thumbJug = driveThumb(p.foto_jugador);
+  var thumb = thumbJug || driveThumb(p.foto_frente);
+  var photo=thumb?'<img src="'+esc(thumb)+'" loading="lazy" decoding="async" onerror="photoError(this)">':'<div class="photo-placeholder"><div class="photo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><span class="photo-lbl">Sin foto</span></div>';
   return '<div class="card-del" data-idx="'+i+'">'
     +'<span class="del-badge">Delegado</span>'
     +'<div class="photo">'+photo+'</div>'
@@ -1173,7 +1223,7 @@ function fotoJugadorUrl(numFoto) {
   // Usamos el thumbnail directo: necesitamos el file ID
   // Como no tenemos el ID directamente, usamos la URL de b\u00fasqueda en carpeta
   // La foto se sirve como thumbnail via query de nombre en la carpeta p\u00fablica
-  return 'https://drive.google.com/thumbnail?id=' + n + '&sz=w300'; // fallback
+  return 'https://drive.google.com/thumbnail?id=' + n + '&sz=w200'; // fallback
 }
 
 function fotoJugadorThumb(numFoto) {
@@ -1202,7 +1252,7 @@ function getFotoJugador(p) {
   var filename = '100_' + n + '.JPG';
   var fileId = idx[filename] || idx[filename.toLowerCase()] || 
                idx['100_' + n + '.jpg'] || p.foto_id || null;
-  return fileId ? 'https://drive.google.com/thumbnail?id=' + fileId + '&sz=w400' : null;
+  return fileId ? 'https://drive.google.com/thumbnail?id=' + fileId + '&sz=w200' : null;
 }
 
 function driveThumb(url) {
@@ -1210,7 +1260,7 @@ function driveThumb(url) {
   var m = url.match(/[?&]id=([^&]+)/);
   if (!m) { m = url.match(/\/d\/([^/]+)/); }
   if (!m) return null;
-  return 'https://drive.google.com/thumbnail?id=' + m[1] + '&sz=w300';
+  return 'https://drive.google.com/thumbnail?id=' + m[1] + '&sz=w200';
 }
 
 function driveLink(url) {
@@ -1564,8 +1614,9 @@ function processDataRows(rows) {
 
     // Filtrar filas v\u00e1lidas
     if (!dni || !club || !categoria) continue;
-    // Saltear jugadores sin foto de fichaje (col AF vac\u00eda)
-    if (!num_foto || String(num_foto).replace(/[^0-9]/g,'').length === 0) continue;
+        // Saltear jugadores sin foto de fichaje (col AF vacia) â€” EXCEPTO 2019/2020/2021
+    var _cat_menor = (categoria==='2019' || categoria==='2019/20' || categoria==='2020' || categoria==='2021');
+    if (!_cat_menor && (!num_foto || String(num_foto).replace(/[^0-9]/g,'').length === 0)) continue;
     // Filtrar clubs inv\u00e1lidos: emails, muy cortos, o que son categor\u00edas
     if (club.indexOf('@') >= 0) continue;  // emails
     if (club.length < 4) continue;          // muy corto
@@ -1618,7 +1669,7 @@ function processDataRows(rows) {
   }
 
   CLUBS.sort();
-  cur = READONLY ? CLUB_MODE : (CLUBS[0] || '');
+  cur = READONLY ? CLUB_MODE : (CLUBS[0] || '');  // preseleccionar primer club
   cat = null;
   lastUpdate = new Date().toLocaleTimeString('es-AR');
 
@@ -1673,13 +1724,7 @@ function buildTabs() {
     b.addEventListener('click', function() {
       cur = decodeURIComponent(this.getAttribute('data-club'));
       cat = null;
-      // Resetear filtro de foto al cambiar de club
-      fotoFilt = 'all';
       estadoFilter = estadoFilter || 'all';
-      ['fotoFiltAll','fotoFiltSi','fotoFiltNo'].forEach(function(id){
-        var el=document.getElementById(id);
-        if(el){el.classList.remove('active'); if(id==='fotoFiltAll') el.classList.add('active');}
-      });
       ct.querySelectorAll('.club-tab').forEach(function(x){x.classList.remove('active');});
       this.classList.add('active');
       update();
@@ -1688,6 +1733,17 @@ function buildTabs() {
 }
 
 function update() {
+  // Si no hay club seleccionado, mostrar pantalla de bienvenida
+  if (!cur && !READONLY) {
+    document.getElementById('mainContent').innerHTML =
+      '<div class="fullscreen-msg" style="margin-top:60px;">' +
+      '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>' +
+      '<div class="msg-title">SeleccionÃ¡ un club para ver los jugadores</div>' +
+      '</div>';
+    document.getElementById('stats').innerHTML = '';
+    document.getElementById('catBar').innerHTML = '<span class="cat-label">CategorÃ­a:</span>';
+    return;
+  }
   var cp = ALL.filter(function(p){return p.club===cur;});
   // Agrupar 2019 y 2019/20 en la misma tab
   var cats2019raw = cp.filter(function(p){ return p.categoria==='2019' || p.categoria==='2019/20'; });
@@ -1731,10 +1787,9 @@ function getF(){
     return p.dni.indexOf(searchTerm)>=0||p.nombre.toLowerCase().indexOf(t)>=0;
   });
   // Si hay filtro de foto activo, mostrar todos los clubs (no filtrar por cur)
-  var ignorarClub = (fotoFilt==='si'||fotoFilt==='no');
   return ALL.filter(function(p){
-    if(!ignorarClub && p.club!==cur)return false;
-    if(!ignorarClub && cat){
+    if(p.club!==cur)return false;
+    if(cat){
       // La tab 2019/20 incluye jugadores con categorÃ­a 2019 o 2019/20
       if(cat==='2019/20'){
         if(p.categoria!=='2019/20' && p.categoria!=='2019') return false;
@@ -1743,11 +1798,7 @@ function getF(){
       }
     }
     if(estadoFilter&&estadoFilter!=='all'&&p.color!==estadoFilter)return false;
-    if(p.tipo!=='tecnico'&&p.tipo!=='delegado'){
-      var _tf = !!p.tiene_foto;
-      if(fotoFilt==='si'&&!_tf)return false;
-      if(fotoFilt==='no'&&_tf)return false;
-    }
+
     if(searchTerm){var t=searchTerm.toLowerCase();
       if(p.dni.indexOf(searchTerm)<0&&p.nombre.toLowerCase().indexOf(t)<0)return false;}
     return true;
@@ -1969,7 +2020,9 @@ function renderGrid() {
   filtered.forEach(function(p, i) {
     // Foto principal: foto de jugador (fichaje) si existe, sino foto frente DNI
     var fotoUrl = getFotoJugador(p);
-    var thumb  = fotoUrl || driveThumb(p.foto_frente);
+    // Cat 2019/2020/2021 sin foto fichaje: usar foto frente DNI como portada
+    var _esCatMenor = (p.categoria==='2019' || p.categoria==='2019/20' || p.categoria==='2020' || p.categoria==='2021');
+    var thumb = fotoUrl || (_esCatMenor ? driveThumb(p.foto_frente) : null);
     var tiene_foto_real = !!fotoUrl;
     var hasDni = !!(p.foto_frente && p.foto_frente !== 'No encontrado' && p.foto_frente.trim() !== '');
     var hasAp  = !!p.has_apto;
@@ -1977,7 +2030,7 @@ function renderGrid() {
     // Foto \u2014 onerror usa funci\u00f3n global para evitar problemas de comillas
     var photoInner;
     if (thumb) {
-      photoInner = '<img src="' + esc(thumb) + '" loading="lazy" onerror="photoError(this)">';
+            photoInner = '<img src="' + esc(fotoUrl) + '" loading="lazy" decoding="async" onerror="photoError(this)">';
     } else {
       photoInner = '<div class="photo-placeholder"><div class="photo-icon">' +
         '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">' +
@@ -2033,6 +2086,20 @@ function renderGrid() {
 
   grid.innerHTML = h;
   // Single delegated listener handles chk, obs-btn, card clicks
+  // Patch: actualizar fotos que no cargaron por timing del FOTO_INDEX
+  if (window.FOTO_INDEX && Object.keys(window.FOTO_INDEX).length > 0) {
+    grid.querySelectorAll('.card[data-idx]').forEach(function(card) {
+      if (!card.querySelector('.photo-placeholder')) return;
+      var i = parseInt(card.getAttribute('data-idx'));
+      var p = filtered[i];
+      if (!p) return;
+      var fotoUrl = getFotoJugador(p);
+      if (!fotoUrl) return;
+      var photoDiv = card.querySelector('.photo');
+      if (photoDiv) photoDiv.innerHTML = '<img src="'+fotoUrl+'" loading="lazy" decoding="async" onerror="photoError(this)">';
+    });
+  }
+
   grid.addEventListener('click', function(e) {
     var chk=e.target.closest('.chk');
     if(chk){e.stopPropagation();e.preventDefault();toggleSel(chk.getAttribute('data-dni'));return;}
@@ -2311,11 +2378,20 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModa
 
 
 function photoError(el) {
-  el.parentNode.innerHTML =
-    '<div class="photo-placeholder">' +
-    '<div class="photo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">' +
-    '<circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>' +
-    '<span class="photo-lbl">Sin foto</span></div>';
+  var retries = parseInt(el.getAttribute('data-retries') || '0');
+  if (retries < 4) {
+    el.setAttribute('data-retries', retries + 1);
+    var src = el.src;
+    el.src = '';
+    setTimeout(function() { if(el.parentNode) el.src = src; }, 1500 * (retries + 1));
+  } else {
+    el.onerror = null;
+    if (el.parentNode) el.parentNode.innerHTML =
+      '<div class="photo-placeholder">' +
+      '<div class="photo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">' +
+      '<circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>' +
+      '<span class="photo-lbl">Sin foto</span></div>';
+  }
 }
 function imgError(el) {
   el.parentNode.innerHTML = '<div class="img-error">No se pudo cargar</div>';
@@ -2453,7 +2529,7 @@ function imgError(el) {
   font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
   text-transform:uppercase;letter-spacing:.06em;
   color:rgba(255,255,255,.25);pointer-events:none;user-select:none;">
-  v5.2
+  v6.5
 </div>
 </body>
 </html>
