@@ -58,8 +58,14 @@ header { background:var(--surface); border-bottom:2px solid var(--accent); paddi
 .grid-wrap { padding:16px 20px; }
 .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; }
 
-.card { border-radius:8px; border:1px solid; overflow:hidden; cursor:pointer; transition:transform .12s,box-shadow .12s; display:flex; flex-direction:column; }
+.card { position:relative; border-radius:8px; border:1px solid; overflow:hidden; cursor:pointer; transition:transform .12s,box-shadow .12s; display:flex; flex-direction:column; }
 .card:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.5); }
+.card.dup { border-color:#dc2626; box-shadow:0 0 0 2px rgba(220,38,38,.35); }
+.card.dup:hover { box-shadow:0 0 0 2px rgba(220,38,38,.55), 0 8px 24px rgba(0,0,0,.5); }
+.dup-band { position:absolute; top:0; left:0; right:0; z-index:5; background:repeating-linear-gradient(135deg,#dc2626 0 12px,#991b1b 12px 24px); color:#fff; font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:11px; letter-spacing:.12em; text-align:center; padding:4px 6px; text-transform:uppercase; line-height:1.15; box-shadow:0 2px 6px rgba(0,0,0,.35); }
+.dup-band .dup-sub { display:block; font-size:9px; font-weight:600; letter-spacing:.04em; opacity:.95; text-transform:none; margin-top:1px; }
+.card.dup .photo { padding-top:30px; }
+.card.dup .chk { top:34px; }
 .card.green      { background:var(--green-bg);  border-color:var(--green-border); }
 .card.lightgreen { background:var(--lgreen-bg); border-color:var(--lgreen-border); }
 .card.yellow     { background:var(--yellow-bg); border-color:var(--yellow-border); }
@@ -2216,10 +2222,13 @@ function _buildAll(rows) {
     // Filtrar DNI no num\u00e9rico
     var dniNum = parseFloat(dni.replace(/[-. ]/g,''));
     if (isNaN(dniNum)) continue;
-    // Deduplicar por DNI \u2014 si ya fue cargado, saltar
+    // Deduplicar por DNI+club: el mismo chico puede estar fichado en mas de un club,
+    // queremos verlos a todos (con leyenda "duplicado"). Solo salteamos repeticiones
+    // exactas dentro del MISMO club.
     var dniKey = String(Math.round(dniNum));
-    if (_seen[dniKey]) continue;
-    _seen[dniKey] = true;
+    var dupKey = dniKey + '|' + club;
+    if (_seen[dupKey]) continue;
+    _seen[dupKey] = true;
 
     var color = classify(calle, datos_dni, localidad, partido, numero);
     var hasApto = apto && apto !== 'No encontrado' && apto.trim() !== '';
@@ -2259,6 +2268,21 @@ function _buildAll(rows) {
 
     if (club && !_seenClub[club]) { _seenClub[club] = true; CLUBS.push(club); }
   }
+
+  // Indice de DNIs duplicados (mismo DNI fichado en >1 club).
+  // window.DNI_CLUBS[dni] = ['Club A', 'Club B', ...]  (>=2 elementos)
+  var _dniMap = {};
+  for (var z = 0; z < ALL.length; z++) {
+    var _d = ALL[z].dni, _c = ALL[z].club;
+    if (!_d || !_c) continue;
+    if (!_dniMap[_d]) _dniMap[_d] = {};
+    _dniMap[_d][_c] = true;
+  }
+  window.DNI_CLUBS = {};
+  Object.keys(_dniMap).forEach(function(d){
+    var clubs = Object.keys(_dniMap[d]);
+    if (clubs.length > 1) window.DNI_CLUBS[d] = clubs.sort();
+  });
 }
 
 function _buildDelegados(rows) {
@@ -2642,8 +2666,12 @@ function renderGrid() {
     if(p.tipo==='delegado'){ h+=renderDelegadoCard(p,i); return; }
 
     // Jugador normal
-    var cardCls='card '+p.color+(p.overridden?' overridden':'');
+    var _dupClubs = (window.DNI_CLUBS && window.DNI_CLUBS[p.dni]) ? window.DNI_CLUBS[p.dni] : null;
+    var _isDup = !!_dupClubs;
+    var _otrosClubs = _isDup ? _dupClubs.filter(function(c){ return c !== p.club; }) : [];
+    var cardCls='card '+p.color+(p.overridden?' overridden':'')+(_isDup?' dup':'');
     h+='<div class="'+cardCls+'" data-idx="'+i+'">'
+      +(_isDup ? '<div class="dup-band" title="Tambien fichado en: '+esc(_otrosClubs.join(', '))+'">&#9888; DUPLICADO &#9888;<span class="dup-sub">Tambien en: '+esc(_otrosClubs.join(', '))+'</span></div>' : '')
       +'<div class="chk" data-dni="'+esc(p.dni)+'">'+(selectedDnis[p.dni]?'\u2713':'')+'</div>' +
       '<div class="photo">' + photoInner + '</div>' +
       '<div class="cbar"></div>' +
