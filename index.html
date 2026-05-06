@@ -2325,6 +2325,40 @@ function _buildTecnicos(rows) {
 }
 
 // \u2500\u2500 UI \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+// Alias cortos para mostrar en las tabs. El nombre real (largo) sigue siendo el de la Sheet
+// y se usa para todo lo demas (filtros, modal, DB, etc).
+var CLUB_ALIAS = {
+  'Centro de Fomento M.M.Padilla': 'Padilla',
+  'CIRES NORTE (Norte Asoc. Vecinal de Fomento y Cultura)': 'CIRES Norte',
+  'Club Atletico Caseros': 'Caseros',
+  'Club Atletico Colegiales': 'Colegiales',
+  'Club Atletico Platense': 'Platense',
+  'Club Social y Cultural D.F. Sarmiento': 'Sarmiento',
+  'Club Social y Deportivo Defensores de Florida': 'Defensores',
+  'Club Social y Deportivo Estrella Federal': 'Estrella Federal',
+  'Club Social y Deportivo Industrial de Munro': 'Industrial',
+  'Club Social y Deportivo Union Florida': 'Union Florida',
+  'Club Union de Munro': 'Union Munro',
+  'El Ciclon F.C.': 'El Ciclon',
+  'Florida Club': 'Florida',
+  'La Hormiguita Club': 'La Hormiguita',
+  'Sociedad de Fomento 12 de Octubre': '12 de Octubre',
+  'Sociedad de Fomento 12 Octubre “B”': '12 de Octubre B',
+  'Sociedad de Fomento Aristobulo Del Valle': 'Aristobulo',
+  'Sociedad de Fomento Barrio Gaynor': 'Gaynor',
+  'Sociedad de Fomento Drysdale': 'Drysdale',
+  'Sociedad de Fomento Grossville': 'Grossville',
+  'Sociedad de Fomento Jose Hernandez': 'Jose Hernandez',
+  'Sociedad de Fomento Villa Martelli': 'Villa Martelli',
+  'Sociedad de Fomento y Social Munro': 'Munro',
+  'Union Vecinal 25 de Mayo de Carapachay': '25 de Mayo'
+  // Barrio Habana, UVAFO, UVVA quedan como estan (ya cortos).
+};
+function clubAlias(name) {
+  if (!name) return '';
+  return CLUB_ALIAS[name] || name;
+}
+
 function buildTabs() {
   var allClubs=CLUBS.slice();
   DELEGADOS.forEach(function(d){if(allClubs.indexOf(d.club)<0)allClubs.push(d.club);});
@@ -2335,7 +2369,8 @@ function buildTabs() {
   var h='';
   allClubs.forEach(function(cl){
     var isTec=cl===TEC_CLUB;
-    h+='<button class="club-tab'+(cl===cur?' active':'')+(isTec?' tec-tab':'')+'" data-club="'+encodeURIComponent(cl)+'">'+(!isTec?getEscudo(cl,'sm'):'')+esc(cl)+'</button>';
+    var label = isTec ? cl : clubAlias(cl);
+    h+='<button class="club-tab'+(cl===cur?' active':'')+(isTec?' tec-tab':'')+'" data-club="'+encodeURIComponent(cl)+'" title="'+esc(cl)+'">'+(!isTec?getEscudo(cl,'sm'):'')+esc(label)+'</button>';
   });
   var ct=document.getElementById('clubTabs');
   ct.innerHTML=h;
